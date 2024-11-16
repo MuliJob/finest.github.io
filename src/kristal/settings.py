@@ -120,7 +120,7 @@ USE_TZ = True
 STATIC_URL = 'static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
-COMPRESS_ROOT = BASE_DIR / 'finest' / 'static' / 'src'
+COMPRESS_ROOT = BASE_DIR / 'finest/static/src'
 
 COMPRESS_ENABLED = True
 
