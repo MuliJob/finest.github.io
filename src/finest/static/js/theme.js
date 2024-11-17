@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', function () {
               document.body.className = `theme-${data.theme}`;
 
               if (data.theme === 'light') {
-                  themeToggle.innerHTML = '<i class="bi bi-moon-stars-fill text-lg"></i>';
+                  themeToggle.innerHTML = '<i class="bi bi-moon-fill text-lg"></i>';
               } else {
                   themeToggle.innerHTML = '<i class="bi bi-sun-fill text-lg"></i>';
               }
