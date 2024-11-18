@@ -121,13 +121,15 @@ USE_TZ = True
 STATIC_URL = 'static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
-COMPRESS_ROOT = BASE_DIR / 'finest/static/src'
+COMPRESS_ROOT = BASE_DIR / 'finest/static/css'
 
 COMPRESS_ENABLED = True
 
-STATICFILES_FINDERS = ( 'django.contrib.staticfiles.finders.FileSystemFinder',
+STATICFILES_FINDERS = [
+    'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-    'compressor.finders.CompressorFinder',)
+    'compressor.finders.CompressorFinder',
+]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
