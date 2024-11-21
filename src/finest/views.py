@@ -11,7 +11,6 @@ def toggle_theme(request):
     request.session['theme'] = new_theme
     return JsonResponse({'theme': new_theme})
 
-@ensure_csrf_cookie
 def home(request):
   title = 'Project Reviews Application'
   context = {
