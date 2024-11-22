@@ -22,4 +22,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('toggle-theme/', views.toggle_theme, name='toggle_theme'),
     path('', views.home, name='home'),
+    path('login', views.login, name='login')
 ]

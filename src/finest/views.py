@@ -17,3 +17,6 @@ def home(request):
     'title':title,
   }
   return render(request, 'home.html', context)
+
+def login(request):
+   return render(request, 'registration/login.html')
