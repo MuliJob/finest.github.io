@@ -23,7 +23,7 @@ module.exports = {
       },
       fontFamily: {
         body: [
-          'Inter',
+          'IBM Plex Mono',
           'ui-sans-serif',
           'system-ui',
           '-apple-system',
@@ -40,7 +40,7 @@ module.exports = {
           'Noto Color Emoji',
         ],
         sans: [
-          'Inter',
+          'IBM Plex Mono',
           'ui-sans-serif',
           'system-ui',
           '-apple-system',
@@ -59,7 +59,7 @@ module.exports = {
       },
     },
   },
-  darkMode: 'class', // Enable dark mode with class
+  // darkMode: 'class',
   plugins: [
     require('flowbite/plugin'),
   ],
