@@ -20,3 +20,10 @@ def dashboard(request):
     'title':title,
   }
   return render(request, 'dashboard.html', context)
+
+def contactus(request):
+  title = 'Contact Us'
+  context = {
+    'title':title,
+  }
+  return render(request, 'contactus.html', context)
