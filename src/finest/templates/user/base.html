@@ -67,19 +67,14 @@
               </svg>
               <span class="sr-only">Toggle sidebar</span>
             </button>
-            <a
-              href=""
-              class="flex items-center justify-between mr-4"
-            >
+            <a href="" class="flex items-center justify-between mr-4">
               <img
                 src="{% static 'img/logo.png' %}"
                 class="mr-3 h-8"
                 alt="Finest Logo"
               />
-              <span
-                class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white"
-              >
-              Finest
+              <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white hidden md:block">
+                Finest
               </span>
             </a>
             <form action="#" method="GET" class="hidden md:block md:pl-2">
@@ -134,10 +129,12 @@
                 ></path>
               </svg>
             </button>
-            <!-- Submit Website -->
+            <!-- Submit Button -->
             <a
-              href=""
-              class="p-2 mr-1 text-gray-600 inline-flex items-center border border-blue-500 hover:bg-gray-100 hover:text-black focus:outline-none focus:ring-4 focus:ring-blue-100 font-medium rounded-lg text-sm px-4 py-2 text-center dark:focus:ring-blue-700 dark:text-gray-400 dark:border-blue-600 dark:hover:text-white dark:hover:bg-gray-700 transition-all duration-200 ease-in-out"
+              href="{% url 'submit_website' %}"
+              data-drawer-toggle="drawer-navigation"
+              aria-controls="drawer-navigation"
+              class="p-2 mr-1 text-gray-600 items-center border border-blue-500 hover:bg-gray-100 hover:text-black focus:outline-none focus:ring-4 focus:ring-blue-100 font-medium rounded-lg text-sm px-4 py-2 text-center dark:focus:ring-blue-700 dark:text-gray-400 dark:border-blue-600 dark:hover:text-white dark:hover:bg-gray-700 transition-all duration-200 ease-in-out md:flex hidden"
             >
               <svg
                 aria-hidden="true"
@@ -153,6 +150,26 @@
                 ></path>
               </svg>
               Submit Website
+            </a>
+            <a
+              href="{% url 'submit_website' %}"
+              data-drawer-toggle="drawer-navigation"
+              aria-controls="drawer-navigation"
+              class="p-2 mr-1 text-gray-600 inline-flex items-center border border-blue-500 hover:bg-gray-100 hover:text-black focus:outline-none focus:ring-4 focus:ring-blue-100 font-medium rounded-lg text-sm px-4 py-2 text-center dark:focus:ring-blue-700 dark:text-gray-400 dark:border-blue-600 dark:hover:text-white dark:hover:bg-gray-700 transition-all duration-200 ease-in-out md:hidden"
+            >
+              <svg
+                aria-hidden="true"
+                class="w-6 h-6"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
+                  clip-rule="evenodd"
+                ></path>
+              </svg>
             </a>
             <!-- Notifications -->
             <button
@@ -435,7 +452,7 @@
           <ul class="space-y-2">
             <li>
               <a
-                href="#"
+                href="{% url 'dashboard' %}"
                 class="flex items-center p-2 text-base font-medium text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
               >
                 <svg
@@ -827,7 +844,7 @@
         </div>
       </aside>
 
-      <main class="p-4 md:ml-64 h-auto pt-20">
+      <main class="p-4 md:ml-64 h-auto">
         {% block content %}
         {% endblock content %}
       </main>
