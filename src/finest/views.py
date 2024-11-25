@@ -19,7 +19,7 @@ def dashboard(request):
   context = {
     'title':title,
   }
-  return render(request, 'dashboard.html', context)
+  return render(request, 'user/dashboard.html', context)
 
 def contactus(request):
   title = 'Contact Us'
