@@ -21,6 +21,13 @@ def dashboard(request):
   }
   return render(request, 'user/dashboard.html', context)
 
+def my_post(request):
+  title = 'My Posts'
+  context = {
+    'title':title,
+  }
+  return render(request, 'user/my-posts.html', context)
+
 def submit_website(request):
   title = 'Submit Website'
   context = {
