@@ -28,6 +28,13 @@ def my_post(request):
   }
   return render(request, 'user/my-posts.html', context)
 
+def posted(request):
+  title = 'Posted Websites'
+  context = {
+    'title':title,
+  }
+  return render(request, 'user/posted.html', context)
+
 def submit_website(request):
   title = 'Submit Website'
   context = {
