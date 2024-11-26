@@ -1,4 +1,5 @@
-{% load compress %} {% load static %}
+<!-- {% load compress %} -->
+ {% load static %}
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -26,9 +27,9 @@
       href="{% static 'img/favicon.ico' %}"
       type="image/x-icon"
     />
-    {% compress css %}
+    <!-- {% compress css %} -->
     <link rel="stylesheet" href="{% static 'css/output.css' %}" />
-    {% endcompress %}
+    <!-- {% endcompress %} -->
 
     <link rel="stylesheet" href="{% static 'css/main.css' %}" />
   </head>
@@ -288,7 +289,7 @@
               <span class="sr-only">Open user menu</span>
               <img
                 class="w-8 h-8 rounded-full"
-                src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/michael-gough.png"
+                src="{% static 'img/banner.jpg' %}"
                 alt="user photo"
               />
             </button>
@@ -460,11 +461,16 @@
             <li>
               <a
                 href="{% url 'dashboard' %}"
-                class="flex items-center p-2 text-base font-medium text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+                class="flex items-center p-2 text-base font-medium text-gray-900 rounded-lg dark:text-white 
+                       hover:bg-gray-100 dark:hover:bg-gray-700 group
+                       {% if request.resolver_match.url_name == 'dashboard' %} 
+                            bg-gray-100 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-500 
+                        {% endif %}"
               >
                 <svg
                   aria-hidden="true"
-                  class="w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+                  class="w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 
+                         group-hover:text-gray-900 dark:group-hover:text-white"
                   fill="currentColor"
                   viewBox="0 0 20 20"
                   xmlns="http://www.w3.org/2000/svg"
@@ -478,7 +484,10 @@
             <li>
               <a
                 href="{% url 'my_post' %}"
-                class="flex items-center p-2 text-base font-medium text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+                class="{% if request.resolver_match.url_name == 'my_post' %} 
+                            bg-gray-100 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-500 
+                        {% endif %} 
+                        flex items-center p-2 text-base font-medium text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
               >
                 <svg
                   aria-hidden="true"
@@ -499,7 +508,9 @@
             <li>
               <a
                 href="{% url 'posted' %}"
-                class="flex items-center p-2 text-base font-medium text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+                class="{% if request.resolver_match.url_name == 'posted' %} 
+                bg-gray-100 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-500 
+            {% endif %} flex items-center p-2 text-base font-medium text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
               >
                 <svg
                   aria-hidden="true"
