@@ -122,7 +122,10 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+STATICFILES_STORAGE = [
+  'django.contrib.staticfiles.storage.ManifestStaticFilesStorage',
+  'whitenoise.storage.CompressedManifestStaticFilesStorage',
+]
 
 COMPRESS_ROOT = BASE_DIR / 'finest/static/css'
 
