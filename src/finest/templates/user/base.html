@@ -163,7 +163,7 @@
               href="{% url 'submit_website' %}"
               data-drawer-toggle="drawer-navigation"
               aria-controls="drawer-navigation"
-              class="p-2 mr-1 text-gray-600 inline-flex items-center border border-blue-500 hover:bg-gray-100 hover:text-black focus:outline-none focus:ring-4 focus:ring-blue-100 font-medium rounded-lg text-sm px-4 py-2 text-center dark:focus:ring-blue-700 dark:text-gray-400 dark:border-blue-600 dark:hover:text-white dark:hover:bg-gray-700 transition-all duration-200 ease-in-out md:hidden"
+              class="p-2 mr-1 text-gray-600 inline-flex items-center hover:bg-gray-100 hover:text-black focus:outline-none focus:ring-4 focus:ring-blue-100 font-medium rounded-lg text-sm px-4 py-2 text-center dark:focus:ring-blue-700 dark:text-gray-400 dark:border-blue-600 dark:hover:text-white dark:hover:bg-gray-700 transition-all duration-200 ease-in-out md:hidden"
             >
               <svg
                 aria-hidden="true"
@@ -301,11 +301,11 @@
               <div class="py-3 px-4">
                 <span
                   class="block text-sm font-semibold text-gray-900 dark:text-white"
-                  >Neil Sims</span
+                  >Muli Munyoki</span
                 >
                 <span
                   class="block text-sm text-gray-900 truncate dark:text-white"
-                  >name@flowbite.com</span
+                  >gmail@gmail.com</span
                 >
               </div>
               <ul
@@ -333,29 +333,46 @@
               >
                 <li>
                   <a
-                    href="#"
+                    id="theme-toggle"
                     class="flex items-center py-2 px-4 text-sm hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                    ><svg
-                      class="mr-2 w-5 h-5 text-gray-400"
-                      fill="currentColor"
-                      viewBox="0 0 20 20"
+                  >
+                    <svg
+                      id="theme-toggle-dark-icon"
+                      class="mr-2 w-5 h-5 text-red-400"
+                      aria-hidden="true"
                       xmlns="http://www.w3.org/2000/svg"
+                      fill="currentColor"
+                      viewBox="0 0 24 24"
                     >
                       <path
                         fill-rule="evenodd"
-                        d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z"
+                        d="M13 3a1 1 0 1 0-2 0v2a1 1 0 1 0 2 0V3ZM6.343 4.929A1 1 0 0 0 4.93 6.343l1.414 1.414a1 1 0 0 0 1.414-1.414L6.343 4.929Zm12.728 1.414a1 1 0 0 0-1.414-1.414l-1.414 1.414a1 1 0 0 0 1.414 1.414l1.414-1.414ZM12 7a5 5 0 1 0 0 10 5 5 0 0 0 0-10Zm-9 4a1 1 0 1 0 0 2h2a1 1 0 1 0 0-2H3Zm16 0a1 1 0 1 0 0 2h2a1 1 0 1 0 0-2h-2ZM7.757 17.657a1 1 0 1 0-1.414-1.414l-1.414 1.414a1 1 0 1 0 1.414 1.414l1.414-1.414Zm9.9-1.414a1 1 0 0 0-1.414 1.414l1.414 1.414a1 1 0 0 0 1.414-1.414l-1.414-1.414ZM13 19a1 1 0 1 0-2 0v2a1 1 0 1 0 2 0v-2Z"
                         clip-rule="evenodd"
-                      ></path>
+                      />
                     </svg>
-                    My likes</a
-                  >
+                    <svg
+                      id="theme-toggle-light-icon"
+                      class="mr-2 w-5 h-5 text-gray-900"
+                      aria-hidden="true"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        fill-rule="evenodd"
+                        d="M11.675 2.015a.998.998 0 0 0-.403.011C6.09 2.4 2 6.722 2 12c0 5.523 4.477 10 10 10 4.356 0 8.058-2.784 9.43-6.667a1 1 0 0 0-1.02-1.33c-.08.006-.105.005-.127.005h-.001l-.028-.002A5.227 5.227 0 0 0 20 14a8 8 0 0 1-8-8c0-.952.121-1.752.404-2.558a.996.996 0 0 0 .096-.428V3a1 1 0 0 0-.825-.985Z"
+                        clip-rule="evenodd"
+                      />
+                    </svg>
+                    Theme
+                  </a>
                 </li>
                 <li>
                   <a
                     href="#"
                     class="flex items-center py-2 px-4 text-sm hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
                     ><svg
-                      class="mr-2 w-5 h-5 text-gray-400"
+                      class="mr-2 w-5 h-5 text-yellow-400"
                       fill="currentColor"
                       viewBox="0 0 20 20"
                       xmlns="http://www.w3.org/2000/svg"
@@ -633,6 +650,14 @@
               ></path>
             </svg>
           </a>
+          <div
+            id="tooltip-settings"
+            role="tooltip"
+            class="inline-block absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip"
+          >
+            Settings
+            <div class="tooltip-arrow" data-popper-arrow></div>
+          </div>
           <a
             href="#"
             data-tooltip-target="tooltip-settings"
@@ -657,7 +682,7 @@
             role="tooltip"
             class="inline-block absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip"
           >
-            Settings page
+            Settings
             <div class="tooltip-arrow" data-popper-arrow></div>
           </div>
           <button
