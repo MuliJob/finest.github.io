@@ -44,7 +44,7 @@
         </a>
         <div class="flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
           <div class="flex items-center space-x-4">
-            {% if request.path != '/login/' and request.path != '/register/' %}
+            {% if request.path != '/members/login_user' %}
               <a
                 href="{% url 'login' %}"
                 class="text-gray-600 inline-flex border border-blue-500 hover:bg-gray-100 hover:text-black focus:outline-none focus:ring-4 focus:ring-blue-100 font-medium rounded-lg text-sm px-4 py-2 text-center dark:focus:ring-blue-700 dark:text-gray-400 dark:border-blue-600 dark:hover:text-white dark:hover:bg-gray-700"

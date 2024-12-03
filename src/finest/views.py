@@ -8,12 +8,6 @@ def home(request):
   }
   return render(request, 'home.html', context)
 
-def login(request):
-   return render(request, 'registration/login.html')
-
-def register(request):
-   return render(request, 'registration/register.html')
-
 def dashboard(request):
   title = 'User Dashboard'
   context = {
