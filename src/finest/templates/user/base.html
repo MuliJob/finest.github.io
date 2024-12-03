@@ -299,14 +299,16 @@
               id="dropdown"
             >
               <div class="py-3 px-4">
+              {% if request.user %}
                 <span
                   class="block text-sm font-semibold text-gray-900 dark:text-white"
-                  >Muli Munyoki</span
+                  >{{user.first_name}} {{user.last_name}}</span
                 >
                 <span
                   class="block text-sm text-gray-900 truncate dark:text-white"
-                  >gmail@gmail.com</span
+                  >{{user.email}}</span
                 >
+              {% endif %}
               </div>
               <ul
                 class="py-1 text-gray-700 dark:text-gray-300"

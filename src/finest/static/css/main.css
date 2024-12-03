@@ -1,5 +1,5 @@
 #nprogress .bar {
-  background: linear-gradient(90deg, #3490dc, #07f98c);
+  background: linear-gradient(90deg, #07e9f5, #07f98c);
   height: 10px;
   border-radius: 6px;
   transition: all 0.3s ease-in-out;
@@ -15,7 +15,7 @@
 }
 
 #nprogress .peg {
-  box-shadow: 0 0 30px #3490dc, 0 0 20px #07f98c;
+  box-shadow: 0 0 30px #07e9f5, 0 0 20px #07f98c;
   opacity: 1;
 }
 
