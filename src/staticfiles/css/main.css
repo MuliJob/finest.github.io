@@ -1,9 +1,22 @@
 #nprogress .bar {
-  background: #3490dc;
+  background: linear-gradient(90deg, #07e9f5, #07f98c);
+  height: 10px;
+  border-radius: 6px;
+  transition: all 0.3s ease-in-out;
+  z-index: 1031;
+}
+
+#nprogress .bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  pointer-events: none;
 }
 
 #nprogress .peg {
-  box-shadow: 0 0 10px #3490dc, 0 0 5px #3490dc;
+  box-shadow: 0 0 30px #07e9f5, 0 0 20px #07f98c;
+  opacity: 1;
 }
 
 #nprogress .spinner {
