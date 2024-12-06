@@ -104,23 +104,20 @@
                 data-modal-toggle="defaultModal"
               >
                 <svg
-                  class="w-5 h-5 -ms-2 me-2"
+                class="w-5 h-5 -ms-2 me-2"
                   aria-hidden="true"
                   xmlns="http://www.w3.org/2000/svg"
                   width="24"
                   height="24"
-                  fill="none"
+                  fill="currentColor"
                   viewBox="0 0 24 24"
                 >
                   <path
-                    stroke="currentColor"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M4 4h1.5L8 16m0 0h8m-8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm.75-3H7.5M11 7H6.312M17 4v6m-3-3h6"
+                    fill-rule="evenodd"
+                    d="M15.03 9.684h3.965c.322 0 .64.08.925.232.286.153.532.374.717.645a2.109 2.109 0 0 1 .242 1.883l-2.36 7.201c-.288.814-.48 1.355-1.884 1.355-2.072 0-4.276-.677-6.157-1.256-.472-.145-.924-.284-1.348-.404h-.115V9.478a25.485 25.485 0 0 0 4.238-5.514 1.8 1.8 0 0 1 .901-.83 1.74 1.74 0 0 1 1.21-.048c.396.13.736.397.96.757.225.36.32.788.269 1.211l-1.562 4.63ZM4.177 10H7v8a2 2 0 1 1-4 0v-6.823C3 10.527 3.527 10 4.176 10Z"
+                    clip-rule="evenodd"
                   />
                 </svg>
-
                 Review
               </a>
             </div>
@@ -132,9 +129,6 @@
             </p>
           </div>
 
-          
-
-          <!-- Main modal -->
           <div
             id="defaultModal"
             tabindex="-1"
@@ -142,11 +136,9 @@
             class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-modal md:h-full"
           >
             <div class="relative p-4 w-full max-w-2xl h-full md:h-auto">
-              <!-- Modal content -->
               <div
                 class="relative p-4 bg-white rounded-lg shadow dark:bg-gray-800 sm:p-5"
               >
-                <!-- Modal header -->
                 <div
                   class="flex justify-between items-center pb-4 mb-4 rounded-t border-b sm:mb-5 dark:border-gray-600"
                 >
@@ -176,7 +168,6 @@
                     <span class="sr-only">Close modal</span>
                   </button>
                 </div>
-                <!-- Modal body -->
                 <form action="#">
                   <div class="grid gap-4 mb-4 sm:grid-cols-2">
                     <div>
@@ -188,6 +179,8 @@
                         type="number"
                         name="design"
                         id="design"
+                        min="1"
+                        max="10"
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                         placeholder="Enter rating for design"
                         required=""
@@ -202,6 +195,8 @@
                         type="number"
                         name="usability"
                         id="userbility"
+                        min="1"
+                        max="10"
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                         placeholder="Enter rating for usability"
                         required=""
@@ -216,6 +211,8 @@
                         type="number"
                         name="content"
                         id="content"
+                        min="1"
+                        max="10"
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                         placeholder="Enter rating for content"
                         required=""
