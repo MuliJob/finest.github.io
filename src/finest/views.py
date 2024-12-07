@@ -43,6 +43,14 @@ def posted(request):
   return render(request, 'user/posted.html', context)
 
 @login_required
+def favorite(request):
+  title = 'Favorites'
+  context = {
+    'title':title,
+  }
+  return render(request, 'user/favorites.html', context)
+
+@login_required
 def submit_website(request):
   title = 'Submit Website'
   context = {
