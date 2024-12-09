@@ -1,4 +1,4 @@
-{% extends 'user/base.html' %} {% load static %} {% block content %}
+{% extends 'user/base.html' %} {% load humanize %} {% load static %} {% block content %}
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -8,7 +8,7 @@
   </head>
   <body class="bg-gray-50 dark:bg-gray-900">
     <section class="bg-gray-50 dark:bg-gray-900 py-3 sm:py-5 mt-16">
-      <h2 class="mb-4 text-xl font-bold text-gray-900 dark:text-white text-center">MY FAVORITES</h2>
+      <h2 class="mb-4 text-xl font-bold text-gray-900 dark:text-white text-center">{{ title }}</h2>
       <div class="px-4 mx-auto max-w-screen-2xl lg:px-12">
         <div
           class="relative overflow-hidden bg-white shadow-md dark:bg-gray-800 sm:rounded-lg"
@@ -19,8 +19,8 @@
             <div
               class="flex flex-col flex-shrink-0 space-y-3 md:flex-row md:items-center lg:justify-end md:space-y-0 md:space-x-3"
             >
-              <button
-                type="button"
+              <a
+                href="{% url 'submit_website' %}"
                 class="flex mr-2 items-center justify-center px-4 py-2 text-sm font-medium text-white rounded-lg bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800"
               >
                 <svg
@@ -37,7 +37,7 @@
                   />
                 </svg>
                 Add Website
-              </button>
+              </a>
               <button
                 type="button"
                 class="flex items-center justify-center flex-shrink-0 px-3 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg focus:outline-none hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
@@ -79,183 +79,122 @@
                       <label for="checkbox-all" class="sr-only">checkbox</label>
                     </div>
                   </th>
-                  <th scope="col" class="px-4 py-3">
-                    Title 
+                  <th scope="col" class="px-4 py-3">Title
                     <svg class="inline-flex w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                       <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 20V7m0 13-4-4m4 4 4-4m4-12v13m0-13 4 4m-4-4-4 4"/>
                     </svg>
                   </th>
-                  <th scope="col" class="px-4 py-3">
-                    URL
+                  <th scope="col" class="px-4 py-3">URL
                     <svg class="inline-flex w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                       <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 20V7m0 13-4-4m4 4 4-4m4-12v13m0-13 4 4m-4-4-4 4"/>
-                    </svg>                    
+                    </svg>
                   </th>
-                  <th scope="col" class="px-4 py-3">
-                    Rating
+                  <th scope="col" class="px-4 py-3">Rating
                     <svg class="inline-flex w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                       <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 20V7m0 13-4-4m4 4 4-4m4-12v13m0-13 4 4m-4-4-4 4"/>
-                    </svg>                    
+                    </svg>
                   </th>
-                  <th scope="col" class="px-4 py-3">
-                    Last Update
+                  <th scope="col" class="px-4 py-3">Last Update
                     <svg class="inline-flex w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                       <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 20V7m0 13-4-4m4 4 4-4m4-12v13m0-13 4 4m-4-4-4 4"/>
-                    </svg>                    
+                    </svg>
                   </th>
-                  <th scope="col" class="px-4 py-3">
-                    Action
+                  <th scope="col" class="px-4 py-3">Action
                     <svg class="inline-flex w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                       <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 20V7m0 13-4-4m4 4 4-4m4-12v13m0-13 4 4m-4-4-4 4"/>
-                    </svg>                    
+                    </svg>
                   </th>
                 </tr>
               </thead>
               <tbody>
-                <tr
-                  class="border-b dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700"
-                >
-                  <td class="w-4 px-4 py-3">
-                    <div class="flex items-center">
-                      <input
-                        id="checkbox-table-search-1"
-                        type="checkbox"
-                        onclick="event.stopPropagation()"
-                        class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                      />
-                      <label for="checkbox-table-search-1" class="sr-only"
-                        >checkbox</label
-                      >
-                    </div>
-                  </td>
-                  <th
-                    scope="row"
-                    class="flex items-center px-4 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                {% for favorite in favorites %}
+                  <tr
+                    class="border-b dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700"
                   >
-                    <img
-                      src="{% static 'img/finest.png' %}"
-                      alt="iMac Front Image"
-                      class="w-auto h-8 mr-3"
-                    />
-                    The Finest
-                  </th>
-
-                  <td class="px-4 py-2">
-                    <span
-                      class="bg-primary-100 text-primary-800 text-xs font-medium px-2 py-0.5 rounded dark:bg-primary-900 dark:text-primary-300"
-                      >https://github.com/MuliJob/project_reviews</span
-                    >
-                  </td>
-
-                  <td
-                    class="px-4 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                  >
-                    <div class="flex items-center">
-                      <svg
-                        aria-hidden="true"
-                        class="w-5 h-5 text-yellow-400"
-                        fill="currentColor"
-                        viewbox="0 0 20 20"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
+                    <td class="w-4 px-4 py-3">
+                      <div class="flex items-center">
+                        <input
+                          id="checkbox-table-search-{{ favorite.id }}"
+                          type="checkbox"
+                          onclick="event.stopPropagation()"
+                          class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                         />
-                      </svg>
-                      <span class="ml-1 text-gray-500 dark:text-gray-400"
-                        >5.0</span
-                      >
-                    </div>
-                  </td>
-                  <td
-                    class="px-4 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                  >
-                    Just now
-                  </td>
-                  <td class="px-4 py-2 font-medium whitespace-nowrap">
-                    <a
-                      href="{% url 'my_post_detail' %}"
-                      class="flex mr-2 items-center justify-center px-4 py-2 text-sm font-medium text-white rounded-lg bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800"
+                        <label for="checkbox-table-search-{{ favorite.id }}" class="sr-only"
+                          >checkbox</label
+                        >
+                      </div>
+                    </td>
+                    <th
+                      scope="row"
+                      class="flex items-center px-4 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                     >
-                      <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m7 16 4-4-4-4m6 8 4-4-4-4"/>
-                      </svg> 
-                      View
-                    </a>
-                  </td>
-                </tr>
-
-                <tr
-                  class="border-b dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700"
-                >
-                  <td class="w-4 px-4 py-3">
-                    <div class="flex items-center">
-                      <input
-                        id="checkbox-table-search-1"
-                        type="checkbox"
-                        onclick="event.stopPropagation()"
-                        class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                      <img
+                        src="{{ favorite.file.url }}"
+                        alt="{{ favorite.title }} Image"
+                        class="w-auto h-8 mr-3"
                       />
-                      <label for="checkbox-table-search-1" class="sr-only"
-                        >checkbox</label
+                      {{ favorite.title }}
+                    </th>
+                    <td class="px-4 py-2">
+                      <a
+                        href="{{ favorite.url }}"
+                        target="_blank"
+                        class="bg-primary-100 text-primary-800 text-xs font-medium px-2 py-0.5 rounded dark:bg-primary-900 dark:text-primary-300"
                       >
-                    </div>
-                  </td>
-                  <th
-                    scope="row"
-                    class="flex items-center px-4 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                  >
-                    <img
-                      src="{% static 'img/digicraft.png' %}"
-                      alt="Digicraft Image"
-                      class="w-auto h-8 mr-3"
-                    />
-                    Digicraft
-                  </th>
-                  <td class="px-4 py-2">
-                    <span
-                      class="bg-primary-100 text-primary-800 text-xs font-medium px-2 py-0.5 rounded dark:bg-primary-900 dark:text-primary-300"
-                      >https://digicraftofficial.onrender.com/</span
+                      {{ favorite.url }}
+                      </a>
+                    </td>
+                    <td
+                      class="px-4 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                     >
-                  </td>
-
-                  <td
-                    class="px-4 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                  >
-                    <div class="flex items-center">
-                      <svg
-                        aria-hidden="true"
-                        class="w-5 h-5 text-yellow-400"
-                        fill="currentColor"
-                        viewbox="0 0 20 20"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
-                        />
-                      </svg>
-                      <span class="ml-1 text-gray-500 dark:text-gray-400"
-                        >5.0</span
-                      >
-                    </div>
-                  </td>
-                  <td
-                    class="px-4 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                  >
-                    1 day ago
-                  </td>
-                  <td class="px-4 py-2 font-medium whitespace-nowrap">
-                    <a
-                      href="{% url 'my_post_detail' %}"
-                      class="flex mr-2 items-center justify-center px-4 py-2 text-sm font-medium text-white rounded-lg bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800"
+                      <div class="flex items-center">
+                        <svg
+                          aria-hidden="true"
+                          class="w-5 h-5 text-yellow-400"
+                          fill="currentColor"
+                          viewbox="0 0 20 20"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
+                          />
+                        </svg>
+                        <span class="ml-1 text-gray-500 dark:text-gray-400"
+                          >5.0</span
+                        >
+                      </div>
+                    </td>
+                    <td
+                      class="px-4 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                     >
-                      <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m7 16 4-4-4-4m6 8 4-4-4-4"/>
-                      </svg> 
-                      View
-                    </a>
-                  </td>
-                </tr>
+                    {{ favorite.submitted_at|naturaltime }}
+                    </td>
+                    <td class="px-4 py-2 font-medium whitespace-nowrap">
+                      <a
+                        href="{% url 'my_post_detail' pk=favorite.pk %}"
+                        class="flex mr-2 items-center justify-center px-4 py-2 text-sm font-medium text-white rounded-lg bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800"
+                      >
+                        <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m7 16 4-4-4-4m6 8 4-4-4-4"/>
+                        </svg> 
+                        View
+                      </a>
+                    </td>
+                  </tr>
+                {% empty %}
+                  
+                  <tr class="border-b dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700">
+                    <td colspan="6" class="px-4 py-3 text-center">
+                      <div class="flex items-center justify-center">
+                        <svg class="w-8 h-8 mr-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="none" viewBox="0 0 24 24">
+                          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m10.051 8.102-3.778.322-1.994 1.994a.94.94 0 0 0 .533 1.6l2.698.316m8.39 1.617-.322 3.78-1.994 1.994a.94.94 0 0 1-1.595-.533l-.4-2.652m8.166-11.174a1.366 1.366 0 0 0-1.12-1.12c-1.616-.279-4.906-.623-6.38.853-1.671 1.672-5.211 8.015-6.31 10.023a.932.932 0 0 0 .162 1.111l.828.835.833.832a.932.932 0 0 0 1.111.163c2.008-1.102 8.35-4.642 10.021-6.312 1.475-1.478 1.133-4.77.855-6.385Zm-2.961 3.722a1.88 1.88 0 1 1-3.76 0 1.88 1.88 0 0 1 3.76 0Z"/>
+                        </svg>
+                        No Favorites Found
+                      </div>
+                    </td>
+                  </tr>
+              
+                {% endfor %}
               </tbody>
             </table>
           </div>

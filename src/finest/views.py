@@ -1,9 +1,13 @@
 """ Finest app views """
+import json
 from django.shortcuts import render, redirect, get_object_or_404
+from django.http import JsonResponse
+from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .models import SubmittedWebsite
 from .forms import SubmittedWebsiteForm
+
 
 
 # Create your views here.
@@ -47,11 +51,35 @@ def my_post_detail(request, pk):
     return render(request, 'user/website-detail.html', context)
 
 @login_required
+def toggle_favorite(request):
+    """ Toggling favorite """
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        website_id = data.get('website_id')
+
+        if not website_id:
+            return JsonResponse({"success": False, "error": "Missing website ID"}, status=400)
+
+        try:
+            website = SubmittedWebsite.objects.get(id=website_id, user=request.user)
+            is_favorite = not website.is_favorite
+            website.is_favorite = is_favorite
+            website.save()
+            return JsonResponse({"success": True, "is_favorite": is_favorite})
+        except ObjectDoesNotExist:
+            return JsonResponse({"success": False, "error": "Website not found"}, status=404)
+    return JsonResponse({"success": False, "error": "Invalid request method"}, status=405)
+
+@login_required
 def favorite(request):
     """ Favorites function """
-    title = 'Favorites'
+    title = 'FAVORITES'
+
+    favorites = SubmittedWebsite.objects.filter(user=request.user, is_favorite=True)
+
     context = {
-      'title':title,
+      'title': title,
+      'favorites': favorites,
     }
     return render(request, 'user/favorites.html', context)
 
