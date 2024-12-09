@@ -10,7 +10,7 @@ urlpatterns = [
     path('dashboard/my-posts/', views.my_post, name='my_post'),
     path('dashboard/favorites/', views.favorite, name='favorite'),
     path('dashboard/submit-website/', views.submit_website, name='submit_website'),
-    path('dashboard/details/', views.my_post_detail, name='my_post_detail'),
+    path('dashboard/details/<int:pk>', views.my_post_detail, name='my_post_detail'),
     path('contactus/', views.contactus, name='contactus')
 ]
 if settings.DEBUG:

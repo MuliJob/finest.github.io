@@ -13,27 +13,27 @@
           <div class="shrink-0 max-w-md lg:max-w-lg mx-auto">
             <img
               class="w-full dark:hidden"
-              src="{% static 'img/portfolio.png' %}"
-              alt=""
+              src="{{ website.file.url }}"
+              alt="{{ website.title }} Image"
             />
             <img
               class="w-full hidden dark:block"
-              src="{% static 'img/portfolio.png' %}"
-              alt="Portfolio"
+              src="{{ website.file.url }}"
+              alt="{{ website.title }} Image"
             />
           </div>
           <div class="mt-6 sm:mt-8 lg:mt-0">
             <h1
               class="text-xl font-semibold text-gray-900 sm:text-2xl dark:text-white"
             >
-              Personal Portfolio
+            {{ website.title }}
             </h1>
             <a
-              href="https://muli-munyoki.onrender.com"
+              href="{{ website.url }}"
               class="text-sm font-medium leading-none mt-4 sm:items-center sm:gap-4 sm:flex text-gray-500 dark:text-gray-400"
               target="_blank"
             >
-              https://muli-munyoki.onrender.com
+            {{ website.url }}
             </a>
             <div class="mt-4 sm:items-center sm:gap-4 sm:flex">
               <div class="flex items-center gap-2 mt-2 sm:mt-0">
@@ -125,7 +125,7 @@
             <hr class="my-6 md:my-8 border-gray-200 dark:border-gray-800" />
 
             <p class="mb-6 text-gray-500 dark:text-gray-400">
-              This is my Personal portfolio website. Get in touch with me.
+              {{ website.description }}
             </p>
           </div>
 

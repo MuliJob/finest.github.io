@@ -9,3 +9,5 @@ class SubmittedWebsite(models.Model):
     description = models.TextField(blank=True, null=True)
     file = models.FileField(upload_to='uploads/websites/')
     submitted_at = models.DateTimeField(auto_now_add=True)
+
+    objects = models.Manager()
