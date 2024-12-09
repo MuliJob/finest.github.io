@@ -1,3 +1,4 @@
+""" Members app authentication view functions """
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
@@ -5,6 +6,7 @@ from django.contrib.auth.models import User
 from .forms import RegisterUserForm
 
 def login_user(request):
+    """ Login user function """
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
@@ -25,11 +27,13 @@ def login_user(request):
         return render(request, 'auth/login.html', {})
 
 def logout_user(request):
+    """ Logout user function """
     logout(request)
     messages.success(request, 'Logged Out Successful.')
     return redirect('login')
 
 def register_user(request):
+    """ user registration function """
     if request.method == 'POST':
         form = RegisterUserForm(request.POST)
         if form.is_valid():

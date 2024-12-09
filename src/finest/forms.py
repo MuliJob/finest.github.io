@@ -1,3 +1,4 @@
+""" Form creation and validation """
 from urllib.parse import urlparse
 import os
 from django import forms
@@ -5,17 +6,21 @@ from django.core.exceptions import ValidationError
 from .models import SubmittedWebsite
 
 class SubmittedWebsiteForm(forms.ModelForm):
+    """ Form validation """
     class Meta:
+        """ SubmittedWebsiteForm fields """
         model = SubmittedWebsite
         fields = ['title', 'url', 'description', 'file']
 
     def clean_title(self):
+        """ title validation """
         title = self.cleaned_data.get('title')
         if len(title) > 255:
             raise forms.ValidationError("The title should not exceed 255 characters.")
         return title
 
     def clean_url(self):
+        """ URL validation """
         url = self.cleaned_data.get('url')
         
         if not url.startswith(('http://', 'https://')):
@@ -28,6 +33,7 @@ class SubmittedWebsiteForm(forms.ModelForm):
         return url
 
     def clean_file(self):
+        """ File validation """
         file = self.cleaned_data.get('file')
         max_size_kb = 5000
         allowed_extensions = ['.jpg', '.jpeg', '.png', '.webp']

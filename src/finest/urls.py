@@ -11,7 +11,7 @@ urlpatterns = [
     path('dashboard/favorites/', views.favorite, name='favorite'),
     path('dashboard/submit-website/', views.submit_website, name='submit_website'),
     path('dashboard/details/<int:pk>', views.my_post_detail, name='my_post_detail'),
-    path('contactus/', views.contactus, name='contactus')
+    path('contact_us/', views.contact_us, name='contact_us')
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

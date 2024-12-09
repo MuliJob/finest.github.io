@@ -1,3 +1,4 @@
+""" Finest app views """
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
@@ -7,6 +8,7 @@ from .forms import SubmittedWebsiteForm
 
 # Create your views here.
 def home(request):
+    """ Homepage function """
     title = 'Project Reviews Application'
     context = {
       'title':title,
@@ -15,6 +17,7 @@ def home(request):
 
 @login_required
 def dashboard(request):
+    """ User dashboard """
     title = 'User Dashboard'
     context = {
       'title':title,
@@ -23,6 +26,7 @@ def dashboard(request):
 
 @login_required
 def my_post(request):
+    """ Posted websites """
     title = 'MY POSTS'
     user_posts = SubmittedWebsite.objects.filter(user=request.user)
     context = {
@@ -33,7 +37,7 @@ def my_post(request):
 
 @login_required
 def my_post_detail(request, pk):
-    
+    """ Posted website details """
     title = 'Website Details'
     website = get_object_or_404(SubmittedWebsite, pk=pk, user=request.user)
     context = {
@@ -44,6 +48,7 @@ def my_post_detail(request, pk):
 
 @login_required
 def favorite(request):
+    """ Favorites function """
     title = 'Favorites'
     context = {
       'title':title,
@@ -52,6 +57,7 @@ def favorite(request):
 
 @login_required
 def submit_website(request):
+    """ Submitting website """
     if request.method == 'POST':
         form = SubmittedWebsiteForm(request.POST, request.FILES)
         if form.is_valid():
@@ -71,7 +77,8 @@ def submit_website(request):
     }
     return render(request, 'user/submit-website.html', context)
 
-def contactus(request):
+def contact_us(request):
+    """ Contact function"""
     title = 'Contact Us'
     context = {
       'title':title,
