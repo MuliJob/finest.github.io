@@ -546,27 +546,6 @@
             </li>
             <li>
               <a
-                href="{% url 'posted' %}"
-                class="{% if request.resolver_match.url_name == 'posted' %} bg-gray-100 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-500 {% endif %} flex items-center p-2 text-base font-medium text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
-              >
-                <svg
-                  aria-hidden="true"
-                  class="w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    fill-rule="evenodd"
-                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm-1.293-4.707a1 1 0 011.414 0l4-4a1 1 0 00-1.414-1.414L9 11.586l-1.293-1.293a1 1 0 00-1.414 1.414l2 2z"
-                    clip-rule="evenodd"
-                  ></path>
-                </svg>
-                <span class="ml-3">Posted</span>
-              </a>
-            </li>
-            <li>
-              <a
                 href="{% url 'favorite' %}"
                 class="{% if request.resolver_match.url_name == 'favorite' %} bg-gray-100 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-500 {% endif %} flex items-center p-2 text-base font-medium text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
               >

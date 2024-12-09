@@ -35,14 +35,6 @@ def my_post_detail(request):
   return render(request, 'user/website-detail.html', context)
 
 @login_required
-def posted(request):
-  title = 'Posted Websites'
-  context = {
-    'title':title,
-  }
-  return render(request, 'user/posted.html', context)
-
-@login_required
 def favorite(request):
   title = 'Favorites'
   context = {
