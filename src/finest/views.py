@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
-from .forms import SubmittedWebsiteForm
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
+from .forms import SubmittedWebsiteForm
 
 
 # Create your views here.
@@ -45,24 +46,21 @@ def favorite(request):
 
 @login_required
 def submit_website(request):
-    title = 'Submit Website'
-
     if request.method == 'POST':
         form = SubmittedWebsiteForm(request.POST, request.FILES)
         if form.is_valid():
-            form.save()
+            submitted_website = form.save(commit=False)
+            submitted_website.user = request.user
+            submitted_website.save()
+            messages.success(request, "Your website was submitted successfully.")
             return redirect('my_post')
         else:
-            context = {
-                'title': title,
-                'form': form,
-            }
-            return render(request, 'user/submit-website.html', context)
+            messages.error(request, "There was an error with your submission. Please correct it below.")
     else:
         form = SubmittedWebsiteForm()
 
     context = {
-        'title': title,
+        'title': 'Submit Website',
         'form': form,
     }
     return render(request, 'user/submit-website.html', context)
