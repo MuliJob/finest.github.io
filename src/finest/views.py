@@ -74,8 +74,12 @@ def toggle_favorite(request):
 def favorite(request):
     """ Favorites function """
     title = 'FAVORITES'
+
+    favorites = SubmittedWebsite.objects.filter(user=request.user, is_favorite=True)
+
     context = {
       'title': title,
+      'favorites': favorites,
     }
     return render(request, 'user/favorites.html', context)
 
