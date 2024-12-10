@@ -5,8 +5,8 @@ from django.http import JsonResponse
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from .models import SubmittedWebsite
-from .forms import SubmittedWebsiteForm
+from .models import SubmittedWebsite, Review
+from .forms import SubmittedWebsiteForm, ReviewForm
 
 
 
@@ -44,9 +44,22 @@ def my_post_detail(request, pk):
     """ Posted website details """
     title = 'Website Details'
     website = get_object_or_404(SubmittedWebsite, pk=pk, user=request.user)
+
+    reviews = website.reviews.all()
+
+    total_reviews = reviews.count() if reviews.exists() else 0
+
+    if reviews.exists():
+        overall_rating = reviews.first().overall
+    else:
+        overall_rating = 0
+
     context = {
       'title': title,
       'website': website,
+      'reviews': reviews,
+      'total_reviews': total_reviews,
+      'overall_rating': overall_rating,
     }
     return render(request, 'user/website-detail.html', context)
 
@@ -82,6 +95,33 @@ def favorite(request):
       'favorites': favorites,
     }
     return render(request, 'user/favorites.html', context)
+
+@login_required
+def add_review(request, pk):
+    """Adding review function"""
+    submitted_website = get_object_or_404(SubmittedWebsite, id=pk)
+
+    if Review.objects.filter(submitted_website=submitted_website, user=request.user).exists():
+        messages.error(request, 'You have already reviewed this website.')
+        return redirect('my_post_detail', pk=pk)
+
+    if request.method == 'POST':
+        form = ReviewForm(request.POST)
+        if form.is_valid():
+            review = form.save(commit=False)
+            review.submitted_website = submitted_website
+            review.user = request.user
+            review.save()
+
+            messages.success(request, 'Your review has been added successfully.')
+            return redirect('my_post_detail', pk=pk)
+        else:
+            messages.error(request, 'Form validation failed. Please try again.')
+            return redirect('my_post_detail', pk=pk)
+
+    messages.error(request, 'Only POST requests are allowed.')
+    return redirect('my_post_detail', pk=pk)
+
 
 @login_required
 def submit_website(request):
