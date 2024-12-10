@@ -8,6 +8,35 @@
   </head>
   <body class="bg-gray-50 dark:bg-gray-900">
     <section class="py-8 bg-white md:py-16 dark:bg-gray-900 antialiased mt-16">
+      {% if messages %}
+        {% for message in messages %}
+            <div id="alert-1" class="flex items-center p-4 mb-4 text-sm rounded-lg 
+                {% if message.tags == 'success' %}
+                    bg-green-200 text-green-800 dark:bg-green-800 dark:text-green-400
+                {% elif message.tags == 'error' %}
+                    bg-red-50 text-red-800 dark:bg-red-800 dark:text-red-400
+                {% elif message.tags == 'warning' %}
+                    bg-yellow-50 text-yellow-800 dark:bg-yellow-800 dark:text-yellow-400
+                {% else %}
+                    bg-blue-50 text-blue-800 dark:bg-gray-800 dark:text-blue-400
+                {% endif %}
+                " role="alert">
+                <svg class="flex-shrink-0 w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
+                </svg>
+                <span class="sr-only">Info</span>
+                <div class="ms-3 text-sm font-medium">
+                    {{ message }}
+                </div>
+                <button type="button" class="ms-auto -mx-1.5 -my-1.5 bg-transparent text-current rounded-lg focus:ring-2 focus:ring-opacity-50 p-1.5 hover:bg-gray-200 inline-flex items-center justify-center h-8 w-8 dark:bg-gray-800 dark:text-current dark:hover:bg-gray-700" data-dismiss-target="#alert-1" aria-label="Close">
+                    <span class="sr-only">Close</span>
+                    <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                    </svg>
+                </button>
+            </div>
+        {% endfor %}
+      {% endif %}
       <div class="max-w-screen-xl px-4 mx-auto 2xl:px-0">
         <div class="lg:grid lg:grid-cols-2 lg:gap-8 xl:gap-16">
           <div class="shrink-0 max-w-md lg:max-w-lg mx-auto">
@@ -37,7 +66,7 @@
             </a>
             <div class="mt-4 sm:items-center sm:gap-4 sm:flex">
               <div class="flex items-center gap-2 mt-2 sm:mt-0">
-                <div class="flex items-center gap-2">
+                <div class="flex items-center">
                   <svg
                     class="w-4 h-4 text-yellow-300"
                     aria-hidden="true"
@@ -55,14 +84,14 @@
                 <p
                   class="text-sm font-medium leading-none text-gray-500 dark:text-gray-400"
                 >
-                  5.0
+                {{ overall_rating }}.0
                 </p>
 
                 <a
                   href="#"
                   class="text-sm font-medium leading-none text-gray-900 underline hover:no-underline dark:text-white"
                 >
-                  345 Reviews
+                {{ total_reviews }} Reviews
                 </a>
               </div>
             </div>
@@ -96,13 +125,12 @@
               </a>
 
               <a
-                href="#"
                 title=""
                 class="text-white mt-4 sm:mt-0 bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800 flex items-center justify-center"
                 role="button"
-                id="defaultModalButton"
-                data-modal-target="defaultModal"
-                data-modal-toggle="defaultModal"
+                id="reviewModalButton"
+                data-modal-target="reviewModal"
+                data-modal-toggle="reviewModal"
               >
                 <svg
                   class="w-5 h-5 -ms-2 me-2"
@@ -129,29 +157,24 @@
               {{ website.description }}
             </p>
           </div>
-
           <div
-            id="defaultModal"
+            id="reviewModal"
             tabindex="-1"
             aria-hidden="true"
-            class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-modal md:h-full"
+            class="hidden fixed inset-0 z-50 justify-center items-center overflow-x-hidden overflow-y-auto transition-transform transform translate-y-10"
           >
-            <div class="relative p-4 w-full max-w-2xl h-full md:h-auto">
-              <div
-                class="relative p-4 bg-white rounded-lg shadow dark:bg-gray-800 sm:p-5"
-              >
+            <div class="relative p-4 w-full max-w-2xl h-auto">
+              <div class="relative p-4 bg-white rounded-lg shadow dark:bg-gray-800 sm:p-5">
                 <div
                   class="flex justify-between items-center pb-4 mb-4 rounded-t border-b sm:mb-5 dark:border-gray-600"
                 >
-                  <h3
-                    class="text-lg font-semibold text-gray-900 dark:text-white"
-                  >
-                    Add Review
+                  <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
+                    {{ website.title }}
                   </h3>
                   <button
                     type="button"
                     class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
-                    data-modal-toggle="defaultModal"
+                    data-modal-toggle="reviewModal"
                   >
                     <svg
                       aria-hidden="true"
@@ -169,7 +192,8 @@
                     <span class="sr-only">Close modal</span>
                   </button>
                 </div>
-                <form action="#">
+                <form action="{% url 'add_review' pk=website.id %}" id="reviewForm" method="post">
+                  {% csrf_token %}
                   <div class="grid gap-4 mb-4 sm:grid-cols-2">
                     <div>
                       <label
@@ -180,12 +204,13 @@
                         type="number"
                         name="design"
                         id="design"
+                        value="{{ form.design.value|default:'' }}"
                         min="1"
                         max="10"
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                         placeholder="Enter rating for design"
-                        required=""
                       />
+                      <div class="text-sm text-red-600 mt-2">{{ form.design.errors }}</div>
                     </div>
                     <div>
                       <label
@@ -195,13 +220,14 @@
                       <input
                         type="number"
                         name="usability"
-                        id="userbility"
+                        id="usability"
+                        value="{{ form.usability.value|default:'' }}"
                         min="1"
                         max="10"
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                         placeholder="Enter rating for usability"
-                        required=""
                       />
+                      <div class="text-sm text-red-600 mt-2">{{ form.usability.errors }}</div>
                     </div>
                     <div>
                       <label
@@ -212,12 +238,33 @@
                         type="number"
                         name="content"
                         id="content"
+                        value="{{ form.content.value|default:'' }}"
                         min="1"
                         max="10"
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                         placeholder="Enter rating for content"
-                        required=""
                       />
+                      <div class="text-sm text-red-600 mt-2">{{ form.content.errors }}</div>
+                    </div>
+                    <div>
+                      <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Overall Rating</label>
+                      <div class="flex space-x-2">
+                          <input type="radio" id="star1" name="overall" value="1" class="hidden" checked />
+                          <label for="star1" class="text-yellow-300 cursor-pointer text-2xl">★</label>
+                          
+                          <input type="radio" id="star2" name="overall" value="2" class="hidden" checked />
+                          <label for="star2" class="text-yellow-300 cursor-pointer text-2xl">★</label>
+                      
+                          <input type="radio" id="star3" name="overall" value="3" class="hidden" checked />
+                          <label for="star3" class="text-yellow-300 cursor-pointer text-2xl">★</label>
+                      
+                          <input type="radio" id="star4" name="overall" value="4" class="hidden" checked />
+                          <label for="star4" class="text-yellow-300 cursor-pointer text-2xl">★</label>
+                      
+                          <input type="radio" id="star5" name="overall" value="5" class="hidden" checked />
+                          <label for="star5" class="text-yellow-300 cursor-pointer text-2xl">★</label>
+                      </div>
+                      <div class="text-sm text-red-600 mt-2">{{ form.overall.errors }}</div>
                     </div>
                     <div class="sm:col-span-2">
                       <label
@@ -226,11 +273,13 @@
                         >Description</label
                       >
                       <textarea
-                        id="description"
-                        rows="4"
-                        class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                        placeholder="Add comment ..."
-                      ></textarea>
+                          name="description"
+                          id="description"
+                          rows="4"
+                          class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                          placeholder="Add comment ..."
+                      >{{ form.description.value|default:'' }}</textarea>
+                      <div class="text-sm text-red-600 mt-2">{{ form.description.errors }}</div>
                     </div>
                   </div>
                   <button
@@ -255,6 +304,7 @@
               </div>
             </div>
           </div>
+        
         </div>
       </div>
     </section>
@@ -353,6 +403,49 @@
           }
           return cookieValue;
         }
+        
+        const stars = document.querySelectorAll('input[type="radio"]');
+        const labels = document.querySelectorAll('label[for^="star"]');
+
+        stars.forEach(star => {
+          star.addEventListener('change', function () {
+            labels.forEach(label => {
+              label.classList.remove('text-yellow-300');
+              label.classList.add('text-gray-400');
+            });
+
+            for (let i = 0; i < star.value; i++) {
+              labels[i].classList.add('text-yellow-300');
+              labels[i].classList.remove('text-gray-400');
+            }
+          });
+        });
+
+        labels.forEach((label, index) => {
+          label.addEventListener('click', function () {
+            const correspondingInput = document.getElementById(label.getAttribute('for'));
+            if (correspondingInput.checked) {
+              correspondingInput.checked = false;
+              labels.forEach(l => l.classList.remove('text-yellow-300'));
+              labels.forEach((l, i) => {
+                if (i < index) l.classList.add('text-yellow-300');
+                else l.classList.add('text-gray-400');
+              });
+            } else {
+              correspondingInput.checked = true;
+              labels.forEach((l, i) => {
+                if (i <= index) l.classList.add('text-yellow-300');
+                else l.classList.add('text-gray-400');
+              });
+            }
+          });
+        });
+      });
+      document.querySelectorAll("[data-modal-toggle]").forEach((button) => {
+          button.addEventListener("click", (e) => {
+              const targetModal = document.getElementById(e.target.getAttribute("data-modal-toggle"));
+              targetModal.classList.toggle("hidden");
+          });
       });
     </script>
   </body>
