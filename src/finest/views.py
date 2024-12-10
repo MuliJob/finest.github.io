@@ -13,10 +13,29 @@ from .forms import SubmittedWebsiteForm, ReviewForm
 # Create your views here.
 def home(request):
     """ Homepage function """
-    title = 'Project Reviews Application'
-    context = {
-      'title':title,
-    }
+    highest_avg_review = Review.objects.order_by('-average').first()
+
+    if highest_avg_review:
+        website = highest_avg_review.submitted_website
+        formatted_date = highest_avg_review.created_at.strftime('%b %d, %Y')
+
+        alt_name = website.title if website.title else "Website Image"
+
+        context = {
+            'title': 'Project Reviews Application',
+            'website_title': website.title,
+            'website_image': website.file.url if website.file else None,
+            'website_description': website.description,
+            'review_score': highest_avg_review.average,
+            'formatted_date': formatted_date,
+            'alt_name': alt_name
+        }
+    else:
+        context = {
+            'title': 'Project Reviews Application',
+            'message': "No reviews available yet"
+        }
+
     return render(request, 'home.html', context)
 
 @login_required
