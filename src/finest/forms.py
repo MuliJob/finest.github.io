@@ -3,7 +3,7 @@ from urllib.parse import urlparse
 import os
 from django import forms
 from django.core.exceptions import ValidationError
-from .models import SubmittedWebsite
+from .models import SubmittedWebsite, Review
 
 class SubmittedWebsiteForm(forms.ModelForm):
     """ Form validation """
@@ -44,3 +44,34 @@ class SubmittedWebsiteForm(forms.ModelForm):
         if ext not in allowed_extensions:
             raise forms.ValidationError("Only .jpg, .jpeg, .png, .webp files are allowed.")
         return file
+
+
+class ReviewForm(forms.ModelForm):
+    """ Review Form """
+    class Meta:
+        """ Class Meta"""
+        model = Review
+        fields = ['design', 'usability', 'content', 'overall', 'description']  # Include 'description' field
+        widgets = {
+            'design': forms.RadioSelect(),
+            'usability': forms.RadioSelect(),
+            'content': forms.RadioSelect(),
+            'overall': forms.RadioSelect(),
+            'description': forms.Textarea(attrs={'rows': 4, 'placeholder': 'Add your comments or feedback here.'}),
+        }
+
+    def clean(self):
+        cleaned_data = super().clean()
+        design = cleaned_data.get("design")
+        usability = cleaned_data.get("usability")
+        content = cleaned_data.get("content")
+        
+        # Ensure ratings are within the valid range
+        if not (1 <= design <= 10):
+            self.add_error('design', 'Rating should be between 1 and 10.')
+        if not (1 <= usability <= 10):
+            self.add_error('usability', 'Rating should be between 1 and 10.')
+        if not (1 <= content <= 10):
+            self.add_error('content', 'Rating should be between 1 and 10.')
+        
+        return cleaned_data
