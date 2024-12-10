@@ -1,6 +1,9 @@
 """ Models creation """
+from decimal import Decimal
 from django.db import models
 from django.contrib.auth.models import User
+from django.utils import timezone
+from django.core.exceptions import ValidationError
 
 # Create your models here.
 class SubmittedWebsite(models.Model):
@@ -14,3 +17,34 @@ class SubmittedWebsite(models.Model):
     is_favorite = models.BooleanField(default=False)
 
     objects = models.Manager()
+
+class Review(models.Model):
+    """Review model"""
+    design = models.PositiveIntegerField(choices=[(i, i) for i in range(1, 11)], default=1)
+    usability = models.PositiveIntegerField(choices=[(i, i) for i in range(1, 11)], default=1)
+    content = models.PositiveIntegerField(choices=[(i, i) for i in range(1, 11)], default=1)
+    overall = models.PositiveIntegerField(choices=[(i, i) for i in range(1, 6)], default=1)
+    average = models.DecimalField(max_digits=3, decimal_places=2, default=1.0)
+    description = models.TextField(blank=True, null=True)
+    submitted_website = models.ForeignKey(SubmittedWebsite, on_delete=models.CASCADE, related_name="reviews")
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(default=timezone.now)
+
+    objects = models.Manager()
+
+    def save(self, *args, **kwargs):
+        self.average = round(
+            Decimal((self.design + self.usability + self.content + self.overall) / 4), 2
+        )
+        super().save(*args, **kwargs)
+
+    def clean(self):
+        for field in ["design", "usability", "content"]:
+            value = getattr(self, field)
+            if not 1 <= value <= 10:
+                raise ValidationError({field: "Rating must be between 1 and 10."})
+
+    def __str__(self):
+        username = self.user.username if self.user and hasattr(self.user, 'username') else "Unknown User"
+        website = self.submitted_website or "Unknown Website"
+        return f"Review by {username} for {website} ({self.average}/5)"
