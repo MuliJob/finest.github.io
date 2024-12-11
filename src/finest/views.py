@@ -1,9 +1,10 @@
 """ Finest app views """
 import json
 from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.views import redirect_to_login
+from django.urls import reverse
 from django.http import JsonResponse
 from django.core.exceptions import ObjectDoesNotExist
-from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .models import SubmittedWebsite, Review
 from .forms import SubmittedWebsiteForm, ReviewForm
@@ -11,6 +12,16 @@ from .forms import SubmittedWebsiteForm, ReviewForm
 
 
 # Create your views here.
+def custom_login_required(view_func):
+    """ Custom login required decorator to add a message on redirect """
+    def wrapper(request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            messages.warning(request, "You need to be logged in to access this page. Please login below!")
+            login_url = reverse('login')
+            return redirect_to_login(request.get_full_path(), login_url)
+        return view_func(request, *args, **kwargs)
+    return wrapper
+
 def home(request):
     """ Homepage function """
     highest_avg_review = Review.objects.order_by('-average').first()
@@ -38,7 +49,7 @@ def home(request):
 
     return render(request, 'home.html', context)
 
-@login_required
+@custom_login_required
 def dashboard(request):
     """ User dashboard """
     title = 'User Dashboard'
@@ -47,7 +58,7 @@ def dashboard(request):
     }
     return render(request, 'user/dashboard.html', context)
 
-@login_required
+@custom_login_required
 def my_post(request):
     """ Posted websites """
     title = 'MY POSTS'
@@ -58,7 +69,7 @@ def my_post(request):
     }
     return render(request, 'user/my-posts.html', context)
 
-@login_required
+@custom_login_required
 def my_post_detail(request, pk):
     """ Posted website details """
     title = 'Website Details'
@@ -82,7 +93,7 @@ def my_post_detail(request, pk):
     }
     return render(request, 'user/website-detail.html', context)
 
-@login_required
+@custom_login_required
 def toggle_favorite(request):
     """ Toggling favorite """
     if request.method == 'POST':
@@ -102,7 +113,7 @@ def toggle_favorite(request):
             return JsonResponse({"success": False, "error": "Website not found"}, status=404)
     return JsonResponse({"success": False, "error": "Invalid request method"}, status=405)
 
-@login_required
+@custom_login_required
 def favorite(request):
     """ Favorites function """
     title = 'FAVORITES'
@@ -115,7 +126,7 @@ def favorite(request):
     }
     return render(request, 'user/favorites.html', context)
 
-@login_required
+@custom_login_required
 def add_review(request, pk):
     """Adding review function"""
     submitted_website = get_object_or_404(SubmittedWebsite, id=pk)
@@ -142,7 +153,7 @@ def add_review(request, pk):
     return redirect('my_post_detail', pk=pk)
 
 
-@login_required
+@custom_login_required
 def submit_website(request):
     """ Submitting website """
     if request.method == 'POST':
