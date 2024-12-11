@@ -33,7 +33,7 @@ def logout_user(request):
     return redirect('login')
 
 def register_user(request):
-    """ user registration function """
+    """ User registration function """
     if request.method == 'POST':
         form = RegisterUserForm(request.POST)
         if form.is_valid():
@@ -43,10 +43,11 @@ def register_user(request):
             user = authenticate(request, username=username, password=password)
             if user is not None:
                 login(request, user)
-                messages.success(request, 'Registration successful.')
+                messages.success(request, f'Registration successful. Welcome {username}!')
                 return redirect('dashboard')
+            else:
+                messages.error(request, 'Registration successful, but we couldn\'t log you in. Please log in manually.')
     else:
-        messages.error(request, 'There was an error with your registration. Please try again!')
         form = RegisterUserForm()
 
     return render(request, 'auth/register.html', {'form': form})
