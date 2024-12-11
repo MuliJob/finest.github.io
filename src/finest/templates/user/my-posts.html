@@ -99,16 +99,6 @@
                 class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
               >
                 <tr>
-                  <th scope="col" class="p-4">
-                    <div class="flex items-center">
-                      <input
-                        id="checkbox-all"
-                        type="checkbox"
-                        class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                      />
-                      <label for="checkbox-all" class="sr-only">checkbox</label>
-                    </div>
-                  </th>
                   <th scope="col" class="px-4 py-3">Title
                     <svg class="inline-flex w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                       <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 20V7m0 13-4-4m4 4 4-4m4-12v13m0-13 4 4m-4-4-4 4"/>
@@ -141,19 +131,6 @@
                   <tr
                     class="border-b dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700"
                   >
-                    <td class="w-4 px-4 py-3">
-                      <div class="flex items-center">
-                        <input
-                          id="checkbox-table-search-{{ post.id }}"
-                          type="checkbox"
-                          onclick="event.stopPropagation()"
-                          class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                        />
-                        <label for="checkbox-table-search-{{ post.id }}" class="sr-only"
-                          >checkbox</label
-                        >
-                      </div>
-                    </td>
                     <th
                       scope="row"
                       class="flex items-center px-4 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white"
@@ -190,8 +167,7 @@
                           />
                         </svg>
                         <span class="ml-1 text-gray-500 dark:text-gray-400"
-                          >5.0</span
-                        >
+                          >{{post.user.overall}}.0</span>
                       </div>
                     </td>
                     <td
