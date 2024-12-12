@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'finest',
     'members',
     'compressor',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
