@@ -14,7 +14,9 @@ urlpatterns = [
     path('dashboard/submit-website/', views.submit_website, name='submit_website'),
     path('dashboard/details/<int:pk>', views.my_post_detail, name='my_post_detail'),
     path('dashboard/<int:pk>/add-review/', views.add_review, name='add_review'),
-    path('contact_us/', views.contact_us, name='contact_us')
+    path('contact_us/', views.contact_us, name='contact_us'),
+    path('api/profiles/', views.ProfileListAPIView.as_view(), name='api-profiles'),
+    path('api/projects/', views.SubmittedWebsiteListAPIView.as_view(), name='api-projects'),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

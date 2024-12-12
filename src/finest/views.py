@@ -1,17 +1,41 @@
 """ Finest app views """
 import json
+from rest_framework import generics
+from django_filters.rest_framework import DjangoFilterBackend
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.views import redirect_to_login
 from django.urls import reverse
 from django.http import JsonResponse
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib import messages
-from .models import SubmittedWebsite, Review
+from .models import SubmittedWebsite, Review, Profile
 from .forms import SubmittedWebsiteForm, ReviewForm
+from .serializers import ProfileSerializer, SubmittedWebsiteSerializer
+from .permissions import IsAdminOrReadOnly
 
 
 
 # Create your views here.
+class ProfileListAPIView(generics.ListAPIView):
+    """API endpoint for retrieving all user profiles."""
+    queryset = Profile.objects.all()
+    serializer_class = ProfileSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['user']
+
+    permission_classes = (IsAdminOrReadOnly,)
+
+class SubmittedWebsiteListAPIView(generics.ListAPIView):
+    """
+    API endpoint for retrieving all projects.
+    """
+    queryset = SubmittedWebsite.objects.all()
+    serializer_class = SubmittedWebsiteSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['user', 'is_favorite']
+
+    permission_classes = (IsAdminOrReadOnly,)
+
 def custom_login_required(view_func):
     """ Custom login required decorator to add a message on redirect """
     def wrapper(request, *args, **kwargs):

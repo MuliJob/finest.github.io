@@ -18,6 +18,15 @@ class SubmittedWebsite(models.Model):
 
     objects = models.Manager()
 
+class Profile(models.Model):
+    """User Profile model"""
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
+    profile_picture = models.ImageField(upload_to='uploads/profiles/', blank=True, null=True)
+    bio = models.TextField(blank=True, null=True)
+    contact_info = models.CharField(max_length=255, blank=True, null=True)
+
+    objects = models.Manager()
+
 class Review(models.Model):
     """Review model"""
     design = models.PositiveIntegerField(choices=[(i, i) for i in range(1, 11)], default=1)
