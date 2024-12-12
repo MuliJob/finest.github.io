@@ -25,6 +25,8 @@ class Profile(models.Model):
     bio = models.TextField(blank=True, null=True)
     contact_info = models.CharField(max_length=255, blank=True, null=True)
 
+    objects = models.Manager()
+
 class Review(models.Model):
     """Review model"""
     design = models.PositiveIntegerField(choices=[(i, i) for i in range(1, 11)], default=1)
