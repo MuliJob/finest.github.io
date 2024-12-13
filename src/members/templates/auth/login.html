@@ -128,10 +128,13 @@
                 >
               </div>
               <button
-                type="submit"
-                class="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
-              >
-                Login                
+                  type="submit"
+                  class="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 flex items-center justify-center space-x-2"
+                  id="login-submit-btn">
+                  <svg id="spinner" class="w-6 h-6 text-white animate-spin hidden" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                      <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.651 7.65a7.131 7.131 0 0 0-12.68 3.15M18.001 4v4h-4m-7.652 8.35a7.13 7.13 0 0 0 12.68-3.15M6 20v-4h4"/>
+                  </svg>
+                  <span id="login-text">Login</span>
               </button>
               <p class="text-sm text-center font-light text-gray-500 dark:text-gray-400">
                 Don’t have an account yet?
@@ -146,6 +149,23 @@
         </div>
       </div>
     </section>
+    <script>
+      document.getElementById("login-submit-btn").addEventListener("click", function(event) {
+          var btn = event.target;
+          var spinner = document.getElementById("spinner");
+          var loginText = document.getElementById("login-text");
+  
+          btn.disabled = true;
+          spinner.classList.remove("hidden");
+          spinner.classList.add("animate-spin");
+  
+          loginText.textContent = "Logging in...";
+  
+          setTimeout(function() {
+              btn.form.submit();
+          }, 500);
+      });
+    </script>  
   </body>
 </html>
 {% endblock content %}
