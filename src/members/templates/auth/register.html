@@ -7,7 +7,7 @@
   <title>Register</title>
 </head>
 <body>
-  <section class="bg-gray-50 dark:bg-gray-900 pt-32">
+  <section class="bg-gray-50 dark:bg-gray-900 mt-16">
     <div
       class="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0"
     >
@@ -43,7 +43,7 @@
         {% endif %}
       </div>
       <div
-        class="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700"
+        class="w-3/4 bg-white rounded-lg shadow dark:border md:mt-0 xl:p-6 dark:bg-gray-800 dark:border-gray-700"
       >
         <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
           <h1
@@ -87,75 +87,78 @@
                 />
                 <div class="text-sm text-red-600 mt-2">{{ form.last_name.errors }}</div>
               </div>
-            </div>
-            <div>
-              <label
-                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                >Username</label
-              >
-              <input
-                type="text"
-                name="{{ form.username.name }}"
-                id="username"
-                value="{{ form.username.value|default:'' }}"
-                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                placeholder="Username"
-              />
-              <div class="text-sm text-red-600 mt-2">
-              {{ form.username.errors }}
+              <div class="flex-1">
+                <label
+                  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  >Username</label
+                >
+                <input
+                  type="text"
+                  name="{{ form.username.name }}"
+                  id="username"
+                  value="{{ form.username.value|default:'' }}"
+                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  placeholder="Username"
+                />
+                <div class="text-sm text-red-600 mt-2">
+                {{ form.username.errors }}
+                </div>
               </div>
             </div>
-            <div>
-              <label
-                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                >Email</label
-              >
-              <input
-                type="email"
-                name="{{ form.email.name }}"
-                id="email"
-                value="{{ form.email.value|default:'' }}"
-                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                placeholder="name@company.com"
-              />
-              <div class="text-sm text-red-600 mt-2">
-                {{ form.email.errors }}
+            
+            <div class="md:flex md:space-x-4">
+              <div class="flex-1">
+                <label
+                  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  >Email</label
+                >
+                <input
+                  type="email"
+                  name="{{ form.email.name }}"
+                  id="email"
+                  value="{{ form.email.value|default:'' }}"
+                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  placeholder="name@company.com"
+                />
+                <div class="text-sm text-red-600 mt-2">
+                  {{ form.email.errors }}
+                </div>
               </div>
-            </div>
-            <div>
-              <label
-                for="password"
-                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                >Password</label
-              >
-              <input
-                type="password"
-                name="{{ form.password1.name }}"
-                id="password"
-                value="{{ form.password1.value|default:'' }}"
-                placeholder="••••••••"
-                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              />
-              <div class="text-sm text-red-600 mt-2">
-              {{ form.password1.errors }}
+              <div class="flex-1">
+                <label
+                  for="password"
+                  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  >Password</label
+                >
+                <input
+                  type="password"
+                  name="{{ form.password1.name }}"
+                  id="password"
+                  value="{{ form.password1.value|default:'' }}"
+                  placeholder="••••••••"
+                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                />
+                <div class="text-sm text-red-600 mt-2">
+                {{ form.password1.errors }}
+                </div>
               </div>
-            </div>
-            <div>
-              <label
-                for="confirm-password"
-                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                >Confirm password</label
-              >
-              <input
-                type="password"
-                name="{{ form.password2.name }}"
-                id="confirm-password"
-                value="{{ form.password2.value|default:'' }}"
-                placeholder="••••••••"
-                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              />
-              <div class="text-sm text-red-600 mt-2">
-              {{ form.password2.errors }}
+              <div class="flex-1">
+                <label
+                  for="confirm-password"
+                  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  >Confirm password</label
+                >
+                <input
+                  type="password"
+                  name="{{ form.password2.name }}"
+                  id="confirm-password"
+                  value="{{ form.password2.value|default:'' }}"
+                  placeholder="••••••••"
+                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                />
+                <div class="text-sm text-red-600 mt-2">
+                {{ form.password2.errors }}
+                </div>
               </div>
             </div>
             <div class="flex items-start">
@@ -166,7 +169,7 @@
             >
               Create an account
             </button>
-            <p class="text-sm font-light text-gray-500 dark:text-gray-400">
+            <p class="text-sm text-center font-light text-gray-500 dark:text-gray-400">
               Already have an account?
               <a
                 href="{% url 'login' %}"
