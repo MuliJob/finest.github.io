@@ -12,6 +12,11 @@ class SubmittedWebsiteForm(forms.ModelForm):
         model = SubmittedWebsite
         fields = ['title', 'url', 'description', 'file']
 
+    title = forms.CharField(required=True, max_length=255)
+    url = forms.URLField(required=True)
+    description = forms.CharField(required=True)
+    file = forms.FileField(required=True)
+
     def clean_title(self):
         """ title validation """
         title = self.cleaned_data.get('title')
