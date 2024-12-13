@@ -88,10 +88,14 @@
                     type="text" 
                     id="username" 
                     name="username"
+                    value="{{ form.username.value|default_if_none:'' }}"
                     class="rounded-none rounded-e-lg bg-gray-50 border border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" 
                     placeholder="Bonnie Green"
                   >
-              </div>              
+                </div>
+                <div class="text-sm text-red-600 mt-2">
+                  {{ form.username.errors }}
+                </div>              
               </div>
               <div>
                 <label
@@ -112,7 +116,9 @@
                     placeholder="••••••••"
                   >
                 </div>
-              
+                <div class="text-sm text-red-600 mt-2">
+                  {{ form.password.errors }}
+                </div>
               </div>
               <div class="flex items-center justify-between">
                 <a
@@ -125,9 +131,9 @@
                 type="submit"
                 class="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
               >
-                Sign in
+                Login                
               </button>
-              <p class="text-sm font-light text-gray-500 dark:text-gray-400">
+              <p class="text-sm text-center font-light text-gray-500 dark:text-gray-400">
                 Don’t have an account yet?
                 <a
                   href="{% url 'register_user' %}"

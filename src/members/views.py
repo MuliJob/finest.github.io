@@ -2,29 +2,25 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
-from django.contrib.auth.models import User
-from .forms import RegisterUserForm
+from .forms import RegisterUserForm, LoginUserForm
 
 def login_user(request):
-    """ Login user function """
+    """Login user function"""
     if request.method == 'POST':
-        username = request.POST.get('username')
-        password = request.POST.get('password')
-
-        if not User.objects.filter(username=username).exists():
-            messages.error(request, 'The username does not exist. Please try again.')
-            return redirect('login')
-
-        user = authenticate(request, username=username, password=password)
-        if user is not None:
-            login(request, user)
-            messages.success(request, f'Login Successful. Welcome {username}')
-            return redirect('dashboard')
+        form = LoginUserForm(request.POST)
+        if form.is_valid():
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password']
+            user = authenticate(request, username=username, password=password)
+            if user:
+                login(request, user)
+                messages.success(request, f'Login Successful. Welcome {username}')
+                return redirect('dashboard')
         else:
-            messages.error(request, 'Incorrect password. Please try again.')
-            return redirect('login')
+            return render(request, 'auth/login.html', {'form': form})
     else:
-        return render(request, 'auth/login.html', {})
+        form = LoginUserForm()
+    return render(request, 'auth/login.html', {'form': form})
 
 def logout_user(request):
     """ Logout user function """
