@@ -8,6 +8,7 @@ from django.urls import reverse
 from django.http import JsonResponse
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib import messages
+from django.db.models import Avg
 from .models import SubmittedWebsite, Review, Profile
 from .forms import SubmittedWebsiteForm, ReviewForm
 from .serializers import ProfileSerializer, SubmittedWebsiteSerializer
@@ -76,11 +77,54 @@ def home(request):
 @custom_login_required
 def dashboard(request):
     """ User dashboard """
-    title = 'User Dashboard'
+    title = 'User Dashboard'    
+    total_projects = SubmittedWebsite.objects.filter(user=request.user).count()
+    reviewed_projects_count = SubmittedWebsite.objects.filter(user=request.user, reviews__isnull=False).distinct().count()
+    non_reviewed_projects_count = total_projects - reviewed_projects_count
+    average_review_score = (
+        Review.objects.filter(submitted_website__user=request.user)
+        .aggregate(avg_score=Avg('overall'))['avg_score'] or 0
+    )
+
     context = {
-      'title':title,
+        'title': title,
+        'total_projects': total_projects,
+        'reviewed_projects_count': reviewed_projects_count,
+        'non_reviewed_projects_count': non_reviewed_projects_count,
+        'average_review_score': round(average_review_score, 1),
     }
+
     return render(request, 'user/dashboard.html', context)
+
+@custom_login_required
+def explore(request):
+    """Explore Page - Top Rated Projects"""
+    title = 'EXPLORE PROJECTS'
+    top_rated_projects = SubmittedWebsite.objects.annotate(
+        avg_score=Avg('reviews__average')
+    ).order_by('-avg_score')[:5]
+
+    highest_design = SubmittedWebsite.objects.annotate(
+        design_score=Avg('reviews__design')
+    ).order_by('-design_score')[:5]
+
+    highest_content = SubmittedWebsite.objects.annotate(
+        content_score=Avg('reviews__content')
+    ).order_by('-content_score')[:5]
+
+    highest_usability = SubmittedWebsite.objects.annotate(
+        usability_score=Avg('reviews__usability')
+    ).order_by('-usability_score')[:5]
+
+    context = {
+        'title': title,
+        'top_rated_projects': top_rated_projects,
+        'highest_design': highest_design,
+        'highest_content': highest_content,
+        'highest_usability': highest_usability,
+    }
+
+    return render(request, 'user/explore.html', context)
 
 @custom_login_required
 def my_post(request):
