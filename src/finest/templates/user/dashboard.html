@@ -52,7 +52,7 @@
       <div class="flex items-center justify-between p-4 bg-white rounded-lg shadow hover:shadow-lg dark:bg-gray-800 transition-shadow">
         <div>
           <h4 class="text-gray-500 text-sm">Pending Reviews</h4>
-          <p class="text-2xl font-semibold text-gray-700 dark:text-white">5</p>
+          <p class="text-2xl font-semibold text-gray-700 dark:text-white">{{ non_reviewed_projects_count }}</p>
         </div>
         <div class="bg-yellow-500 text-white p-3 rounded-full">
           <i class="bi bi-hourglass-split"></i>
@@ -61,7 +61,7 @@
       <div class="flex items-center justify-between p-4 bg-white rounded-lg shadow hover:shadow-lg dark:bg-gray-800 transition-shadow">
         <div>
           <h4 class="text-gray-500 text-sm">Reviewed Projects</h4>
-          <p class="text-2xl font-semibold text-gray-700 dark:text-white">18</p>
+          <p class="text-2xl font-semibold text-gray-700 dark:text-white">{{ reviewed_projects_count }}</p>
         </div>
         <div class="bg-green-500 text-white p-3 rounded-full">
           <i class="bi bi-check-circle"></i>
@@ -70,7 +70,7 @@
       <div class="flex items-center justify-between p-4 bg-white rounded-lg shadow hover:shadow-lg dark:bg-gray-800 transition-shadow">
         <div>
           <h4 class="text-gray-500 text-sm">Avg. Review Score</h4>
-          <p class="text-2xl font-semibold text-gray-700 dark:text-white">4.5/5</p>
+          <p class="text-2xl font-semibold text-gray-700 dark:text-white">{{ average_review_score }}/5</p>
         </div>
         <div class="bg-purple-500 text-white p-3 rounded-full">
           <i class="bi bi-star"></i>
