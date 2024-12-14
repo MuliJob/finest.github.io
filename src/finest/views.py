@@ -97,6 +97,36 @@ def dashboard(request):
     return render(request, 'user/dashboard.html', context)
 
 @custom_login_required
+def explore(request):
+    """Explore Page - Top Rated Projects"""
+    title = 'EXPLORE PROJECTS'
+    top_rated_projects = SubmittedWebsite.objects.annotate(
+        avg_score=Avg('reviews__average')
+    ).order_by('-avg_score')[:5]
+
+    highest_design = SubmittedWebsite.objects.annotate(
+        design_score=Avg('reviews__design')
+    ).order_by('-design_score')[:5]
+
+    highest_content = SubmittedWebsite.objects.annotate(
+        content_score=Avg('reviews__content')
+    ).order_by('-content_score')[:5]
+
+    highest_usability = SubmittedWebsite.objects.annotate(
+        usability_score=Avg('reviews__usability')
+    ).order_by('-usability_score')[:5]
+
+    context = {
+        'title': title,
+        'top_rated_projects': top_rated_projects,
+        'highest_design': highest_design,
+        'highest_content': highest_content,
+        'highest_usability': highest_usability,
+    }
+
+    return render(request, 'user/explore.html', context)
+
+@custom_login_required
 def my_post(request):
     """ Posted websites """
     title = 'MY POSTS'

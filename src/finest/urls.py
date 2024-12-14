@@ -2,12 +2,13 @@
 from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
-from . import views
+from finest import views
 
 
 urlpatterns = [
     path('', views.home, name='home'),
     path('dashboard/overview/', views.dashboard, name='dashboard'),
+    path('dashboard/explore/', views.explore, name='explore'),
     path('dashboard/my-posts/', views.my_post, name='my_post'),
     path("dashboard/toggle-favorite/", views.toggle_favorite, name="toggle_favorite"),
     path('dashboard/favorites/', views.favorite, name='favorite'),
