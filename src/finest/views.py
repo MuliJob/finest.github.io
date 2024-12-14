@@ -77,8 +77,11 @@ def home(request):
 def dashboard(request):
     """ User dashboard """
     title = 'User Dashboard'
+    total_projects = SubmittedWebsite.objects.filter(user=request.user).count()
+
     context = {
       'title':title,
+      'total_projects': total_projects,
     }
     return render(request, 'user/dashboard.html', context)
 
