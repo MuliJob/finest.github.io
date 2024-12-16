@@ -58,7 +58,7 @@ def home(request):
         alt_name = website.title if website.title else "Website Image"
 
         context = {
-            'title': 'Project Reviews Application',
+            'title': 'FINEST',
             'website_title': website.title,
             'website_image': website.file.url if website.file else None,
             'website_description': website.description,
@@ -77,7 +77,7 @@ def home(request):
 @custom_login_required
 def dashboard(request):
     """ User dashboard """
-    title = 'User Dashboard'    
+    title = 'USER DASHBOARD'    
     total_projects = SubmittedWebsite.objects.filter(user=request.user).count()
     reviewed_projects_count = SubmittedWebsite.objects.filter(user=request.user, reviews__isnull=False).distinct().count()
     non_reviewed_projects_count = total_projects - reviewed_projects_count
@@ -140,7 +140,7 @@ def my_post(request):
 @custom_login_required
 def my_post_detail(request, pk):
     """ Posted website details """
-    title = 'Website Details'
+    title = 'WEBSITE DETAILS'
     website = get_object_or_404(SubmittedWebsite, pk=pk, user=request.user)
 
     reviews = website.reviews.all()
@@ -245,7 +245,7 @@ def submit_website(request):
 
 def contact_us(request):
     """ Contact function"""
-    title = 'Contact Us'
+    title = 'CONTACT US'
     context = {
       'title':title,
     }
