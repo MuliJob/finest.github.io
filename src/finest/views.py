@@ -77,7 +77,7 @@ def home(request):
 @custom_login_required
 def dashboard(request):
     """ User dashboard """
-    title = 'USER DASHBOARD'    
+    title = 'USER DASHBOARD'
     total_projects = SubmittedWebsite.objects.filter(user=request.user).count()
     reviewed_projects_count = SubmittedWebsite.objects.filter(user=request.user, reviews__isnull=False).distinct().count()
     non_reviewed_projects_count = total_projects - reviewed_projects_count
