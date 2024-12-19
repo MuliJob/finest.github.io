@@ -16,32 +16,37 @@
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {% for project in top_rated_projects %}
         <div class="relative p-4 bg-white rounded-lg shadow-md dark:bg-gray-800">
-          <div class="absolute top-2 right-2 flex space-x-2">
+          <div class="absolute top-6 right-2 flex space-x-2">
             <a href="{{ project.url }}" target="_blank" class="group">
-              <svg
-                class="w-5 h-5 text-gray-500 transition-transform transform group-hover:scale-110 group-hover:text-gray-900 dark:group-hover:text-white duration-300"
-                aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                <path d="M12.6 2a.75.75 0 0 0 0 1.5h3.19l-9.6 9.6a.75.75 0 0 0 1.06 1.06l9.6-9.6v3.19a.75.75 0 0 0 1.5 0V2h-5.75Z" />
-                <path d="M4.25 3.5A1.75 1.75 0 0 0 2.5 5.25v11.5c0 .966.784 1.75 1.75 1.75h11.5a1.75 1.75 0 0 0 1.75-1.75V10a.75.75 0 0 0-1.5 0v6.75c0 .138-.112.25-.25.25H4.25a.25.25 0 0 1-.25-.25V5.25c0-.138.112-.25.25-.25H11a.75.75 0 0 0 0-1.5H4.25Z" />
-              </svg>
+              <svg class="w-5 h-5 text-gray-500 hover:text-gray-900 dark:hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 14v4.833A1.166 1.166 0 0 1 16.833 20H5.167A1.167 1.167 0 0 1 4 18.833V7.167A1.166 1.166 0 0 1 5.167 6h4.618m4.447-2H20v5.768m-7.889 2.121 7.778-7.778"/>
+              </svg>                           
             </a>
       
-            <a href="{% url 'add_review' project.id %}" class="group">
-              <svg
-                class="w-5 h-5 text-blue-500 transition-transform transform group-hover:scale-110 group-hover:text-blue-700 duration-300"
-                aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                <path d="M4.75 2A2.75 2.75 0 0 0 2 4.75v10.5A2.75 2.75 0 0 0 4.75 18h6.5a.75.75 0 0 0 .53-.22l5.5-5.5a.75.75 0 0 0 .22-.53v-6.5A2.75 2.75 0 0 0 14.25 2h-9.5ZM3.5 4.75a1.25 1.25 0 0 1 1.25-1.25h9.5a1.25 1.25 0 0 1 1.25 1.25v5.59l-4.84 4.84H4.75a1.25 1.25 0 0 1-1.25-1.25V4.75ZM12.25 12.5a.75.75 0 0 1 .75.75v1.25h1.25a.75.75 0 0 1 0 1.5H13a2.25 2.25 0 0 1-2.25-2.25v-1.25a.75.75 0 0 1 .75-.75Z" />
-              </svg>
+            <a href="{% url 'my_post_detail' project.id %}" class="group">  
+              <svg class="w-5 h-5 text-gray-500 hover:text-gray-900 dark:hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m14.304 4.844 2.852 2.852M7 7H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-4.5m2.409-9.91a2.017 2.017 0 0 1 0 2.853l-6.844 6.844L8 14l.713-3.565 6.844-6.844a2.015 2.015 0 0 1 2.852 0Z"/>
+              </svg>                                     
             </a>
           </div>
       
-          <div class="flex items-center space-x-4 mb-4">
+          <div class="flex items-center space-x-2 mb-4">
             <img src="{{ project.file.url }}" alt="{{ project.title }}"
               class="w-16 h-16 rounded-full object-cover">
             <div>
               <h3 class="text-lg font-bold text-gray-800 dark:text-white">{{ project.title }}</h3>
-              <p class="mt-2 text-sm font-medium text-green-600 dark:text-green-400">
-                Average Rating: {{ project.avg_score|floatformat:1 }}/10
+              <p class="mt-2 text-sm space-x-1 font-medium text-green-600 dark:text-green-400">
+                <svg
+                  aria-hidden="true"
+                  class="inline-flex  w-5 h-5 text-yellow-400"
+                  fill="currentColor"
+                  viewbox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
+                  />
+                </svg>{{ project.avg_score|floatformat:1 }}
               </p>
             </div>
           </div>
@@ -62,17 +67,20 @@
             <div>
               <h3 class="text-lg font-bold text-gray-800 dark:text-white">{{ project.title }}</h3>
               <p class="mt-2 text-sm font-medium text-blue-600 dark:text-blue-400">
-                Design Rating: {{ project.design_score|floatformat:1 }}/10
+                <svg
+                  aria-hidden="true"
+                  class="inline-flex  w-5 h-5 text-yellow-400"
+                  fill="currentColor"
+                  viewbox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
+                  />
+                </svg>{{ project.design_score|floatformat:1 }}
               </p>
             </div>
           </div>
-          <a href="{{ project.url }}" target="_blank" class="inline-flex items-center group">
-            <svg class="w-5 h-5 text-gray-500 transition-transform transform group-hover:scale-110 group-hover:text-gray-900 dark:group-hover:text-white duration-300" 
-                 aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                <path d="M12.6 2a.75.75 0 0 0 0 1.5h3.19l-9.6 9.6a.75.75 0 0 0 1.06 1.06l9.6-9.6v3.19a.75.75 0 0 0 1.5 0V2h-5.75Z"/>
-                <path d="M4.25 3.5A1.75 1.75 0 0 0 2.5 5.25v11.5c0 .966.784 1.75 1.75 1.75h11.5a1.75 1.75 0 0 0 1.75-1.75V10a.75.75 0 0 0-1.5 0v6.75c0 .138-.112.25-.25.25H4.25a.25.25 0 0 1-.25-.25V5.25c0-.138.112-.25.25-.25H11a.75.75 0 0 0 0-1.5H4.25Z"/>
-            </svg>
-          </a>
         </div>
         {% endfor %}
       </div>
@@ -89,17 +97,20 @@
             <div>
               <h3 class="text-lg font-bold text-gray-800 dark:text-white">{{ project.title }}</h3>
               <p class="mt-2 text-sm font-medium text-purple-600 dark:text-purple-400">
-                Content Rating: {{ project.content_score|floatformat:1 }}/10
+                <svg
+                  aria-hidden="true"
+                  class="inline-flex  w-5 h-5 text-yellow-400"
+                  fill="currentColor"
+                  viewbox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
+                  />
+                </svg>{{ project.content_score|floatformat:1 }}
               </p>
             </div>
           </div>
-          <a href="{{ project.url }}" target="_blank" class="inline-flex items-center group">
-            <svg class="w-5 h-5 text-gray-500 transition-transform transform group-hover:scale-110 group-hover:text-gray-900 dark:group-hover:text-white duration-300" 
-                 aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                <path d="M12.6 2a.75.75 0 0 0 0 1.5h3.19l-9.6 9.6a.75.75 0 0 0 1.06 1.06l9.6-9.6v3.19a.75.75 0 0 0 1.5 0V2h-5.75Z"/>
-                <path d="M4.25 3.5A1.75 1.75 0 0 0 2.5 5.25v11.5c0 .966.784 1.75 1.75 1.75h11.5a1.75 1.75 0 0 0 1.75-1.75V10a.75.75 0 0 0-1.5 0v6.75c0 .138-.112.25-.25.25H4.25a.25.25 0 0 1-.25-.25V5.25c0-.138.112-.25.25-.25H11a.75.75 0 0 0 0-1.5H4.25Z"/>
-            </svg>
-          </a>
         </div>
         {% endfor %}
       </div>
@@ -116,17 +127,20 @@
             <div>
               <h3 class="text-lg font-bold text-gray-800 dark:text-white">{{ project.title }}</h3>
               <p class="mt-2 text-sm font-medium text-teal-600 dark:text-teal-400">
-                Usability Rating: {{ project.usability_score|floatformat:1 }}/10
+                <svg
+                  aria-hidden="true"
+                  class="inline-flex  w-5 h-5 text-yellow-400"
+                  fill="currentColor"
+                  viewbox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
+                  />
+                </svg>{{ project.usability_score|floatformat:1 }}
               </p>
             </div>
           </div>
-          <a href="{{ project.url }}" target="_blank" class="inline-flex items-center group">
-            <svg class="w-5 h-5 text-gray-500 transition-transform transform group-hover:scale-110 group-hover:text-gray-900 dark:group-hover:text-white duration-300" 
-                 aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                <path d="M12.6 2a.75.75 0 0 0 0 1.5h3.19l-9.6 9.6a.75.75 0 0 0 1.06 1.06l9.6-9.6v3.19a.75.75 0 0 0 1.5 0V2h-5.75Z"/>
-                <path d="M4.25 3.5A1.75 1.75 0 0 0 2.5 5.25v11.5c0 .966.784 1.75 1.75 1.75h11.5a1.75 1.75 0 0 0 1.75-1.75V10a.75.75 0 0 0-1.5 0v6.75c0 .138-.112.25-.25.25H4.25a.25.25 0 0 1-.25-.25V5.25c0-.138.112-.25.25-.25H11a.75.75 0 0 0 0-1.5H4.25Z"/>
-            </svg>
-          </a>
         </div>
         {% endfor %}
       </div>
