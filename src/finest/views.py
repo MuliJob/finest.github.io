@@ -99,7 +99,7 @@ def dashboard(request):
 @custom_login_required
 def explore(request):
     """Explore Page - Top Rated Projects"""
-    title = 'EXPLORE PROJECTS'
+    title = 'EXPLORE'
     top_rated_projects = SubmittedWebsite.objects.annotate(
         avg_score=Avg('reviews__average')
     ).order_by('-avg_score')[:5]

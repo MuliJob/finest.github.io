@@ -9,10 +9,11 @@
 <body>
   <div class="container mx-auto px-4 py-8 mt-14">
     <h1 class="text-3xl font-bold text-center text-gray-800 dark:text-white mb-6">{{title}}</h1>
+    <hr class="border-t-2 border-gray-300 dark:border-gray-600 w-full mx-auto">
     
     <!-- Top Rated Projects Section -->
-    <section class="mb-8">
-      <h2 class="text-2xl font-semibold text-gray-700 dark:text-gray-200 mb-4">Top Rated Projects</h2>
+    <section class="mb-10">
+      <h2 class="text-2xl font-semibold text-gray-700 dark:text-gray-200 mt-6 mb-4">Top Rated Projects</h2>
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {% for project in top_rated_projects %}
         <div class="relative p-4 bg-white rounded-lg shadow-md dark:bg-gray-800">
@@ -23,7 +24,7 @@
               </svg>                           
             </a>
       
-            <a href="{% url 'my_post_detail' project.id %}" class="group">  
+            <a href="{% url 'add_review' project.id %}" class="group">  
               <svg class="w-5 h-5 text-gray-500 hover:text-gray-900 dark:hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m14.304 4.844 2.852 2.852M7 7H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-4.5m2.409-9.91a2.017 2.017 0 0 1 0 2.853l-6.844 6.844L8 14l.713-3.565 6.844-6.844a2.015 2.015 0 0 1 2.852 0Z"/>
               </svg>                                     
@@ -61,12 +62,27 @@
       <h2 class="text-2xl font-semibold text-gray-700 dark:text-gray-200 mb-4">Highest Design Ratings</h2>
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {% for project in highest_design %}
-        <div class="p-4 bg-white rounded-lg shadow-md dark:bg-gray-800">
-          <div class="flex items-center space-x-4 mb-4">
-            <img src="{{ project.file.url }}" alt="{{ project.title }}" class="w-16 h-16 rounded-full object-cover">
+        <div class="relative p-4 bg-white rounded-lg shadow-md dark:bg-gray-800">
+          <div class="absolute top-6 right-2 flex space-x-2">
+            <a href="{{ project.url }}" target="_blank" class="group">
+              <svg class="w-5 h-5 text-gray-500 hover:text-gray-900 dark:hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 14v4.833A1.166 1.166 0 0 1 16.833 20H5.167A1.167 1.167 0 0 1 4 18.833V7.167A1.166 1.166 0 0 1 5.167 6h4.618m4.447-2H20v5.768m-7.889 2.121 7.778-7.778"/>
+              </svg>                           
+            </a>
+      
+            <a href="{% url 'my_post_detail' project.id %}" class="group">  
+              <svg class="w-5 h-5 text-gray-500 hover:text-gray-900 dark:hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m14.304 4.844 2.852 2.852M7 7H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-4.5m2.409-9.91a2.017 2.017 0 0 1 0 2.853l-6.844 6.844L8 14l.713-3.565 6.844-6.844a2.015 2.015 0 0 1 2.852 0Z"/>
+              </svg>                                     
+            </a>
+          </div>
+      
+          <div class="flex items-center space-x-2 mb-4">
+            <img src="{{ project.file.url }}" alt="{{ project.title }}"
+              class="w-16 h-16 rounded-full object-cover">
             <div>
               <h3 class="text-lg font-bold text-gray-800 dark:text-white">{{ project.title }}</h3>
-              <p class="mt-2 text-sm font-medium text-blue-600 dark:text-blue-400">
+              <p class="mt-2 text-sm space-x-1 font-medium text-green-600 dark:text-green-400">
                 <svg
                   aria-hidden="true"
                   class="inline-flex  w-5 h-5 text-yellow-400"
@@ -91,12 +107,27 @@
       <h2 class="text-2xl font-semibold text-gray-700 dark:text-gray-200 mb-4">Highest Content Ratings</h2>
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {% for project in highest_content %}
-        <div class="p-4 bg-white rounded-lg shadow-md dark:bg-gray-800">
-          <div class="flex items-center space-x-4 mb-4">
-            <img src="{{ project.file.url }}" alt="{{ project.title }}" class="w-16 h-16 rounded-full object-cover">
+        <div class="relative p-4 bg-white rounded-lg shadow-md dark:bg-gray-800">
+          <div class="absolute top-6 right-2 flex space-x-2">
+            <a href="{{ project.url }}" target="_blank" class="group">
+              <svg class="w-5 h-5 text-gray-500 hover:text-gray-900 dark:hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 14v4.833A1.166 1.166 0 0 1 16.833 20H5.167A1.167 1.167 0 0 1 4 18.833V7.167A1.166 1.166 0 0 1 5.167 6h4.618m4.447-2H20v5.768m-7.889 2.121 7.778-7.778"/>
+              </svg>                           
+            </a>
+      
+            <a href="{% url 'my_post_detail' project.id %}" class="group">  
+              <svg class="w-5 h-5 text-gray-500 hover:text-gray-900 dark:hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m14.304 4.844 2.852 2.852M7 7H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-4.5m2.409-9.91a2.017 2.017 0 0 1 0 2.853l-6.844 6.844L8 14l.713-3.565 6.844-6.844a2.015 2.015 0 0 1 2.852 0Z"/>
+              </svg>                                     
+            </a>
+          </div>
+      
+          <div class="flex items-center space-x-2 mb-4">
+            <img src="{{ project.file.url }}" alt="{{ project.title }}"
+              class="w-16 h-16 rounded-full object-cover">
             <div>
               <h3 class="text-lg font-bold text-gray-800 dark:text-white">{{ project.title }}</h3>
-              <p class="mt-2 text-sm font-medium text-purple-600 dark:text-purple-400">
+              <p class="mt-2 text-sm space-x-1 font-medium text-green-600 dark:text-green-400">
                 <svg
                   aria-hidden="true"
                   class="inline-flex  w-5 h-5 text-yellow-400"
@@ -121,12 +152,27 @@
       <h2 class="text-2xl font-semibold text-gray-700 dark:text-gray-200 mb-4">Highest Usability Ratings</h2>
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {% for project in highest_usability %}
-        <div class="p-4 bg-white rounded-lg shadow-md dark:bg-gray-800">
-          <div class="flex items-center space-x-4 mb-4">
-            <img src="{{ project.file.url }}" alt="{{ project.title }}" class="w-16 h-16 rounded-full object-cover">
+        <div class="relative p-4 bg-white rounded-lg shadow-md dark:bg-gray-800">
+          <div class="absolute top-6 right-2 flex space-x-2">
+            <a href="{{ project.url }}" target="_blank" class="group">
+              <svg class="w-5 h-5 text-gray-500 hover:text-gray-900 dark:hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 14v4.833A1.166 1.166 0 0 1 16.833 20H5.167A1.167 1.167 0 0 1 4 18.833V7.167A1.166 1.166 0 0 1 5.167 6h4.618m4.447-2H20v5.768m-7.889 2.121 7.778-7.778"/>
+              </svg>                           
+            </a>
+      
+            <a href="{% url 'my_post_detail' project.id %}" class="group">  
+              <svg class="w-5 h-5 text-gray-500 hover:text-gray-900 dark:hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m14.304 4.844 2.852 2.852M7 7H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-4.5m2.409-9.91a2.017 2.017 0 0 1 0 2.853l-6.844 6.844L8 14l.713-3.565 6.844-6.844a2.015 2.015 0 0 1 2.852 0Z"/>
+              </svg>                                     
+            </a>
+          </div>
+      
+          <div class="flex items-center space-x-2 mb-4">
+            <img src="{{ project.file.url }}" alt="{{ project.title }}"
+              class="w-16 h-16 rounded-full object-cover">
             <div>
               <h3 class="text-lg font-bold text-gray-800 dark:text-white">{{ project.title }}</h3>
-              <p class="mt-2 text-sm font-medium text-teal-600 dark:text-teal-400">
+              <p class="mt-2 text-sm space-x-1 font-medium text-green-600 dark:text-green-400">
                 <svg
                   aria-hidden="true"
                   class="inline-flex  w-5 h-5 text-yellow-400"
