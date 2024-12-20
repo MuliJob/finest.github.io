@@ -8,7 +8,7 @@ from django.urls import reverse
 from django.http import JsonResponse
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib import messages
-from django.db.models import Avg
+from django.db.models import Avg, Max
 from .models import SubmittedWebsite, Review, Profile
 from .forms import SubmittedWebsiteForm, ReviewForm
 from .serializers import ProfileSerializer, SubmittedWebsiteSerializer
@@ -101,19 +101,19 @@ def explore(request):
     """Explore Page - Top Rated Projects"""
     title = 'EXPLORE'
     top_rated_projects = SubmittedWebsite.objects.annotate(
-        avg_score=Avg('reviews__average')
+        avg_score=Max('reviews__average')
     ).order_by('-avg_score')[:5]
 
     highest_design = SubmittedWebsite.objects.annotate(
-        design_score=Avg('reviews__design')
+        design_score=Max('reviews__design')
     ).order_by('-design_score')[:5]
 
     highest_content = SubmittedWebsite.objects.annotate(
-        content_score=Avg('reviews__content')
+        content_score=Max('reviews__content')
     ).order_by('-content_score')[:5]
 
     highest_usability = SubmittedWebsite.objects.annotate(
-        usability_score=Avg('reviews__usability')
+        usability_score=Max('reviews__usability')
     ).order_by('-usability_score')[:5]
 
     context = {
