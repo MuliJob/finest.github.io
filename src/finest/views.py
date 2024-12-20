@@ -130,7 +130,9 @@ def explore(request):
 def my_post(request):
     """ Posted websites """
     title = 'MY POSTS'
-    user_posts = SubmittedWebsite.objects.filter(user=request.user)
+    user_posts = SubmittedWebsite.objects.filter(user=request.user).annotate(
+        highest_rating=Max('reviews__overall')
+    )
     context = {
       'title': title,
       'user_posts': user_posts,
@@ -152,7 +154,7 @@ def my_post_detail(request, pk):
     total_reviews = reviews.count() if reviews.exists() else 0
 
     if reviews.exists():
-        overall_rating = reviews.first().overall
+        overall_rating = reviews.aggregate(max_rating=Max('overall'))['max_rating']
     else:
         overall_rating = 0
 
@@ -183,7 +185,7 @@ def all_post_details(request, pk):
     total_reviews = reviews.count() if reviews.exists() else 0
 
     if reviews.exists():
-        overall_rating = reviews.first().overall
+        overall_rating = reviews.aggregate(max_rating=Max('overall'))['max_rating']
     else:
         overall_rating = 0
 
@@ -223,7 +225,9 @@ def favorite(request):
     """ Favorites function """
     title = 'FAVORITES'
 
-    favorites = SubmittedWebsite.objects.filter(user=request.user, is_favorite=True)
+    favorites = SubmittedWebsite.objects.filter(user=request.user, is_favorite=True).annotate(
+        highest_rating = Max('reviews__overall')
+    )
 
     context = {
       'title': title,
