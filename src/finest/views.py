@@ -142,6 +142,10 @@ def my_post_detail(request, pk):
     """ Posted website details """
     title = 'WEBSITE DETAILS'
     website = get_object_or_404(SubmittedWebsite, pk=pk, user=request.user)
+    is_submitted_by_user = website.user == request.user
+    has_user_reviewed = Review.objects.filter(
+        submitted_website=website, user=request.user
+    ).exists()
 
     reviews = website.reviews.all()
 
@@ -158,8 +162,41 @@ def my_post_detail(request, pk):
       'reviews': reviews,
       'total_reviews': total_reviews,
       'overall_rating': overall_rating,
+      'is_submitted_by_user': is_submitted_by_user,
+      'has_user_reviewed': has_user_reviewed,
     }
     return render(request, 'user/website-detail.html', context)
+
+@custom_login_required
+def all_post_details(request, pk):
+    """ All posted website details for all users """
+    title = 'WEBSITE DETAILS'
+    
+    website = get_object_or_404(SubmittedWebsite, pk=pk)
+    
+    has_user_reviewed = Review.objects.filter(
+        submitted_website=website, user=request.user
+    ).exists()
+
+    reviews = website.reviews.all()
+
+    total_reviews = reviews.count() if reviews.exists() else 0
+
+    if reviews.exists():
+        overall_rating = reviews.first().overall
+    else:
+        overall_rating = 0
+
+    context = {
+      'title': title,
+      'website': website,
+      'reviews': reviews,
+      'total_reviews': total_reviews,
+      'overall_rating': overall_rating,
+      'has_user_reviewed': has_user_reviewed,
+    }
+    return render(request, 'user/website-detail.html', context)
+
 
 @custom_login_required
 def toggle_favorite(request):
@@ -196,12 +233,16 @@ def favorite(request):
 
 @custom_login_required
 def add_review(request, pk):
-    """Adding review function"""
+    """Allow users to add a review to a project they did not submit."""
     submitted_website = get_object_or_404(SubmittedWebsite, id=pk)
 
+    if submitted_website.user == request.user:
+        messages.error(request, 'You cannot review your own project.')
+        return redirect('all_post_details', pk=pk)
+
     if Review.objects.filter(submitted_website=submitted_website, user=request.user).exists():
-        messages.error(request, 'You have already reviewed this website.')
-        return redirect('my_post_detail', pk=pk)
+        messages.error(request, 'You have already reviewed this project.')
+        return redirect('all_post_details', pk=pk)
 
     if request.method == 'POST':
         form = ReviewForm(request.POST)
@@ -212,13 +253,13 @@ def add_review(request, pk):
             review.save()
 
             messages.success(request, 'Your review has been added successfully.')
-            return redirect('my_post_detail', pk=pk)
+            return redirect('all_post_details', pk=pk)
         else:
-            messages.error(request, 'Form validation failed. Please try again.')
-            return redirect('my_post_detail', pk=pk)
+            messages.error(request, 'Invalid data. Please correct the errors and try again.')
+            return redirect('all_post_details', pk=pk)
 
-    messages.error(request, 'Only POST requests are allowed.')
-    return redirect('my_post_detail', pk=pk)
+    messages.error(request, 'Only POST requests are allowed for adding reviews.')
+    return redirect('all_post_details', pk=pk)
 
 
 @custom_login_required
