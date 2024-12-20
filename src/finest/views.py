@@ -8,7 +8,7 @@ from django.urls import reverse
 from django.http import JsonResponse
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib import messages
-from django.db.models import Avg
+from django.db.models import Avg, Max
 from .models import SubmittedWebsite, Review, Profile
 from .forms import SubmittedWebsiteForm, ReviewForm
 from .serializers import ProfileSerializer, SubmittedWebsiteSerializer
@@ -99,21 +99,21 @@ def dashboard(request):
 @custom_login_required
 def explore(request):
     """Explore Page - Top Rated Projects"""
-    title = 'EXPLORE PROJECTS'
+    title = 'EXPLORE'
     top_rated_projects = SubmittedWebsite.objects.annotate(
-        avg_score=Avg('reviews__average')
+        avg_score=Max('reviews__average')
     ).order_by('-avg_score')[:5]
 
     highest_design = SubmittedWebsite.objects.annotate(
-        design_score=Avg('reviews__design')
+        design_score=Max('reviews__design')
     ).order_by('-design_score')[:5]
 
     highest_content = SubmittedWebsite.objects.annotate(
-        content_score=Avg('reviews__content')
+        content_score=Max('reviews__content')
     ).order_by('-content_score')[:5]
 
     highest_usability = SubmittedWebsite.objects.annotate(
-        usability_score=Avg('reviews__usability')
+        usability_score=Max('reviews__usability')
     ).order_by('-usability_score')[:5]
 
     context = {
@@ -130,7 +130,9 @@ def explore(request):
 def my_post(request):
     """ Posted websites """
     title = 'MY POSTS'
-    user_posts = SubmittedWebsite.objects.filter(user=request.user)
+    user_posts = SubmittedWebsite.objects.filter(user=request.user).annotate(
+        highest_rating=Max('reviews__overall')
+    )
     context = {
       'title': title,
       'user_posts': user_posts,
@@ -142,13 +144,17 @@ def my_post_detail(request, pk):
     """ Posted website details """
     title = 'WEBSITE DETAILS'
     website = get_object_or_404(SubmittedWebsite, pk=pk, user=request.user)
+    is_submitted_by_user = website.user == request.user
+    has_user_reviewed = Review.objects.filter(
+        submitted_website=website, user=request.user
+    ).exists()
 
     reviews = website.reviews.all()
 
     total_reviews = reviews.count() if reviews.exists() else 0
 
     if reviews.exists():
-        overall_rating = reviews.first().overall
+        overall_rating = reviews.aggregate(max_rating=Max('overall'))['max_rating']
     else:
         overall_rating = 0
 
@@ -158,8 +164,41 @@ def my_post_detail(request, pk):
       'reviews': reviews,
       'total_reviews': total_reviews,
       'overall_rating': overall_rating,
+      'is_submitted_by_user': is_submitted_by_user,
+      'has_user_reviewed': has_user_reviewed,
     }
     return render(request, 'user/website-detail.html', context)
+
+@custom_login_required
+def all_post_details(request, pk):
+    """ All posted website details for all users """
+    title = 'WEBSITE DETAILS'
+    
+    website = get_object_or_404(SubmittedWebsite, pk=pk)
+    
+    has_user_reviewed = Review.objects.filter(
+        submitted_website=website, user=request.user
+    ).exists()
+
+    reviews = website.reviews.all()
+
+    total_reviews = reviews.count() if reviews.exists() else 0
+
+    if reviews.exists():
+        overall_rating = reviews.aggregate(max_rating=Max('overall'))['max_rating']
+    else:
+        overall_rating = 0
+
+    context = {
+      'title': title,
+      'website': website,
+      'reviews': reviews,
+      'total_reviews': total_reviews,
+      'overall_rating': overall_rating,
+      'has_user_reviewed': has_user_reviewed,
+    }
+    return render(request, 'user/website-detail.html', context)
+
 
 @custom_login_required
 def toggle_favorite(request):
@@ -186,7 +225,9 @@ def favorite(request):
     """ Favorites function """
     title = 'FAVORITES'
 
-    favorites = SubmittedWebsite.objects.filter(user=request.user, is_favorite=True)
+    favorites = SubmittedWebsite.objects.filter(user=request.user, is_favorite=True).annotate(
+        highest_rating = Max('reviews__overall')
+    )
 
     context = {
       'title': title,
@@ -196,12 +237,16 @@ def favorite(request):
 
 @custom_login_required
 def add_review(request, pk):
-    """Adding review function"""
+    """Allow users to add a review to a project they did not submit."""
     submitted_website = get_object_or_404(SubmittedWebsite, id=pk)
 
+    if submitted_website.user == request.user:
+        messages.error(request, 'You cannot review your own project.')
+        return redirect('all_post_details', pk=pk)
+
     if Review.objects.filter(submitted_website=submitted_website, user=request.user).exists():
-        messages.error(request, 'You have already reviewed this website.')
-        return redirect('my_post_detail', pk=pk)
+        messages.error(request, 'You have already reviewed this project.')
+        return redirect('all_post_details', pk=pk)
 
     if request.method == 'POST':
         form = ReviewForm(request.POST)
@@ -212,13 +257,13 @@ def add_review(request, pk):
             review.save()
 
             messages.success(request, 'Your review has been added successfully.')
-            return redirect('my_post_detail', pk=pk)
+            return redirect('all_post_details', pk=pk)
         else:
-            messages.error(request, 'Form validation failed. Please try again.')
-            return redirect('my_post_detail', pk=pk)
+            messages.error(request, 'Invalid data. Please correct the errors and try again.')
+            return redirect('all_post_details', pk=pk)
 
-    messages.error(request, 'Only POST requests are allowed.')
-    return redirect('my_post_detail', pk=pk)
+    messages.error(request, 'Only POST requests are allowed for adding reviews.')
+    return redirect('all_post_details', pk=pk)
 
 
 @custom_login_required
