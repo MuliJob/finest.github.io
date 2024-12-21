@@ -3,7 +3,7 @@ from urllib.parse import urlparse
 import os
 from django import forms
 from django.core.exceptions import ValidationError
-from .models import SubmittedWebsite, Review
+from .models import SubmittedWebsite, Review, Profile
 
 class SubmittedWebsiteForm(forms.ModelForm):
     """ Form validation """
@@ -80,3 +80,10 @@ class ReviewForm(forms.ModelForm):
             self.add_error('content', 'Rating should be between 1 and 10.')
         
         return cleaned_data
+    
+class ProfileForm(forms.ModelForm):
+    """ Profile update form """
+    class Meta:
+        """Class Meta"""
+        model = Profile
+        fields = ['profile_picture', 'bio', 'contact_info']

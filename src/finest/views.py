@@ -9,8 +9,9 @@ from django.http import JsonResponse
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib import messages
 from django.db.models import Avg
+from django.contrib.auth.models import User
 from .models import SubmittedWebsite, Review, Profile
-from .forms import SubmittedWebsiteForm, ReviewForm
+from .forms import SubmittedWebsiteForm, ReviewForm, ProfileForm
 from .serializers import ProfileSerializer, SubmittedWebsiteSerializer
 from .permissions import IsAdminOrReadOnly
 
@@ -287,6 +288,38 @@ def submit_website(request):
         'form': form,
     }
     return render(request, 'user/submit-website.html', context)
+
+@custom_login_required
+def edit_profile(request, username):
+    """View to edit user profile"""
+    user = get_object_or_404(User, username=username)
+    
+    # Ensure the logged-in user can only edit their own profile
+    if request.user != user:
+        messages.error(request, "You are not authorized to edit this profile.")
+        return redirect('home')  # Redirect to home or any other page.
+
+    # Retrieve or create the user's profile
+    profile, _ = Profile.objects.get_or_create(user=user)
+
+    if request.method == "POST":
+        form = ProfileForm(request.POST, request.FILES, instance=profile)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Profile updated successfully.")
+            return redirect('edit_profile', username=user.username)
+        else:
+            messages.error(request, "There was an error updating your profile.")
+    else:
+        form = ProfileForm(instance=profile)
+
+    context = {
+        'title': f"Edit Profile - {user.username}",
+        'form': form,
+        'profile': profile,
+    }
+    return render(request, 'user/profile.html', context)
+
 
 def contact_us(request):
     """ Contact function"""

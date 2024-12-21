@@ -1,0 +1,112 @@
+{% extends 'user/base.html' %} {% load humanize %} {% load static %} {% block content %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{title}}</title>
+  </head>
+  <body>
+    <div class="max-w-2xl mx-auto bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg shadow-lg mt-16 p-6">
+      <h2 class="text-2xl font-bold mb-4 text-gray-800 dark:text-white">Profile</h2>
+      <form id="profile-form" action="{% url 'edit_profile' user.username %}" method="POST" enctype="multipart/form-data">
+          {% csrf_token %}
+  
+          <!-- Profile Picture Upload -->
+          <div class="mb-6 text-center">
+              <label for="profile-picture" class="block text-sm font-medium dark:text-white text-gray-800 mb-2">Profile Picture</label>
+              <div class="flex justify-center">
+                  <div class="relative w-24 h-24 rounded-full overflow-hidden border border-gray-300 dark:border-gray-600 cursor-pointer group" onclick="document.getElementById('profile-picture').click()">
+                      <img id="profile-preview" 
+                           src="{% if user.profile.profile_picture %}{{ user.profile.profile_picture.url }}{% else %}https://robohash.org/{{ user.username }}.png?size=96x96{% endif %}" 
+                           alt="Profile Picture" 
+                           class="object-cover w-full h-full">
+                        <div class="absolute inset-0 bg-gray-100 dark:bg-gray-100 bg-opacity-40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                          <svg class="w-6 h-6 text-gray-800 dark:text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                              <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m-7 7V5"/>
+                          </svg>
+                        </div>
+                  </div>
+              </div>
+              <input 
+                  type="file" 
+                  id="profile-picture" 
+                  name="profile_picture" 
+                  accept="image/*" 
+                  class="hidden">
+          </div>
+  
+          <!-- Name -->
+          <div class="mb-6">
+              <label for="name" class="block text-sm font-medium text-gray-800 dark:text-white mb-2">Name</label>
+              <input 
+                  type="text" 
+                  id="name" 
+                  name="name" 
+                  class="block w-full text-sm text-gray-900 dark:text-white border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700 focus:ring-blue-500 focus:border-blue-500"
+                  value="{{ user.first_name }} {{ user.last_name }}">
+          </div>
+  
+          <!-- Username -->
+          <div class="mb-6">
+              <label for="username" class="block text-sm font-medium text-gray-800 dark:text-white mb-2">Username</label>
+              <input 
+                  type="text" 
+                  id="username" 
+                  name="username" 
+                  class="block w-full text-sm text-gray-900 dark:text-white border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700 focus:ring-blue-500 focus:border-blue-500"
+                  placeholder="Your username"
+                  value="{{ user.username }}">
+          </div>
+  
+          <!-- Bio -->
+          <div class="mb-6">
+              <label for="bio" class="block text-sm font-medium text-gray-800 dark:text-white mb-2">Bio</label>
+              <textarea 
+                  id="bio" 
+                  name="bio" 
+                  rows="4" 
+                  class="block w-full text-sm text-gray-900 dark:text-white border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700 focus:ring-blue-500 focus:border-blue-500"
+                  placeholder="Write a short bio about yourself...">{% if user.profile.bio %}{{ user.profile.bio }}{% endif %}</textarea>
+          </div>
+  
+          <!-- Contact Info -->
+          <div class="mb-6">
+              <label for="contact-info" class="block text-sm font-medium text-gray-800 dark:text-white mb-2">Contact Info</label>
+              <input 
+                  type="text" 
+                  id="contact-info" 
+                  name="contact_info" 
+                  class="block w-full text-sm text-gray-900 dark:text-white border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700 focus:ring-blue-500 focus:border-blue-500"
+                  placeholder="Your email, phone number, or other contact info"
+                  value="{% if user.profile.contact_info %}{{ user.profile.contact_info }}{% endif %}">
+          </div>
+  
+          <!-- Submit Button -->
+          <div>
+              <button 
+                  type="submit" 
+                  class="w-full px-4 py-2 text-white bg-blue-600 hover:bg-blue-700 rounded-md focus:ring-2 focus:ring-blue-500 focus:ring-offset-1">
+                  Update Profile
+              </button>
+          </div>
+      </form>
+  </div>
+  
+  <script>
+      // File upload preview logic
+      document.getElementById('profile-picture').addEventListener('change', function(event) {
+          const file = event.target.files[0];
+          if (file) {
+              const reader = new FileReader();
+              reader.onload = function(e) {
+                  document.getElementById('profile-preview').src = e.target.result;
+              };
+              reader.readAsDataURL(file);
+          }
+      });
+  </script>
+  
+  </body>
+</html>
+{% endblock content %}
