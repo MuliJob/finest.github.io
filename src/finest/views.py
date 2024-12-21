@@ -8,7 +8,7 @@ from django.urls import reverse
 from django.http import JsonResponse
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib import messages
-from django.db.models import Avg, Max
+from django.db.models import Avg
 from .models import SubmittedWebsite, Review, Profile
 from .forms import SubmittedWebsiteForm, ReviewForm
 from .serializers import ProfileSerializer, SubmittedWebsiteSerializer
@@ -101,19 +101,19 @@ def explore(request):
     """Explore Page - Top Rated Projects"""
     title = 'EXPLORE'
     top_rated_projects = SubmittedWebsite.objects.annotate(
-        avg_score=Max('reviews__average')
+        avg_score=Avg('reviews__average')
     ).order_by('-avg_score')[:5]
 
     highest_design = SubmittedWebsite.objects.annotate(
-        design_score=Max('reviews__design')
+        design_score=Avg('reviews__design')
     ).order_by('-design_score')[:5]
 
     highest_content = SubmittedWebsite.objects.annotate(
-        content_score=Max('reviews__content')
+        content_score=Avg('reviews__content')
     ).order_by('-content_score')[:5]
 
     highest_usability = SubmittedWebsite.objects.annotate(
-        usability_score=Max('reviews__usability')
+        usability_score=Avg('reviews__usability')
     ).order_by('-usability_score')[:5]
 
     context = {
@@ -131,7 +131,7 @@ def my_post(request):
     """ Posted websites """
     title = 'MY POSTS'
     user_posts = SubmittedWebsite.objects.filter(user=request.user).annotate(
-        highest_rating=Max('reviews__overall')
+        highest_rating=Avg('reviews__overall')
     )
     context = {
       'title': title,
@@ -154,7 +154,7 @@ def my_post_detail(request, pk):
     total_reviews = reviews.count() if reviews.exists() else 0
 
     if reviews.exists():
-        overall_rating = reviews.aggregate(max_rating=Max('overall'))['max_rating']
+        overall_rating = reviews.aggregate(max_rating=Avg('overall'))['max_rating']
     else:
         overall_rating = 0
 
@@ -185,7 +185,7 @@ def all_post_details(request, pk):
     total_reviews = reviews.count() if reviews.exists() else 0
 
     if reviews.exists():
-        overall_rating = reviews.aggregate(max_rating=Max('overall'))['max_rating']
+        overall_rating = reviews.aggregate(max_rating=Avg('overall'))['max_rating']
     else:
         overall_rating = 0
 
@@ -226,7 +226,7 @@ def favorite(request):
     title = 'FAVORITES'
 
     favorites = SubmittedWebsite.objects.filter(user=request.user, is_favorite=True).annotate(
-        highest_rating = Max('reviews__overall')
+        highest_rating = Avg('reviews__overall')
     )
 
     context = {
