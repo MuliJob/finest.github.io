@@ -308,7 +308,7 @@
             >
               <span class="sr-only">Open user menu</span>
               <img
-                class="w-8 h-8 rounded-full"
+                class="w-8 h-8 border border-gray-600 dark:border-gray-600 rounded-full"
                 src="{% if user.profile.profile_picture %}{{ user.profile.profile_picture.url }}{% else %}https://robohash.org/{{ user.username }}.png?size=96x96{% endif %}"
                 alt="user photo"
               />
