@@ -1,0 +1,166 @@
+{% extends 'user/base.html' %} {% load humanize %} {% load static %} {% block content %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{title}}</title>
+  </head>
+  <body>
+    <div class="max-w-2xl mx-auto bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg shadow-lg mt-16 p-6">
+      {% if messages %} {% for message in messages %}
+        <div
+          id="alert-1"
+          class="flex items-center p-4 mb-4 text-sm rounded-lg {% if message.tags == 'success' %} bg-green-200 text-green-800 dark:bg-green-800 dark:text-green-400 {% elif message.tags == 'error' %} bg-red-50 text-red-800 dark:bg-red-800 dark:text-red-400 {% elif message.tags == 'warning' %} bg-yellow-50 text-yellow-800 dark:bg-yellow-800 dark:text-yellow-400 {% else %} bg-blue-50 text-blue-800 dark:bg-gray-800 dark:text-blue-400 {% endif %}"
+          role="alert"
+        >
+          <svg
+            class="flex-shrink-0 w-4 h-4"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+          >
+            <path
+              d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"
+            />
+          </svg>
+          <span class="sr-only">Info</span>
+          <div class="ms-3 text-sm font-medium">{{ message }}</div>
+          <button
+            type="button"
+            class="ms-auto -mx-1.5 -my-1.5 bg-transparent text-current rounded-lg focus:ring-2 focus:ring-opacity-50 p-1.5 hover:bg-gray-200 inline-flex items-center justify-center h-8 w-8 dark:bg-gray-800 dark:text-current dark:hover:bg-gray-700"
+            data-dismiss-target="#alert-1"
+            aria-label="Close"
+          >
+            <span class="sr-only">Close</span>
+            <svg
+              class="w-3 h-3"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 14 14"
+            >
+              <path
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
+              />
+            </svg>
+          </button>
+        </div>
+      {% endfor %} {% endif %}
+      <h2 class="text-2xl font-bold mb-4 text-gray-800 dark:text-white">Profile</h2>
+      <form id="profile-form" action="{% url 'edit_profile' user.username %}" method="POST" enctype="multipart/form-data">
+          {% csrf_token %}
+          <div class="mb-6 text-center">
+              <div class="flex justify-center">
+                  <div class="relative w-24 h-24 rounded-full overflow-hidden border border-gray-300 dark:border-gray-600 cursor-pointer group" onclick="document.getElementById('profile-picture').click()">
+                      <img id="profile-preview" 
+                           src="{% if user.profile.profile_picture %}{{ user.profile.profile_picture.url }}{% else %}https://robohash.org/{{ user.username }}.png?size=96x96{% endif %}" 
+                           alt="Profile Picture" 
+                           class="object-cover w-full h-full">
+                        <div class="absolute inset-0 bg-gray-100 dark:bg-gray-100 bg-opacity-40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                          <svg class="w-6 h-6 text-gray-800 dark:text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                              <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m-7 7V5"/>
+                          </svg>
+                        </div>
+                  </div>
+              </div>
+              <input 
+                  type="file" 
+                  id="profile-picture" 
+                  name="profile_picture" 
+                  accept="image/*" 
+                  class="hidden">
+          </div>
+          <div class="mb-6">
+              <label for="name" class="block text-sm font-medium text-gray-800 dark:text-white mb-2">Name</label>
+              <input 
+                  type="text" 
+                  id="name" 
+                  name="name" 
+                  class="block w-full text-sm text-gray-900 dark:text-white border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700 focus:ring-blue-500 focus:border-blue-500"
+                  value="{{ user.first_name }} {{ user.last_name }}">
+          </div>
+          <div class="mb-6">
+              <label for="username" class="block text-sm font-medium text-gray-800 dark:text-white mb-2">Username</label>
+              <input 
+                  type="text" 
+                  id="username" 
+                  name="username" 
+                  class="block w-full text-sm text-gray-900 dark:text-white border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700 focus:ring-blue-500 focus:border-blue-500"
+                  placeholder="Your username"
+                  value="{{ user.username }}">
+          </div>
+          <div class="mb-6">
+              <label for="bio" class="block text-sm font-medium text-gray-800 dark:text-white mb-2">Bio</label>
+              <textarea 
+                  id="bio" 
+                  name="bio" 
+                  rows="4" 
+                  class="block w-full text-sm text-gray-900 dark:text-white border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700 focus:ring-blue-500 focus:border-blue-500"
+                  placeholder="Write a short bio about yourself...">{% if user.profile.bio %}{{ user.profile.bio }}{% endif %}</textarea>
+          </div>
+          <div class="mb-6">
+              <label for="contact-info" class="block text-sm font-medium text-gray-800 dark:text-white mb-2">Contact Info</label>
+              <input 
+                  type="text" 
+                  id="contact-info" 
+                  name="contact_info" 
+                  class="block w-full text-sm text-gray-900 dark:text-white border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700 focus:ring-blue-500 focus:border-blue-500"
+                  placeholder="Your work email, phone number, or other contact info"
+                  value="{% if user.profile.contact_info %}{{ user.profile.contact_info }}{% endif %}">
+          </div>
+          <button 
+              type="submit" 
+              class="w-full px-4 py-2 text-white bg-blue-600 hover:bg-blue-700 rounded-md focus:ring-2 focus:ring-blue-500 focus:ring-offset-1 flex items-center justify-center space-x-2"
+              id="update-profile-button">
+              <svg id="spinner" class="w-6 h-6 text-white hidden" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.651 7.65a7.131 7.131 0 0 0-12.68 3.15M18.001 4v4h-4m-7.652 8.35a7.13 7.13 0 0 0 12.68-3.15M6 20v-4h4"/>
+              </svg>
+              <span class="update-profile">Update Profile</span>
+          </button>
+      </form>
+  </div>
+  
+  <script>
+      document.getElementById('profile-picture').addEventListener('change', function(event) {
+          const file = event.target.files[0];
+          if (file) {
+              const reader = new FileReader();
+              reader.onload = function(e) {
+                  document.getElementById('profile-preview').src = e.target.result;
+              };
+              reader.readAsDataURL(file);
+          }
+      });
+  </script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+    document.getElementById("update-profile-button").addEventListener("click", function (event) {
+        var btn = event.currentTarget;
+        var spinner = document.getElementById("spinner");
+        var updateText = btn.querySelector(".update-profile");
+
+        btn.disabled = true;
+
+        spinner.classList.remove("hidden");
+        spinner.classList.add("animate-spin");
+
+        if (updateText) {
+            updateText.textContent = "Updating...";
+        }
+
+        setTimeout(function () {
+            btn.form.submit();
+        }, 500);
+      });
+    });
+
+  </script>  
+  </body>
+</html>
+{% endblock content %}

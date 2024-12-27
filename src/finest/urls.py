@@ -16,6 +16,7 @@ urlpatterns = [
     path('dashboard/details/<int:pk>', views.my_post_detail, name='my_post_detail'),
     path('dashboard/all/details/<int:pk>', views.all_post_details, name='all_post_details'),
     path('dashboard/<int:pk>/add-review/', views.add_review, name='add_review'),
+    path('dashboard/profile/<str:username>/', views.edit_profile, name='edit_profile'),
     path('contact_us/', views.contact_us, name='contact_us'),
     path('api/profiles/', views.ProfileListAPIView.as_view(), name='api-profiles'),
     path('api/projects/', views.SubmittedWebsiteListAPIView.as_view(), name='api-projects'),
