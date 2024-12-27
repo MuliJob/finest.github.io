@@ -294,12 +294,9 @@ def edit_profile(request, username):
     """View to edit user profile"""
     user = get_object_or_404(User, username=username)
     
-    # Ensure the logged-in user can only edit their own profile
     if request.user != user:
         messages.error(request, "You are not authorized to edit this profile.")
-        return redirect('home')  # Redirect to home or any other page.
-
-    # Retrieve or create the user's profile
+        return redirect('home')
     profile, _ = Profile.objects.get_or_create(user=user)
 
     if request.method == "POST":
@@ -319,7 +316,6 @@ def edit_profile(request, username):
         'profile': profile,
     }
     return render(request, 'user/profile.html', context)
-
 
 def contact_us(request):
     """ Contact function"""
