@@ -203,7 +203,7 @@ def all_post_details(request, pk):
 
 @custom_login_required
 def toggle_favorite(request):
-    """ Toggling favorite """
+    """ Toggling favorite for any website """
     if request.method == 'POST':
         data = json.loads(request.body)
         website_id = data.get('website_id')
@@ -212,13 +212,16 @@ def toggle_favorite(request):
             return JsonResponse({"success": False, "error": "Missing website ID"}, status=400)
 
         try:
-            website = SubmittedWebsite.objects.get(id=website_id, user=request.user)
+            website = SubmittedWebsite.objects.get(id=website_id)
+            
             is_favorite = not website.is_favorite
             website.is_favorite = is_favorite
             website.save()
+
             return JsonResponse({"success": True, "is_favorite": is_favorite})
         except ObjectDoesNotExist:
             return JsonResponse({"success": False, "error": "Website not found"}, status=404)
+    
     return JsonResponse({"success": False, "error": "Invalid request method"}, status=405)
 
 @custom_login_required

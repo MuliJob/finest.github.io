@@ -97,32 +97,34 @@
             </div>
 
             <div class="mt-6 sm:gap-6 sm:items-center sm:flex sm:mt-8">
-              <a
-                href=""
-                data-id="{{ website.id }}"
-                data-favorite="{{ website.is_favorite|yesno:'true,false' }}"
-                class="favorite-btn flex items-center justify-center py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
-                role="button"
-              >
-                <svg
-                  class="icon w-5 h-5 -ms-2 me-2"
-                  aria-hidden="true"
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  fill="none"
-                  viewBox="0 0 24 24"
+              <form action="{% url 'toggle_favorite' %}" method="post">
+                {% csrf_token %}
+                <a
+                  data-id="{{ website.id }}"
+                  data-url="{% url 'toggle_favorite' %}"
+                  class="favorite-btn flex items-center justify-center py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
+                  role="button"
                 >
-                  <path
-                    d="M12.01 6.001C6.5 1 1 8 5.782 13.001L12.011 20l6.23-7C23 8 17.5 1 12.01 6.002Z"
-                    stroke="currentColor"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                  />
-                </svg>
-                <span class="text">Like</span>
-              </a>
+                    <svg
+                        class="icon w-5 h-5 -ms-2 me-2"
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        fill="{% if website.is_favorite %}currentColor{% else %}none{% endif %}"
+                        viewBox="0 0 24 24"
+                    >
+                        <path
+                            d="M12.01 6.001C6.5 1 1 8 5.782 13.001L12.011 20l6.23-7C23 8 17.5 1 12.01 6.002Z"
+                            stroke="currentColor"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                        />
+                    </svg>
+                    <span class="text">{% if website.is_favorite %}Unlike{% else %}Like{% endif %}</span>
+                </a>
+              </form>
+              
               {% if is_submitted_by_user or has_user_reviewed %}
               <a
                   class="text-gray-50 mt-4 sm:mt-0 bg-gray-200 hover:bg-gray-300 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-gray-400 dark:hover:bg-gray-300 focus:outline-none dark:focus:ring-gray-500 flex items-center justify-center"
@@ -333,99 +335,38 @@
     </section>
     <script>
       document.addEventListener("DOMContentLoaded", () => {
-        const favoriteButtons = document.querySelectorAll(".favorite-btn");
+        document.querySelectorAll(".favorite-btn").forEach(function (btn) {
+          btn.addEventListener("click", function (e) {
+              e.preventDefault();
 
-        favoriteButtons.forEach((button) => {
-          const icon = button.querySelector(".icon");
-          const isFavorite = button.dataset.favorite === "true";
+              const websiteId = this.getAttribute("data-id");
+              const url = this.getAttribute('data-url');
 
-          if (isFavorite) {
-            icon.innerHTML = `
-                    <path
-                        d="M12.01 6.001C6.5 1 1 8 5.782 13.001L12.011 20l6.23-7C23 8 17.5 1 12.01 6.002Z"
-                        fill="currentColor"
-                    />
-                `;
-            button.querySelector(".text").textContent = "Unlike";
-          } else {
-            icon.innerHTML = `
-                    <path
-                        d="M12.01 6.001C6.5 1 1 8 5.782 13.001L12.011 20l6.23-7C23 8 17.5 1 12.01 6.002Z"
-                        stroke="currentColor"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        fill="none"
-                    />
-                `;
-            button.querySelector(".text").textContent = "Like";
-          }
-
-          button.addEventListener("click", function (event) {
-            event.preventDefault();
-
-            const websiteId = this.dataset.id;
-
-            fetch("/dashboard/toggle-favorite/", {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-                "X-CSRFToken": getCookie("csrftoken"),
-              },
-              body: JSON.stringify({ website_id: websiteId }),
-            })
-              .then((response) => response.json())
-              .then((data) => {
-                if (data.success) {
-                  button.dataset.favorite = data.is_favorite.toString();
-
-                  if (data.is_favorite) {
-                    icon.innerHTML = `
-                                    <path
-                                        d="M12.01 6.001C6.5 1 1 8 5.782 13.001L12.011 20l6.23-7C23 8 17.5 1 12.01 6.002Z"
-                                        fill="currentColor"
-                                    />
-                                `;
-                    button.querySelector(".text").textContent = "Unlike";
-                  } else {
-                    icon.innerHTML = `
-                                    <path
-                                        d="M12.01 6.001C6.5 1 1 8 5.782 13.001L12.011 20l6.23-7C23 8 17.5 1 12.01 6.002Z"
-                                        stroke="currentColor"
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        stroke-width="2"
-                                        fill="none"
-                                    />
-                                `;
-                    button.querySelector(".text").textContent = "Like";
-                  }
-                } else {
-                  alert(data.error || "Something went wrong!");
-                }
+              fetch(url, {
+                  method: "POST",
+                  headers: {
+                      "Content-Type": "application/json",
+                      "X-CSRFToken": document.querySelector("[name=csrfmiddlewaretoken]").value,
+                  },
+                  body: JSON.stringify({ website_id: websiteId }),
               })
-              .catch((error) => {
-                console.error("Error:", error);
-              });
+                  .then((response) => response.json())
+                  .then((data) => {
+                      if (data.success) {
+                          if (data.is_favorite) {
+                              this.querySelector(".text").textContent = "Unlike";
+                              this.querySelector(".icon").setAttribute("fill", "currentColor");
+                          } else {
+                              this.querySelector(".text").textContent = "Like";
+                              this.querySelector(".icon").setAttribute("fill", "none");
+                          }
+                      } else {
+                          console.error("Error:", data.error);
+                      }
+                  })
+                  .catch((error) => console.error("Error:", error));
           });
         });
-
-        function getCookie(name) {
-          let cookieValue = null;
-          if (document.cookie && document.cookie !== "") {
-            const cookies = document.cookie.split(";");
-            for (let i = 0; i < cookies.length; i++) {
-              const cookie = cookies[i].trim();
-              if (cookie.substring(0, name.length + 1) === name + "=") {
-                cookieValue = decodeURIComponent(
-                  cookie.substring(name.length + 1)
-                );
-                break;
-              }
-            }
-          }
-          return cookieValue;
-        }
         
         const stars = document.querySelectorAll('input[type="radio"]');
         const labels = document.querySelectorAll('label[for^="star"]');
