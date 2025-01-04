@@ -49,7 +49,7 @@ def custom_login_required(view_func):
     return wrapper
 
 def home(request):
-    """ Homepage function """
+    """Homepage function"""
     highest_avg_review = Review.objects.order_by('-average').first()
 
     if highest_avg_review:
@@ -57,6 +57,12 @@ def home(request):
         formatted_date = highest_avg_review.created_at.strftime('%b %d, %Y')
 
         alt_name = website.title if website.title else "Website Image"
+        user = website.user
+
+        profile = getattr(user, 'profile', None)
+        profile_picture = (
+            profile.profile_picture.url if profile and profile.profile_picture else None
+        )
 
         context = {
             'title': 'FINEST',
@@ -65,7 +71,10 @@ def home(request):
             'website_description': website.description,
             'review_score': highest_avg_review.average,
             'formatted_date': formatted_date,
-            'alt_name': alt_name
+            'alt_name': alt_name,
+            'user_username': user.username,
+            'user_profile_url': f'/profile/{user.username}/',
+            'user_avatar_url': profile_picture or f'https://robohash.org/{user.username}.png?size=96x96',
         }
     else:
         context = {
@@ -74,6 +83,7 @@ def home(request):
         }
 
     return render(request, 'home.html', context)
+
 
 @custom_login_required
 def dashboard(request):
