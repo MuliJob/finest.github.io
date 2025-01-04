@@ -18,6 +18,13 @@ class SubmittedWebsite(models.Model):
 
     objects = models.Manager()
 
+class SiteOfTheDay(models.Model):
+    """Tracking site of the day"""
+    date = models.DateField(unique=True)
+    website = models.ForeignKey(SubmittedWebsite, on_delete=models.CASCADE)
+
+    objects = models.Manager()
+
 class Profile(models.Model):
     """User Profile model"""
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
