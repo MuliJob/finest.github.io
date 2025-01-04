@@ -1,5 +1,6 @@
 """ Finest app views """
 import json
+from datetime import timedelta
 from rest_framework import generics
 from django_filters.rest_framework import DjangoFilterBackend
 from django.shortcuts import render, redirect, get_object_or_404
@@ -10,7 +11,8 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.contrib import messages
 from django.db.models import Avg
 from django.contrib.auth.models import User
-from .models import SubmittedWebsite, Review, Profile
+from django.utils.timezone import now
+from .models import SiteOfTheDay, SubmittedWebsite, Review, Profile
 from .forms import SubmittedWebsiteForm, ReviewForm, ProfileForm
 from .serializers import ProfileSerializer, SubmittedWebsiteSerializer
 from .permissions import IsAdminOrReadOnly
@@ -81,6 +83,29 @@ def home(request):
             'title': 'Project Reviews Application',
             'message': "No reviews available yet"
         }
+
+    today = now().date()
+    recent_sites = []
+
+    for i in range(1, 7):
+        day = today - timedelta(days=i)
+
+        site_of_the_day = SiteOfTheDay.objects.filter(date=day).first()
+
+        if site_of_the_day:
+            recent_sites.append(site_of_the_day.website)
+        else:
+            highest_rating = (
+                Review.objects.filter(created_at__date=day)
+                .order_by('-average')
+                .first()
+            )
+            if highest_rating:
+                recent_sites.append(highest_rating.submitted_website)
+
+                SiteOfTheDay.objects.create(date=day, website=highest_rating.submitted_website)
+
+    context['recent_sites'] = recent_sites
 
     return render(request, 'home.html', context)
 
