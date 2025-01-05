@@ -39,8 +39,10 @@
           </div>
       {% endfor %}
     {% endif %}
-    <h2 class="mb-4 text-xl font-bold text-gray-900 dark:text-white text-center">{{title}}</h2>
-    <div class="bg-white dark:bg-gray-800 py-8 px-4 max-w-full lg:py-16 text-left border border-gray-300 dark:border-gray-600 p-8 rounded-lg shadow-lg">
+    <h1 class="text-3xl font-bold text-center text-gray-800 dark:text-white mb-6">{{title}}</h1>
+    <hr class="border-t-2 border-gray-300 dark:border-gray-600 w-full mx-auto">
+    
+    <div class="bg-white dark:bg-gray-800 py-8 px-4 max-w-full lg:py-16 text-left border border-gray-300 dark:border-gray-600 p-8 rounded-lg shadow-lg mt-10">
         <form action="{% url 'submit_website' %}" method="post" enctype="multipart/form-data">
             {% csrf_token %}
             <div class="grid gap-6 sm:grid-cols-2 sm:gap-8">
