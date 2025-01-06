@@ -121,6 +121,31 @@ def dashboard(request):
         Review.objects.filter(submitted_website__user=request.user)
         .aggregate(avg_score=Avg('overall'))['avg_score'] or 0
     )
+    recent_projects = SubmittedWebsite.objects.filter(user=request.user).order_by('-submitted_at')[:4]
+
+    top_review = Review.objects.filter(
+        user=request.user,
+        submitted_website__user=request.user
+    ).order_by('-average').first()
+
+    if top_review:
+        top_feedback = top_review.description or "No feedback available yet."
+        top_feedback_id = top_review.submitted_website.pk
+    else:
+        top_feedback = "No feedback available yet."
+        top_feedback_id = None
+
+    lowest_review = Review.objects.filter(
+        user=request.user,
+        submitted_website__user=request.user
+    ).order_by('average').first()
+
+    if lowest_review:
+        improvement_tip = lowest_review.description or "No improvement tips available yet."
+        improvement_project_id = lowest_review.submitted_website.pk
+    else:
+        improvement_tip = "No improvement tips available yet."
+        improvement_project_id = None
 
     context = {
         'title': title,
@@ -128,6 +153,11 @@ def dashboard(request):
         'reviewed_projects_count': reviewed_projects_count,
         'non_reviewed_projects_count': non_reviewed_projects_count,
         'average_review_score': round(average_review_score, 1),
+        'recent_projects': recent_projects,
+        'top_feedback': top_feedback,
+        'top_feedback_id': top_feedback_id,
+        'improvement_tip': improvement_tip,
+        'improvement_project_id': improvement_project_id,
     }
 
     return render(request, 'user/dashboard.html', context)
