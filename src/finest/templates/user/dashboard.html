@@ -86,20 +86,26 @@
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
       <div class="p-4 bg-white rounded-lg shadow hover:shadow-lg dark:bg-gray-800 transition-shadow">
         <h4 class="text-gray-500 text-sm">Recent Projects</h4>
-        <ul class="mt-4 space-y-2">
-          <li class="flex items-center justify-between text-gray-700 dark:text-gray-300">
-            <span>Project ABC</span> <span class="text-green-400">Reviewed</span>
-          </li>
-          <li class="flex items-center justify-between text-gray-700 dark:text-gray-300">
-            <span>Project XYZ</span> <span class="text-yellow-300">Pending</span>
-          </li>
-        </ul>
-        <button class="mt-4 px-4 py-2 text-sm font-medium text-white rounded-lg bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800 flex items-center gap-2 group">
-          View All
-          <svg class="w-6 h-6 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m7 16 4-4-4-4m6 8 4-4-4-4"/>
-          </svg>
-        </button>
+        {% if recent_projects %}
+          <ul class="mt-4 space-y-2">
+              {% for project in recent_projects %}
+              <li class="flex items-center justify-between text-gray-700 dark:text-gray-300">
+                  <span>{{ project.title }}</span>
+                  <span class="{% if project.reviews.exists %}text-green-400{% else %}text-yellow-300{% endif %}">
+                      {% if project.reviews.exists %}Reviewed{% else %}Pending{% endif %}
+                  </span>
+              </li>
+              {% endfor %}
+          </ul>
+          <button class="mt-4 px-4 py-2 text-sm font-medium text-white rounded-lg bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800 flex items-center gap-2 group">
+              View All
+              <svg class="w-6 h-6 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m7 16 4-4-4-4m6 8 4-4-4-4"/>
+              </svg>
+          </button>
+        {% else %}
+          <p class="text-gray-700 dark:text-gray-300 mt-4">No projects submitted yet.</p>
+        {% endif %}
       </div>
       <div class="p-4 bg-white rounded-lg shadow hover:shadow-lg dark:bg-gray-800 transition-shadow">
         <h4 class="text-gray-500 text-sm">Notifications</h4>
@@ -116,23 +122,29 @@
       </div>
       <div class="p-4 bg-white rounded-lg shadow hover:shadow-lg dark:bg-gray-800 transition-shadow">
         <h4 class="text-gray-500 text-sm">Top Feedback</h4>
-        <p class="text-gray-700 dark:text-gray-300 mt-4">"Great structure, but consider improving the design flow."</p>
-        <button class="mt-4 px-4 py-2 text-sm font-medium text-white rounded-lg bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800 flex items-center gap-2 group">
-          More Feedback
-          <svg class="w-6 h-6 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m7 16 4-4-4-4m6 8 4-4-4-4"/>
-          </svg>
-        </button>
+        <p class="text-gray-700 dark:text-gray-300 mt-4">{{ top_feedback }}</p>
+        {% if top_feedback_id %}
+        <a href="{% url 'my_post_detail' top_feedback_id %}">
+            <button class="mt-4 px-4 py-2 text-sm font-medium text-white rounded-lg bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800 flex items-center gap-2 group">
+                More Feedback
+                <svg class="w-6 h-6 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m7 16 4-4-4-4m6 8 4-4-4-4"/>
+                </svg>
+            </button>
+        </a>
+        {% endif %}
       </div>
       <div class="p-4 bg-white rounded-lg shadow hover:shadow-lg dark:bg-gray-800 transition-shadow">
         <h4 class="text-gray-500 text-sm">Explore Featured Projects</h4>
         <p class="text-gray-700 dark:text-gray-300 mt-4">Check out top-rated projects to get inspired!</p>
-        <button class="mt-4 px-4 py-2 text-sm font-medium text-white rounded-lg bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800 flex items-center gap-2 group">
-          Discover
-          <svg class="w-6 h-6 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m7 16 4-4-4-4m6 8 4-4-4-4"/>
-          </svg>
-        </button>
+        <a href="{% url 'explore' %}">
+          <button class="mt-4 px-4 py-2 text-sm font-medium text-white rounded-lg bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800 flex items-center gap-2 group">
+            Discover
+            <svg class="w-6 h-6 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m7 16 4-4-4-4m6 8 4-4-4-4"/>
+            </svg>
+          </button>
+        </a>
       </div>
     </div>
   
@@ -147,13 +159,17 @@
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
       <div class="p-4 bg-white rounded-lg shadow hover:shadow-lg dark:bg-gray-800 transition-shadow">
         <h4 class="text-gray-500 text-sm">Improvement Tips</h4>
-        <p class="text-gray-700 dark:text-gray-300 mt-4">Optimize your project descriptions for clarity.</p>
-        <button class="mt-4 px-4 py-2 text-sm font-medium text-white rounded-lg bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800 flex items-center gap-2 group">
-          Learn More
-          <svg class="w-6 h-6 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m7 16 4-4-4-4m6 8 4-4-4-4"/>
-          </svg>
-        </button>
+        <p class="text-gray-700 dark:text-gray-300 mt-4">{{ improvement_tip }}</p>
+        {% if improvement_project_id %}
+          <a href="{% url 'my_post_detail' improvement_project_id %}">
+            <button class="mt-4 px-4 py-2 text-sm font-medium text-white rounded-lg bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800 flex items-center gap-2 group">
+              Learn More
+              <svg class="w-6 h-6 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m7 16 4-4-4-4m6 8 4-4-4-4"/>
+              </svg>
+            </button>
+          </a>
+        {% endif %}
       </div>
       <div class="p-4 bg-white rounded-lg shadow hover:shadow-lg dark:bg-gray-800 transition-shadow">
         <h4 class="text-gray-500 text-sm">Pending Actions</h4>
