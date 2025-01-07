@@ -18,7 +18,6 @@ from .serializers import ProfileSerializer, SubmittedWebsiteSerializer
 from .permissions import IsAdminOrReadOnly
 
 
-
 # Create your views here.
 class ProfileListAPIView(generics.ListAPIView):
     """API endpoint for retrieving all user profiles."""
@@ -204,6 +203,17 @@ def my_post(request):
       'user_posts': user_posts,
     }
     return render(request, 'user/my-posts.html', context)
+
+@custom_login_required
+def my_reviews(request):
+    '''My Reviews Function'''
+    title = 'My Reviews'
+    reviews = Review.objects.filter(user=request.user)
+    context = {
+        'title': title,
+        'reviews': reviews,
+    }
+    return render(request, 'user/my-reviews.html', context)
 
 @custom_login_required
 def my_post_detail(request, pk):

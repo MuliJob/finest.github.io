@@ -569,6 +569,25 @@
             </li>
             <li>
               <a
+                href="{% url 'my_reviews' %}"
+                class="{% if request.resolver_match.url_name == 'my_reviews' %} bg-gray-100 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-500 {% endif %} flex items-center p-2 text-base font-medium text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+              >
+                <svg
+                  class="w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+                  aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"
+                  />
+                </svg>
+                <span class="ml-3">My Reviews</span>
+              </a>
+            </li>
+            <li>
+              <a
                 href="{% url 'favorite' %}"
                 class="{% if request.resolver_match.url_name == 'favorite' %} bg-gray-100 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-500 {% endif %} flex items-center p-2 text-base font-medium text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
               >
