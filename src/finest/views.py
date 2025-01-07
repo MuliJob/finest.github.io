@@ -206,6 +206,15 @@ def my_post(request):
     return render(request, 'user/my-posts.html', context)
 
 @custom_login_required
+def my_reviews(request):
+    '''My Reviews Function'''
+    title = 'My Reviews'
+    context = {
+        'title': title,
+    }
+    return render(request, 'user/my-reviews.html', context)
+
+@custom_login_required
 def my_post_detail(request, pk):
     """ Posted website details """
     title = 'WEBSITE DETAILS'
