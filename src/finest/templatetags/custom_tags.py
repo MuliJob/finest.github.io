@@ -4,6 +4,6 @@ from django import template
 register = template.Library()
 
 @register.filter
-def range_filter(value):
+def range_filter(start, end):
     '''Custom Template Tag'''
-    return range(value)
+    return range(start, end)
