@@ -1,6 +1,6 @@
 """ Finest app views """
 import json
-from datetime import timedelta
+from datetime import timedelta, datetime
 from rest_framework import generics
 from django_filters.rest_framework import DjangoFilterBackend
 from django.shortcuts import render, redirect, get_object_or_404
@@ -146,6 +146,14 @@ def dashboard(request):
         improvement_tip = "No improvement tips available yet."
         improvement_project_id = None
 
+    current_hour = datetime.now().hour
+    if current_hour < 12:
+        greeting = "Good Morning"
+    elif current_hour < 18:
+        greeting = "Good Afternoon"
+    else:
+        greeting = "Good Evening"
+
     context = {
         'title': title,
         'total_projects': total_projects,
@@ -157,6 +165,7 @@ def dashboard(request):
         'top_feedback_id': top_feedback_id,
         'improvement_tip': improvement_tip,
         'improvement_project_id': improvement_project_id,
+        'greeting': greeting,
     }
 
     return render(request, 'user/dashboard.html', context)
