@@ -7,6 +7,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{{title}}</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body class="bg-gray-50 dark:bg-gray-900">
   {% if messages %}
@@ -208,31 +209,45 @@
       </div>
     </div>
   </div>
-  
   <script>
+    // Pass Django data to JavaScript by embedding as JSON
+    const labels = JSON.parse('{{ labels|safe }}');
+    const data = JSON.parse('{{ data|safe }}');
+
+    // Initialize the chart
     const ctx = document.getElementById('performanceChart').getContext('2d');
     new Chart(ctx, {
-      type: 'bar',
-      data: {
-        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May'],
-        datasets: [{
-          label: 'Projects Reviewed',
-          data: [12, 19, 3, 5, 2],
-          backgroundColor: 'rgba(75, 192, 192, 0.2)',
-          borderColor: 'rgba(75, 192, 192, 1)',
-          borderWidth: 1
-        }]
-      },
-      options: {
-        responsive: true,
-        scales: {
-          y: {
-            beginAtZero: true
-          }
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Projects Reviewed',
+                data: data,
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Months'
+                    }
+                },
+                y: {
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: 'Number of Reviews'
+                    }
+                }
+            }
         }
-      }
     });
-  </script>
+</script>
 </body>
 </html>
 {% endblock content %}
