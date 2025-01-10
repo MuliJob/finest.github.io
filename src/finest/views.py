@@ -1,6 +1,6 @@
 """ Finest app views """
 import json
-from datetime import timedelta
+from datetime import timedelta, datetime
 from rest_framework import generics
 from django_filters.rest_framework import DjangoFilterBackend
 from django.shortcuts import render, redirect, get_object_or_404
@@ -9,7 +9,8 @@ from django.urls import reverse
 from django.http import JsonResponse
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib import messages
-from django.db.models import Avg
+from django.db.models import Avg, Count
+from django.db.models.functions import TruncMonth
 from django.contrib.auth.models import User
 from django.utils.timezone import now
 from .models import SiteOfTheDay, SubmittedWebsite, Review, Profile
@@ -48,6 +49,35 @@ def custom_login_required(view_func):
             return redirect_to_login(request.get_full_path(), login_url)
         return view_func(request, *args, **kwargs)
     return wrapper
+
+def performance_chart(request):
+    current_year = datetime.now().year  # Get the current year
+
+    # Count reviews grouped by month for the current year
+    review_data = (
+        Review.objects.filter(user=request.user, created_at__year=current_year)  # Filter by current year
+        .annotate(month=TruncMonth('created_at'))  # Group by month
+        .values('month')
+        .annotate(total_reviews=Count('id'))
+        .order_by('month')
+    )
+
+    # Prepare data for JavaScript
+    months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+    data = {month: 0 for month in months}  # Initialize counts for all months
+
+    for item in review_data:
+        month_index = item['month'].month - 1
+        data[months[month_index]] = item['total_reviews']
+
+    # Filter months with reviews
+    filtered_labels = [month for month, count in data.items() if count > 0]
+    filtered_data = [count for month, count in data.items() if count > 0]
+
+    return render(request, 'chart.html', {
+        'labels': filtered_labels,
+        'data': filtered_data,
+    })
 
 def home(request):
     """Homepage function"""
@@ -146,6 +176,36 @@ def dashboard(request):
         improvement_tip = "No improvement tips available yet."
         improvement_project_id = None
 
+    current_hour = datetime.now().hour
+    if current_hour < 12:
+        greeting = "Good Morning"
+    elif current_hour < 18:
+        greeting = "Good Afternoon"
+    else:
+        greeting = "Good Evening"
+
+    current_year = datetime.now().year
+
+    review_data = (
+        Review.objects.filter(user=request.user, created_at__year=current_year)
+        .annotate(month=TruncMonth('created_at'))
+        .values('month')
+        .annotate(total_reviews=Count('id'))
+        .order_by('month')
+    )
+
+    months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+    data = {month: 0 for month in months}
+
+    for item in review_data:
+        month_index = item['month'].month - 1
+        data[months[month_index]] = item['total_reviews']
+
+    filtered_labels = [month for month, count in data.items() if count > 0]
+    filtered_data = [count for month, count in data.items() if count > 0]
+
+    recent_submissions = SubmittedWebsite.objects.filter(user=request.user).order_by('-submitted_at')[:2]
+
     context = {
         'title': title,
         'total_projects': total_projects,
@@ -157,6 +217,10 @@ def dashboard(request):
         'top_feedback_id': top_feedback_id,
         'improvement_tip': improvement_tip,
         'improvement_project_id': improvement_project_id,
+        'greeting': greeting,
+        'labels': json.dumps(filtered_labels),
+        'data': json.dumps(filtered_data),
+        'recent_submissions': recent_submissions,
     }
 
     return render(request, 'user/dashboard.html', context)
