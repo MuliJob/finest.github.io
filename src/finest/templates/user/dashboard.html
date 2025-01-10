@@ -199,22 +199,32 @@
       </div>
       <div class="p-4 bg-white rounded-lg shadow hover:shadow-lg dark:bg-gray-800 transition-shadow">
         <h4 class="text-gray-500 text-sm">Achievements</h4>
-        <p class="text-gray-700 dark:text-gray-300 mt-4">You've submitted 20+ projects. Keep going!</p>
+        <p class="text-gray-700 dark:text-gray-300 mt-4">You've submitted {{ total_projects }}+ projects. Keep going!</p>
+        
+        {% if total_projects > 3 %}
         <button class="mt-4 px-4 py-2 text-sm font-medium text-white rounded-lg bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800 flex items-center gap-2 group">
-          View More
-          <svg class="w-6 h-6 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m7 16 4-4-4-4m6 8 4-4-4-4"/>
-          </svg>
+            View More
+            <svg class="w-6 h-6 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m7 16 4-4-4-4m6 8 4-4-4-4"/>
+            </svg>
         </button>
+        {% endif %}
+        
+        <div class="mt-4">
+            {% for submission in recent_submissions %}
+                <div class="bg-gray-100 p-3 rounded-lg mb-2">
+                    <a href="{{ submission.url }}" target="_blank" class="font-semibold text-primary-700">{{ submission.title }}</a>
+                    <p class="text-gray-500 text-sm">{{ submission.submitted_at|date:"F j, Y" }}</p>
+                </div>
+            {% endfor %}
+        </div>
       </div>
     </div>
   </div>
   <script>
-    // Pass Django data to JavaScript by embedding as JSON
     const labels = JSON.parse('{{ labels|safe }}');
     const data = JSON.parse('{{ data|safe }}');
 
-    // Initialize the chart
     const ctx = document.getElementById('performanceChart').getContext('2d');
     new Chart(ctx, {
         type: 'line',

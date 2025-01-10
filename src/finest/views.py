@@ -204,6 +204,8 @@ def dashboard(request):
     filtered_labels = [month for month, count in data.items() if count > 0]
     filtered_data = [count for month, count in data.items() if count > 0]
 
+    recent_submissions = SubmittedWebsite.objects.filter(user=request.user).order_by('-submitted_at')[:2]
+
     context = {
         'title': title,
         'total_projects': total_projects,
@@ -218,6 +220,7 @@ def dashboard(request):
         'greeting': greeting,
         'labels': json.dumps(filtered_labels),
         'data': json.dumps(filtered_data),
+        'recent_submissions': recent_submissions,
     }
 
     return render(request, 'user/dashboard.html', context)
