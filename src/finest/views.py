@@ -236,24 +236,44 @@ def dashboard(request):
 def explore(request):
     """Explore Page - Top Rated Projects"""
     title = 'EXPLORE'
-    top_rated_projects = SubmittedWebsite.objects.annotate(
-        avg_score=Avg('reviews__average')
-    ).order_by('-avg_score')[:5]
 
-    highest_design = SubmittedWebsite.objects.annotate(
-        design_score=Avg('reviews__design')
-    ).order_by('-design_score')[:5]
+    all_projects = SubmittedWebsite.objects.order_by('-submitted_at')[:5]
 
-    highest_content = SubmittedWebsite.objects.annotate(
-        content_score=Avg('reviews__content')
-    ).order_by('-content_score')[:5]
+    top_rated_projects = (
+        SubmittedWebsite.objects.annotate(
+            avg_user_score=Avg('reviews__average', distinct=True)
+        )
+        .filter(reviews__isnull=False)
+        .order_by('-avg_user_score')[:5]
+    )
 
-    highest_usability = SubmittedWebsite.objects.annotate(
-        usability_score=Avg('reviews__usability')
-    ).order_by('-usability_score')[:5]
+    highest_design = (
+        SubmittedWebsite.objects.annotate(
+            avg_design_score=Avg('reviews__design', distinct=True)
+        )
+        .filter(reviews__isnull=False)
+        .order_by('-avg_design_score')[:5]
+    )
+
+    highest_content = (
+        SubmittedWebsite.objects.annotate(
+            avg_content_score=Avg('reviews__content', distinct=True)
+        )
+        .filter(reviews__isnull=False)
+        .order_by('-avg_content_score')[:5]
+    )
+
+    highest_usability = (
+        SubmittedWebsite.objects.annotate(
+            avg_usability_score=Avg('reviews__usability', distinct=True)
+        )
+        .filter(reviews__isnull=False)
+        .order_by('-avg_usability_score')[:5]
+    )
 
     context = {
         'title': title,
+        "all_projects": all_projects,
         'top_rated_projects': top_rated_projects,
         'highest_design': highest_design,
         'highest_content': highest_content,
