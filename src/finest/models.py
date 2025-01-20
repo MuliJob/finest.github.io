@@ -15,13 +15,7 @@ class SubmittedWebsite(models.Model):
     file = models.FileField(upload_to='uploads/websites/')
     submitted_at = models.DateTimeField(auto_now_add=True)
     is_favorite = models.BooleanField(default=False)
-
-    objects = models.Manager()
-
-class SiteOfTheDay(models.Model):
-    """Tracking site of the day"""
-    date = models.DateField(unique=True)
-    website = models.ForeignKey(SubmittedWebsite, on_delete=models.CASCADE)
+    date_site_of_the_day = models.DateField(blank=True, null=True)
 
     objects = models.Manager()
 
