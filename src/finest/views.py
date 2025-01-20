@@ -315,7 +315,8 @@ def all_post_details(request, pk):
     title = 'WEBSITE DETAILS'
     
     website = get_object_or_404(SubmittedWebsite, pk=pk)
-    
+
+    is_submitted_by_user = website.user == request.user
     has_user_reviewed = Review.objects.filter(
         submitted_website=website, user=request.user
     ).exists()
@@ -335,6 +336,7 @@ def all_post_details(request, pk):
       'reviews': reviews,
       'total_reviews': total_reviews,
       'overall_rating': overall_rating,
+      'is_submitted_by_user': is_submitted_by_user,
       'has_user_reviewed': has_user_reviewed,
     }
     return render(request, 'user/website-detail.html', context)
