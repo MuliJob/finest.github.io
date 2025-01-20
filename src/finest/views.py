@@ -13,7 +13,7 @@ from django.db.models import Avg, Count
 from django.db.models.functions import TruncMonth
 from django.contrib.auth.models import User
 from django.utils.timezone import now
-from .models import SiteOfTheDay, SubmittedWebsite, Review, Profile
+from .models import SubmittedWebsite, Review, Profile
 from .forms import SubmittedWebsiteForm, ReviewForm, ProfileForm
 from .serializers import ProfileSerializer, SubmittedWebsiteSerializer
 from .permissions import IsAdminOrReadOnly
@@ -44,33 +44,32 @@ def custom_login_required(view_func):
     """ Custom login required decorator to add a message on redirect """
     def wrapper(request, *args, **kwargs):
         if not request.user.is_authenticated:
-            messages.warning(request, "You need to be logged in to access this page. Please login below!")
+            messages.warning(request,
+                             "You need to be logged in to access this page. Please login below!")
             login_url = reverse('login')
             return redirect_to_login(request.get_full_path(), login_url)
         return view_func(request, *args, **kwargs)
     return wrapper
 
 def performance_chart(request):
-    current_year = datetime.now().year  # Get the current year
+    """Function to display user review project"""
+    current_year = datetime.now().year
 
-    # Count reviews grouped by month for the current year
     review_data = (
-        Review.objects.filter(user=request.user, created_at__year=current_year)  # Filter by current year
-        .annotate(month=TruncMonth('created_at'))  # Group by month
+        Review.objects.filter(user=request.user, created_at__year=current_year)
+        .annotate(month=TruncMonth('created_at'))
         .values('month')
         .annotate(total_reviews=Count('id'))
         .order_by('month')
     )
 
-    # Prepare data for JavaScript
     months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-    data = {month: 0 for month in months}  # Initialize counts for all months
+    data = {month: 0 for month in months}
 
     for item in review_data:
         month_index = item['month'].month - 1
         data[months[month_index]] = item['total_reviews']
 
-    # Filter months with reviews
     filtered_labels = [month for month, count in data.items() if count > 0]
     filtered_data = [count for month, count in data.items() if count > 0]
 
@@ -81,11 +80,18 @@ def performance_chart(request):
 
 def home(request):
     """Homepage function"""
-    highest_avg_review = Review.objects.order_by('-average').first()
+    project_avg_reviews = (
+        Review.objects.values('submitted_website', 'submitted_website__title')
+        .annotate(average_per_user=Avg('average'))
+        .order_by('-average_per_user')
+    )
+
+    highest_avg_review = project_avg_reviews.first()
 
     if highest_avg_review:
-        website = highest_avg_review.submitted_website
-        formatted_date = highest_avg_review.created_at.strftime('%b %d, %Y')
+        website_id = highest_avg_review['submitted_website']
+        website = SubmittedWebsite.objects.get(id=website_id)
+        formatted_date = now().strftime('%b %d, %Y')
 
         alt_name = website.title if website.title else "Website Image"
         user = website.user
@@ -100,7 +106,7 @@ def home(request):
             'website_title': website.title,
             'website_image': website.file.url if website.file else None,
             'website_description': website.description,
-            'review_score': highest_avg_review.average,
+            'review_score': highest_avg_review['average_per_user'],
             'formatted_date': formatted_date,
             'alt_name': alt_name,
             'user_username': user.username,
@@ -114,25 +120,26 @@ def home(request):
         }
 
     today = now().date()
-    recent_sites = []
+
+    recent_sites = (
+        SubmittedWebsite.objects.filter(date_site_of_the_day__lt=today)
+        .order_by('-date_site_of_the_day')[:6]
+    )
 
     for i in range(1, 7):
         day = today - timedelta(days=i)
-
-        site_of_the_day = SiteOfTheDay.objects.filter(date=day).first()
-
-        if site_of_the_day:
-            recent_sites.append(site_of_the_day.website)
-        else:
-            highest_rating = (
+        if not SubmittedWebsite.objects.filter(date_site_of_the_day=day).exists():
+            highest_rating_for_day = (
                 Review.objects.filter(created_at__date=day)
-                .order_by('-average')
+                .values('submitted_website')
+                .annotate(average_per_user=Avg('average'))
+                .order_by('-average_per_user')
                 .first()
             )
-            if highest_rating:
-                recent_sites.append(highest_rating.submitted_website)
-
-                SiteOfTheDay.objects.create(date=day, website=highest_rating.submitted_website)
+            if highest_rating_for_day:
+                site = SubmittedWebsite.objects.get(id=highest_rating_for_day['submitted_website'])
+                site.date_site_of_the_day = day
+                site.save()
 
     context['recent_sites'] = recent_sites
 
