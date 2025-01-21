@@ -14,7 +14,7 @@ from django.db.models.functions import TruncMonth
 from django.contrib.auth.models import User
 from django.utils.timezone import now
 from .models import SubmittedWebsite, Review, Profile
-from .forms import SubmittedWebsiteForm, ReviewForm, ProfileForm
+from .forms import ContactForm, SubmittedWebsiteForm, ReviewForm, ProfileForm
 from .serializers import ProfileSerializer, SubmittedWebsiteSerializer
 from .permissions import IsAdminOrReadOnly
 
@@ -491,7 +491,20 @@ def edit_profile(request, username):
 def contact_us(request):
     """ Contact function"""
     title = 'CONTACT US'
+    if request.method == 'POST':
+        form = ContactForm(request.POST)
+        if form.is_valid():
+            contact_info = form.save(commit=False)
+            contact_info.save()
+            messages.success(request,
+                            'We have received your message 🤝. We will contact you soon. 🤖')
+        else:
+            messages.error(request,
+                           "There was an error with your submission. Please correct it below.")
+    else:
+        form = ContactForm
     context = {
       'title':title,
+      'form': form,
     }
     return render(request, 'contactus.html', context)

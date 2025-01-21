@@ -2,8 +2,9 @@
 from urllib.parse import urlparse
 import os
 from django import forms
+from django.core.validators import EmailValidator
 from django.core.exceptions import ValidationError
-from .models import SubmittedWebsite, Review, Profile
+from .models import Contact, SubmittedWebsite, Review, Profile
 
 class SubmittedWebsiteForm(forms.ModelForm):
     """ Form validation """
@@ -27,7 +28,7 @@ class SubmittedWebsiteForm(forms.ModelForm):
     def clean_url(self):
         """ URL validation """
         url = self.cleaned_data.get('url')
-        
+
         if not url.startswith(('http://', 'https://')):
             raise ValidationError("The URL must start with 'http://' or 'https://'")
 
@@ -70,20 +71,47 @@ class ReviewForm(forms.ModelForm):
         design = cleaned_data.get("design")
         usability = cleaned_data.get("usability")
         content = cleaned_data.get("content")
-        
+
         # Ensure ratings are within the valid range
-        if not (1 <= design <= 10):
+        if not 1 <= design <= 10:
             self.add_error('design', 'Rating should be between 1 and 10.')
-        if not (1 <= usability <= 10):
+        if not 1 <= usability <= 10:
             self.add_error('usability', 'Rating should be between 1 and 10.')
-        if not (1 <= content <= 10):
+        if not 1 <= content <= 10:
             self.add_error('content', 'Rating should be between 1 and 10.')
-        
+
         return cleaned_data
-    
+
 class ProfileForm(forms.ModelForm):
     """ Profile update form """
     class Meta:
         """Class Meta"""
         model = Profile
         fields = ['profile_picture', 'bio', 'contact_info']
+
+class ContactForm(forms.ModelForm):
+    '''Contact Form'''
+    class Meta:
+        '''Class Meta'''
+        model = Contact
+        fields = ['email', 'subject', 'message']
+
+    def clean(self):
+        cleaned_data = super().clean()
+        email = cleaned_data.get("email")
+        subject = cleaned_data.get("subject")
+        message = cleaned_data.get("message")
+
+        if email:
+            try:
+                EmailValidator()(email)
+            except ValidationError as exc:
+                raise forms.ValidationError({'email': "Please enter a valid email address."}) from exc
+
+        if subject and len(subject) > 255:
+            raise forms.ValidationError({'subject': "Subject must not exceed a length 255 characters."})
+
+        if message and len(message) > 1000:
+            raise forms.ValidationError({'message': "Message must not exceed a length 255 characters."})
+
+        return cleaned_data
