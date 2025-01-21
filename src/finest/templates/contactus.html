@@ -103,22 +103,28 @@
               >{{ form.message.value|default:'' }}</textarea>
               <div class="text-sm text-red-600 mt-2">{{ form.message.errors }}</div>
             </div>
-            <div class="flex justify-between items-center">
+            <div class="flex justify-between items-center gap-3">
               <button
                 type="submit"
-                id="message-button"
-                class="inline-flex py-3 px-5 text-sm font-medium text-center text-white rounded-lg bg-primary-700 sm:w-fit hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+                id="message-btn"
+                class="flex-1 inline-flex justify-center items-center py-3 px-5 text-sm font-medium text-center text-white rounded-lg bg-primary-700 sm:w-fit hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
               >
-                <svg id="spinner" class="w-6 h-6 text-white animate-spin hidden" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                <svg id="initial-icon" class="w-6 h-6 mr-1 rotate-90" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m12 18-7 3 7-18 7 18-7-3Zm0 0v-5"/>
+                </svg>
+                <svg id="spinner-icon" class="w-6 h-6 text-white animate-spin hidden" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                   <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.651 7.65a7.131 7.131 0 0 0-12.68 3.15M18.001 4v4h-4m-7.652 8.35a7.13 7.13 0 0 0 12.68-3.15M6 20v-4h4"/>
                 </svg>
-                <span id="message-text">Send message</span>
+                <span id="button-text">Send message</span>
               </button>
               <a
                 href="{% url 'home' %}"
                 type="button"
-                class="py-3 px-5 text-sm font-medium text-center text-white rounded-lg bg-red-700 sm:w-fit hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800"
+                class="flex-1 inline-flex justify-center items-center py-3 px-5 text-sm font-medium text-center text-white rounded-lg bg-red-700 sm:w-fit hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800"
               >
+                <svg class="w-6 h-6 mr-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m15 9-6 6m0-6 6 6m6-3a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
+                </svg>
                 Cancel
               </a>
             </div>
@@ -128,21 +134,23 @@
     </div>
   </section>
   <script>
-    document.getElementById("message-button").addEventListener("click", function(event) {
-          var btn = event.target;
-          var spinner = document.getElementById("spinner");
-          var loginText = document.getElementById("message-text");
-  
-          btn.disabled = true;
-          spinner.classList.remove("hidden");
-          spinner.classList.add("animate-spin");
-  
-          loginText.textContent = "Sending...";
-  
-          setTimeout(function() {
-              btn.form.submit();
-          }, 500);
-      });
+    document.getElementById("message-btn").addEventListener("click", function(event) {
+        var btn = event.target;
+        var initialIcon = document.getElementById("initial-icon");
+        var spinnerIcon = document.getElementById("spinner-icon");
+        var buttonText = document.getElementById("button-text");
+
+        btn.disabled = true;
+        initialIcon.classList.add("hidden");
+        spinnerIcon.classList.remove("hidden");
+        spinnerIcon.classList.add("animate-spin");
+
+        buttonText.textContent = "Sending...";
+
+        setTimeout(function() {
+            btn.form.submit();
+        }, 500);
+    });
   </script>
 </body>
 </html>

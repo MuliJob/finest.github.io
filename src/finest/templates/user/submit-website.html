@@ -42,51 +42,57 @@
     <h1 class="text-3xl font-bold text-center text-gray-800 dark:text-white mb-6">{{title}}</h1>
     <hr class="border-t-2 border-gray-300 dark:border-gray-600 w-full mx-auto">
     
-    <div class="bg-white dark:bg-gray-800 py-8 px-4 max-w-full lg:py-16 text-left border border-gray-300 dark:border-gray-600 p-8 rounded-lg shadow-lg mt-10">
-        <form action="{% url 'submit_website' %}" method="post" enctype="multipart/form-data">
-            {% csrf_token %}
-            <div class="grid gap-6 sm:grid-cols-2 sm:gap-8">
-                <div class="sm:col-span-1">
-                    <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Title</label>
-                    <input type="text" name="title" id="title" value="{{ form.title.value|default:'' }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Type project name">
-                    <div class="text-sm text-red-600 mt-2">{{ form.title.errors }}</div>
+    <div class="flex items-center justify-center">
+        <div class="bg-white dark:bg-gray-800 py-8 px-4 max-w-3xl lg:py-16 text-left border border-gray-300 dark:border-gray-600 p-8 rounded-lg shadow-lg mt-10">
+            <form action="{% url 'submit_website' %}" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="grid gap-6 sm:grid-cols-2 sm:gap-8">
+                    <div class="sm:col-span-1">
+                        <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Title</label>
+                        <input type="text" name="title" id="title" value="{{ form.title.value|default:'' }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Type project name">
+                        <div class="text-sm text-red-600 mt-2">{{ form.title.errors }}</div>
+                    </div>
+                    <div class="sm:col-span-1">
+                        <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Website link</label>
+                        <input type="text" name="url" id="url" value="{{ form.url.value|default:'' }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="https://example.com/">
+                        <div class="text-sm text-red-600 mt-2">{{ form.url.errors }}</div>
+                    </div>
+                    <div class="w-full sm:col-span-2">
+                        <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Upload landing page</label>
+                        <input class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" name="file" id="file_input" type="file">
+                        <div class="text-sm text-red-600 mt-2">{{ form.file.errors }}</div>
+                    </div>
+                    <div class="w-full sm:col-span-2">
+                        <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Description</label>
+                        <textarea id="description" name="description" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Your description here">{{ form.description.value|default:'' }}</textarea>
+                        <div class="text-sm text-red-600 mt-2">{{ form.description.errors }}</div>
+                    </div>
                 </div>
-                <div class="sm:col-span-1">
-                    <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Website link</label>
-                    <input type="text" name="url" id="url" value="{{ form.url.value|default:'' }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="https://example.com/">
-                    <div class="text-sm text-red-600 mt-2">{{ form.url.errors }}</div>
-                </div>
-                <div class="w-full sm:col-span-2">
-                    <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Upload landing page</label>
-                    <input class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" name="file" id="file_input" type="file">
-                    <div class="text-sm text-red-600 mt-2">{{ form.file.errors }}</div>
-                </div>
-                <div class="w-full sm:col-span-2">
-                    <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Description</label>
-                    <textarea id="description" name="description" rows="8" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Your description here">{{ form.description.value|default:'' }}</textarea>
-                    <div class="text-sm text-red-600 mt-2">{{ form.description.errors }}</div>
-                </div>
-            </div>
-            <div class="flex justify-between items-center">
-                <button type="submit" class="inline-flex justify-center items-center px-5 py-2.5 mt-4 sm:mt-6 text-sm font-medium text-center text-white bg-primary-700 rounded-lg focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900 hover:bg-primary-800 md:w-auto" id="upload-btn">
-                    <svg id="initial-icon" class="w-6 h-6 mr-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-                        <path fill-rule="evenodd" d="M12 3a1 1 0 0 1 .78.375l4 5a1 1 0 1 1-1.56 1.25L13 6.85V14a1 1 0 1 1-2 0V6.85L8.78 9.626a1 1 0 1 1-1.56-1.25l4-5A1 1 0 0 1 12 3ZM9 14v-1H5a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-4a2 2 0 0 0-2-2h-4v1a3 3 0 1 1-6 0Zm8 2a1 1 0 1 0 0 2h.01a1 1 0 1 0 0-2H17Z" clip-rule="evenodd"/>
-                    </svg>
-                    <svg id="spinner-icon" class="w-6 h-6 mr-2 text-white animate-spin hidden" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.651 7.65a7.131 7.131 0 0 0-12.68 3.15M18.001 4v4h-4m-7.652 8.35a7.13 7.13 0 0 0 12.68-3.15M6 20v-4h4"/>
-                    </svg>
-                    <span id="button-text">Upload</span>
-                </button>
-                <a
-                    href="{% url 'dashboard' %}"
-                    type="button"
-                    class="py-3 px-5 text-sm font-medium text-center text-white rounded-lg bg-red-700 sm:w-fit hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800"
-                >
-                    Cancel
-                </a>
-            </div>            
-        </form>
-    </div>    
+                <div class="flex justify-between items-center gap-3">
+                    <button type="submit" class="flex-1 inline-flex justify-center items-center px-5 py-2.5 mt-4 sm:mt-6 text-sm font-medium text-center text-white bg-primary-700 rounded-lg focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900 hover:bg-primary-800 md:w-auto" id="upload-btn">
+                        <svg id="initial-icon" class="w-5 h-5 mr-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+                            <path fill-rule="evenodd" d="M12 3a1 1 0 0 1 .78.375l4 5a1 1 0 1 1-1.56 1.25L13 6.85V14a1 1 0 1 1-2 0V6.85L8.78 9.626a1 1 0 1 1-1.56-1.25l4-5A1 1 0 0 1 12 3ZM9 14v-1H5a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-4a2 2 0 0 0-2-2h-4v1a3 3 0 1 1-6 0Zm8 2a1 1 0 1 0 0 2h.01a1 1 0 1 0 0-2H17Z" clip-rule="evenodd"/>
+                        </svg>
+                        <svg id="spinner-icon" class="w-5 h-5 mr-1 text-white animate-spin hidden" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.651 7.65a7.131 7.131 0 0 0-12.68 3.15M18.001 4v4h-4m-7.652 8.35a7.13 7.13 0 0 0 12.68-3.15M6 20v-4h4"/>
+                        </svg>
+                        <span id="button-text">Upload</span>
+                    </button>
+                    <a
+                        href="{% url 'dashboard' %}"
+                        type="button"
+                        class="flex-1 inline-flex justify-center items-center py-2.5 px-5 mt-4 sm:mt-6 text-sm font-medium text-center text-white rounded-lg bg-red-700 sm:w-fit hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800 md:w-auto"
+                    >
+                        <svg class="w-5 h-5 mr-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m15 9-6 6m0-6 6 6m6-3a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
+                        </svg>
+                        Cancel
+                    </a>
+                </div>            
+            </form>
+        </div>
+    </div>
+        
   </section>
 
 <script>
