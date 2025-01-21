@@ -28,6 +28,12 @@ class Profile(models.Model):
 
     objects = models.Manager()
 
+class Contact(models.Model):
+    '''Contact Model'''
+    email = models.EmailField(blank=False, null=False)
+    subject = models.CharField(max_length=255, blank=False, null=False)
+    message = models.TextField(blank=False, null=False)
+
 class Review(models.Model):
     """Review model"""
     design = models.PositiveIntegerField(choices=[(i, i) for i in range(1, 11)], default=1)
