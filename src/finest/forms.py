@@ -106,14 +106,12 @@ class ContactForm(forms.ModelForm):
             try:
                 EmailValidator()(email)
             except ValidationError as exc:
-                raise ValidationError("Please enter a valid email address.") from exc
+                raise forms.ValidationError({'email': "Please enter a valid email address."}) from exc
 
         if subject and len(subject) > 255:
-            raise ValidationError("Subject must not exceed 255 characters.")
-        if not subject:
-            raise ValidationError("Subject is required.")
+            raise forms.ValidationError({'subject': "Subject must not exceed a length 255 characters."})
 
-        if not message:
-            raise ValidationError("Message cannot be empty.")
+        if message and len(message) > 1000:
+            raise forms.ValidationError({'message': "Message must not exceed a length 255 characters."})
 
         return cleaned_data

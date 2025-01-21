@@ -505,5 +505,6 @@ def contact_us(request):
         form = ContactForm
     context = {
       'title':title,
+      'form': form,
     }
     return render(request, 'contactus.html', context)
