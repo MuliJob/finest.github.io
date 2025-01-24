@@ -151,13 +151,17 @@ def dashboard(request):
     """ User dashboard """
     title = 'USER DASHBOARD'
     total_projects = SubmittedWebsite.objects.filter(user=request.user).count()
-    reviewed_projects_count = SubmittedWebsite.objects.filter(user=request.user, reviews__isnull=False).distinct().count()
+    reviewed_projects_count = (SubmittedWebsite.objects
+                               .filter(user=request.user, reviews__isnull=False)
+                               .distinct().count())
     non_reviewed_projects_count = total_projects - reviewed_projects_count
     average_review_score = (
         Review.objects.filter(submitted_website__user=request.user)
         .aggregate(avg_score=Avg('overall'))['avg_score'] or 0
     )
-    recent_projects = SubmittedWebsite.objects.filter(user=request.user).order_by('-submitted_at')[:4]
+    recent_projects = (SubmittedWebsite.objects
+                       .filter(user=request.user)
+                       .order_by('-submitted_at')[:4])
 
     top_review = Review.objects.filter(
         user=request.user,
@@ -171,10 +175,10 @@ def dashboard(request):
         top_feedback = "No feedback available yet."
         top_feedback_id = None
 
-    lowest_review = Review.objects.filter(
+    lowest_review = (Review.objects.filter(
         user=request.user,
         submitted_website__user=request.user
-    ).order_by('average').first()
+    ).order_by('average').first())
 
     if lowest_review:
         improvement_tip = lowest_review.description or "No improvement tips available yet."
@@ -211,7 +215,10 @@ def dashboard(request):
     filtered_labels = [month for month, count in data.items() if count > 0]
     filtered_data = [count for month, count in data.items() if count > 0]
 
-    recent_submissions = SubmittedWebsite.objects.filter(user=request.user).order_by('-submitted_at')[:2]
+    recent_submissions = (SubmittedWebsite
+                          .objects
+                          .filter(user=request.user)
+                          .order_by('-submitted_at')[:2])
 
     context = {
         'title': title,
@@ -286,9 +293,11 @@ def explore(request):
 def my_post(request):
     """ Posted websites """
     title = 'MY POSTS'
-    user_posts = SubmittedWebsite.objects.filter(user=request.user).order_by('-submitted_at').annotate(
-        highest_rating=Avg('reviews__overall')
-    )
+    user_posts = (SubmittedWebsite.objects
+                  .filter(user=request.user)
+                  .order_by('-submitted_at')
+                  .annotate(highest_rating=Avg('reviews__overall')
+    ))
     context = {
       'title': title,
       'user_posts': user_posts,
@@ -340,7 +349,7 @@ def my_post_detail(request, pk):
 def all_post_details(request, pk):
     """ All posted website details for all users """
     title = 'WEBSITE DETAILS'
-    
+
     website = get_object_or_404(SubmittedWebsite, pk=pk)
 
     is_submitted_by_user = website.user == request.user
@@ -381,7 +390,7 @@ def toggle_favorite(request):
 
         try:
             website = SubmittedWebsite.objects.get(id=website_id)
-            
+
             is_favorite = not website.is_favorite
             website.is_favorite = is_favorite
             website.save()
@@ -389,7 +398,7 @@ def toggle_favorite(request):
             return JsonResponse({"success": True, "is_favorite": is_favorite})
         except ObjectDoesNotExist:
             return JsonResponse({"success": False, "error": "Website not found"}, status=404)
-    
+
     return JsonResponse({"success": False, "error": "Invalid request method"}, status=405)
 
 @custom_login_required
@@ -450,7 +459,8 @@ def submit_website(request):
             messages.success(request, "Your website was submitted successfully.")
             return redirect('my_post')
         else:
-            messages.error(request, "There was an error with your submission. Please correct it below.")
+            messages.error(request, 
+                           "There was an error with your submission. Please correct it below.")
     else:
         form = SubmittedWebsiteForm()
 
@@ -464,7 +474,7 @@ def submit_website(request):
 def edit_profile(request, username):
     """View to edit user profile"""
     user = get_object_or_404(User, username=username)
-    
+
     if request.user != user:
         messages.error(request, "You are not authorized to edit this profile.")
         return redirect('home')
