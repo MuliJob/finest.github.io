@@ -286,7 +286,7 @@ def explore(request):
 def my_post(request):
     """ Posted websites """
     title = 'MY POSTS'
-    user_posts = SubmittedWebsite.objects.filter(user=request.user).annotate(
+    user_posts = SubmittedWebsite.objects.filter(user=request.user).order_by('-submitted_at').annotate(
         highest_rating=Avg('reviews__overall')
     )
     context = {
@@ -299,7 +299,7 @@ def my_post(request):
 def my_reviews(request):
     '''My Reviews Function'''
     title = 'My Reviews'
-    reviews = Review.objects.filter(user=request.user)
+    reviews = Review.objects.filter(user=request.user).order_by('-created_at')
     context = {
         'title': title,
         'reviews': reviews,
