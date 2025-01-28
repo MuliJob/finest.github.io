@@ -7,6 +7,7 @@ from finest import views
 
 urlpatterns = [
     path('', views.home, name='home'),
+    path('<str:username>/', views.user_project_detail, name='user_detail'),
     path('dashboard/overview/', views.dashboard, name='dashboard'),
     path('dashboard/explore/', views.explore, name='explore'),
     path('dashboard/my-reviews/', views.my_reviews, name='my_reviews'),
@@ -19,8 +20,8 @@ urlpatterns = [
     path('dashboard/<int:pk>/add-review/', views.add_review, name='add_review'),
     path('dashboard/profile/<str:username>/', views.edit_profile, name='edit_profile'),
     path('contact_us/', views.contact_us, name='contact_us'),
-    path('api/profiles/', views.ProfileListAPIView.as_view(), name='api-profiles'),
-    path('api/projects/', views.SubmittedWebsiteListAPIView.as_view(), name='api-projects'),
+    path('api/profiles/', views.ProfileListAPIView.as_view(), name='api_profiles'),
+    path('api/projects/', views.SubmittedWebsiteListAPIView.as_view(), name='api_projects'),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

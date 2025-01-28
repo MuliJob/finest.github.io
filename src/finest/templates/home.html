@@ -31,13 +31,15 @@
           {{ website_title }}
         </h1>
         <div class="flex items-center space-x-3 mb-4 group">
-          <img
-            src="{{ user_avatar_url }}"
-            alt="{{ user_username }}'s avatar"
-            class="w-8 h-8 rounded-full border border-gray-300 dark:border-gray-600 group-hover:underline"
-          />
+          <a href="{% url 'user_detail' user_username %}">
+            <img
+              src="{{ user_avatar_url }}"
+              alt="{{ user_username }}'s avatar"
+              class="w-8 h-8 rounded-full border border-gray-300 dark:border-gray-600 group-hover:underline"
+            />
+          </a>
           <a
-            href="{{ user_profile_url }}"
+            href="{% url 'user_detail' user_username %}"
             class="text-lg font-semibold text-gray-700 dark:text-gray-300 group-hover:underline"
           >
             {{ user_username|capfirst }}
