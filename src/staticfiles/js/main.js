@@ -1,4 +1,13 @@
 document.addEventListener('DOMContentLoaded', function () {
     NProgress.start();
-    NProgress.done();
+
+    window.addEventListener('load', function () {
+        NProgress.done();
+    });
+
+    document.querySelectorAll('a').forEach((link) => {
+        link.addEventListener('click', function () {
+            NProgress.start();
+        });
+    });
 });
