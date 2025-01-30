@@ -11,7 +11,7 @@ from django.http import JsonResponse
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib import messages
 from django.db.models import Avg, Count, Q
-from django.db.models.functions import TruncMonth
+from django.db.models.functions import Coalesce, TruncMonth
 from django.contrib.auth.models import User
 from django.utils.timezone import now
 from .models import SubmittedWebsite, Review, Profile
@@ -196,13 +196,17 @@ def user_project_detail(request, username):
     user = get_object_or_404(User, username=username)
 
     user_stats = SubmittedWebsite.objects.filter(user=user).aggregate(
-        total_works=Count('id'),
-        site_of_the_day_count=Count('id', filter=Q(date_site_of_the_day__isnull=False))
+        total_works=Coalesce(Count('id'), 0),
+        site_of_the_day_count=Coalesce(Count('id', filter=Q(date_site_of_the_day__isnull=False)), 0)
     )
+
+    user_projects = SubmittedWebsite.objects.filter(user=user)
+
     context = {
         "title": username.upper(),
-        "user": user,
-        "user_stats": user_stats
+        "user_profile": user,
+        "user_stats": user_stats,
+        "user_projects": user_projects
     }
     return render(request, 'personal_info.html', context)
 
