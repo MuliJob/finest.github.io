@@ -54,75 +54,142 @@
       {% endfor %} {% endif %}
       <h2 class="text-2xl font-bold mb-4 text-gray-800 dark:text-white">Profile</h2>
       <form id="profile-form" action="{% url 'edit_profile' user.username %}" method="POST" enctype="multipart/form-data">
-          {% csrf_token %}
-          <div class="mb-6 text-center">
-            <div class="flex justify-center">
-                <div class="relative w-24 h-24 rounded-full overflow-hidden border border-gray-300 dark:border-gray-600 cursor-pointer">
-                    <img id="profile-preview" 
-                         src="{% if user.profile.profile_picture %}{{ user.profile.profile_picture.url }}{% else %}https://robohash.org/{{ user.username }}.png?size=96x96{% endif %}" 
-                         alt="Profile Picture" 
-                         class="object-cover w-full h-full">
-                    <div class="absolute bottom-3 right-2 bg-gray-100 dark:bg-gray-800 rounded-full p-1" onclick="document.getElementById('profile-picture').click()">
-                        <svg class="w-5 h-5 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.779 17.779 4.36 19.918 6.5 13.5m4.279 4.279 8.364-8.643a3.027 3.027 0 0 0-2.14-5.165 3.03 3.03 0 0 0-2.14.886L6.5 13.5m4.279 4.279L6.499 13.5m2.14 2.14 6.213-6.504M12.75 7.04 17 11.28"/>
-                        </svg>
-                    </div>
-                </div>
+        {% csrf_token %}
+        <div class="mb-6 text-center">
+          <div class="flex justify-center">
+            <div class="relative w-24 h-24 rounded-full overflow-hidden border border-gray-300 dark:border-gray-600 cursor-pointer">
+              <img id="profile-preview" 
+                   src="{% if user.profile.profile_picture %}{{ user.profile.profile_picture.url }}{% else %}https://robohash.org/{{ user.username }}.png?size=96x96{% endif %}" 
+                   alt="Profile Picture" 
+                   class="object-cover w-full h-full">
+              <div class="absolute bottom-3 right-2 bg-gray-100 dark:bg-gray-800 rounded-full p-1" onclick="document.getElementById('profile-picture').click()">
+                <svg class="w-5 h-5 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.779 17.779 4.36 19.918 6.5 13.5m4.279 4.279 8.364-8.643a3.027 3.027 0 0 0-2.14-5.165 3.03 3.03 0 0 0-2.14.886L6.5 13.5m4.279 4.279L6.499 13.5m2.14 2.14 6.213-6.504M12.75 7.04 17 11.28"/>
+                </svg>
+              </div>
             </div>
+          </div>
+          <input 
+              type="file" 
+              id="profile-picture" 
+              name="profile_picture" 
+              accept="image/*" 
+              class="hidden">
+        </div>
+      
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+          <div class="mb-6">
+            <label for="name" class="block text-sm font-medium text-gray-800 dark:text-white mb-2">Name</label>
             <input 
-                type="file" 
-                id="profile-picture" 
-                name="profile_picture" 
-                accept="image/*" 
-                class="hidden">
+                type="text" 
+                id="name" 
+                name="name" 
+                class="block w-full text-sm text-gray-900 dark:text-white border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700 focus:ring-blue-500 focus:border-blue-500"
+                value="{{ user.first_name }} {{ user.last_name }}">
           </div>
+      
           <div class="mb-6">
-              <label for="name" class="block text-sm font-medium text-gray-800 dark:text-white mb-2">Name</label>
-              <input 
-                  type="text" 
-                  id="name" 
-                  name="name" 
-                  class="block w-full text-sm text-gray-900 dark:text-white border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700 focus:ring-blue-500 focus:border-blue-500"
-                  value="{{ user.first_name }} {{ user.last_name }}">
+            <label for="username" class="block text-sm font-medium text-gray-800 dark:text-white mb-2">Username</label>
+            <input 
+                type="text" 
+                id="username" 
+                name="username" 
+                class="block w-full text-sm text-gray-900 dark:text-white border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700 focus:ring-blue-500 focus:border-blue-500"
+                placeholder="Your username"
+                value="{{ user.username }}">
           </div>
+      
           <div class="mb-6">
-              <label for="username" class="block text-sm font-medium text-gray-800 dark:text-white mb-2">Username</label>
-              <input 
-                  type="text" 
-                  id="username" 
-                  name="username" 
-                  class="block w-full text-sm text-gray-900 dark:text-white border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700 focus:ring-blue-500 focus:border-blue-500"
-                  placeholder="Your username"
-                  value="{{ user.username }}">
+            <label for="profession" class="block text-sm font-medium text-gray-800 dark:text-white mb-2">Profession</label>
+            <input 
+                type="text" 
+                id="profession" 
+                name="profession" 
+                class="block w-full text-sm text-gray-900 dark:text-white border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700 focus:ring-blue-500 focus:border-blue-500"
+                placeholder="Your profession"
+                value="{{ user.profile.profession }}">
           </div>
+      
           <div class="mb-6">
-              <label for="bio" class="block text-sm font-medium text-gray-800 dark:text-white mb-2">Bio</label>
-              <textarea 
-                  id="bio" 
-                  name="bio" 
-                  rows="4" 
-                  class="block w-full text-sm text-gray-900 dark:text-white border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700 focus:ring-blue-500 focus:border-blue-500"
-                  placeholder="Write a short bio about yourself...">{% if user.profile.bio %}{{ user.profile.bio }}{% endif %}</textarea>
+            <label for="contact-info" class="block text-sm font-medium text-gray-800 dark:text-white mb-2">Contact Info</label>
+            <input 
+                type="text" 
+                id="contact-info" 
+                name="contact_info" 
+                class="block w-full text-sm text-gray-900 dark:text-white border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700 focus:ring-blue-500 focus:border-blue-500"
+                placeholder="Your work email, phone number, or other contact info"
+                value="{% if user.profile.contact_info %}{{ user.profile.contact_info }}{% endif %}">
           </div>
+      
           <div class="mb-6">
-              <label for="contact-info" class="block text-sm font-medium text-gray-800 dark:text-white mb-2">Contact Info</label>
-              <input 
-                  type="text" 
-                  id="contact-info" 
-                  name="contact_info" 
-                  class="block w-full text-sm text-gray-900 dark:text-white border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700 focus:ring-blue-500 focus:border-blue-500"
-                  placeholder="Your work email, phone number, or other contact info"
-                  value="{% if user.profile.contact_info %}{{ user.profile.contact_info }}{% endif %}">
+            <label for="github" class="block text-sm font-medium text-gray-800 dark:text-white mb-2">Github</label>
+            <input 
+                type="text" 
+                id="github" 
+                name="github" 
+                class="block w-full text-sm text-gray-900 dark:text-white border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700 focus:ring-blue-500 focus:border-blue-500"
+                placeholder="Your github link"
+                value="{% if user.profile.github %}{{ user.profile.github }}{% endif %}">
+                <div class="text-sm text-red-600 mt-2">{{ form.profile.github.errors }}</div>
           </div>
-          <button 
-              type="submit" 
-              class="w-full px-4 py-2 text-white bg-blue-600 hover:bg-blue-700 rounded-md focus:ring-2 focus:ring-blue-500 focus:ring-offset-1 flex items-center justify-center space-x-2"
-              id="update-profile-button">
-              <svg id="spinner" class="w-6 h-6 text-white hidden" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.651 7.65a7.131 7.131 0 0 0-12.68 3.15M18.001 4v4h-4m-7.652 8.35a7.13 7.13 0 0 0 12.68-3.15M6 20v-4h4"/>
-              </svg>
-              <span class="update-profile">Update Profile</span>
-          </button>
+      
+          <div class="mb-6">
+            <label for="linkedin" class="block text-sm font-medium text-gray-800 dark:text-white mb-2">LinkedIn</label>
+            <input 
+                type="text" 
+                id="linkedin" 
+                name="linkedin" 
+                class="block w-full text-sm text-gray-900 dark:text-white border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700 focus:ring-blue-500 focus:border-blue-500"
+                placeholder="Your linkedin link"
+                value="{% if user.profile.linkedin %}{{ user.profile.linkedin }}{% endif %}">
+                <div class="text-sm text-red-600 mt-2">{{ form.profile.linkedin.errors }}</div>
+          </div>
+      
+          <div class="mb-6">
+            <label for="x" class="block text-sm font-medium text-gray-800 dark:text-white mb-2">X (Twitter)</label>
+            <input 
+                type="text" 
+                id="twitter" 
+                name="twitter" 
+                class="block w-full text-sm text-gray-900 dark:text-white border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700 focus:ring-blue-500 focus:border-blue-500"
+                placeholder="Your X (Twitter) link"
+                value="{% if user.profile.twitter %}{{ user.profile.twitter }}{% endif %}">
+                <div class="text-sm text-red-600 mt-2">{{ form.profile.twitter.errors }}</div>
+          </div>
+      
+          <div class="mb-6">
+            <label for="instagram" class="block text-sm font-medium text-gray-800 dark:text-white mb-2">Instagram</label>
+            <input 
+                type="text" 
+                id="instagram" 
+                name="instagram" 
+                class="block w-full text-sm text-gray-900 dark:text-white border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700 focus:ring-blue-500 focus:border-blue-500"
+                placeholder="Your instagram link"
+                value="{% if user.profile.instagram %}{{ user.profile.instagram }}{% endif %}">
+                <div class="text-sm text-red-600 mt-2">{{ form.profile.instagram.errors }}</div>
+          </div>
+        </div>
+      
+        <div class="mb-6">
+          <label for="bio" class="block text-sm font-medium text-gray-800 dark:text-white mb-2">Bio</label>
+          <textarea 
+              id="bio" 
+              name="bio" 
+              rows="4" 
+              class="block w-full text-sm text-gray-900 dark:text-white border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700 focus:ring-blue-500 focus:border-blue-500"
+              placeholder="Write a short bio about yourself...">{% if user.profile.bio %}{{ user.profile.bio }}{% endif %}
+          </textarea>
+        </div>
+      
+        <button 
+            type="submit" 
+            class="w-full px-4 py-2 text-white bg-blue-600 hover:bg-blue-700 rounded-md focus:ring-2 focus:ring-blue-500 focus:ring-offset-1 flex items-center justify-center space-x-2"
+            id="update-profile-button">
+            <svg id="spinner" class="w-6 h-6 text-white hidden" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.651 7.65a7.131 7.131 0 0 0-12.68 3.15M18.001 4v4h-4m-7.652 8.35a7.13 7.13 0 0 0 12.68-3.15M6 20v-4h4"/>
+            </svg>
+            <span class="update-profile">Update Profile</span>
+        </button>
       </form>
   </div>
   

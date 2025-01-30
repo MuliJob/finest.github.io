@@ -10,7 +10,7 @@ from django.urls import reverse
 from django.http import JsonResponse
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib import messages
-from django.db.models import Avg, Count, Q
+from django.db.models import Avg, Count, Q, Value
 from django.db.models.functions import Coalesce, TruncMonth
 from django.contrib.auth.models import User
 from django.utils.timezone import now
@@ -156,7 +156,6 @@ def home(request):
             'formatted_date': formatted_date,
             'alt_name': alt_name,
             'user_username': user.username,
-            # 'user_profile_url': f'/profile/{user.username}/',
             'user_avatar_url': profile_picture or f'https://robohash.org/{user.username}.png?size=96x96',
         }
     else:
@@ -200,15 +199,24 @@ def user_project_detail(request, username):
         site_of_the_day_count=Coalesce(Count('id', filter=Q(date_site_of_the_day__isnull=False)), 0)
     )
 
-    user_projects = SubmittedWebsite.objects.filter(user=user)
+    site_of_the_day_by_month = SubmittedWebsite.objects.filter(user=user, date_site_of_the_day__isnull=False) \
+        .annotate(month=TruncMonth('date_site_of_the_day')) \
+        .values('month') \
+        .annotate(month_count=Coalesce(Count('id'), Value(0))) \
+        .order_by('month')
+
+    user_projects = SubmittedWebsite.objects.filter(user=user).order_by('-submitted_at')
 
     context = {
         "title": username.upper(),
         "user_profile": user,
         "user_stats": user_stats,
-        "user_projects": user_projects
+        "user_projects": user_projects,
+        "site_of_the_day_by_month": site_of_the_day_by_month
     }
+    
     return render(request, 'personal_info.html', context)
+
 
 @custom_login_required
 def dashboard(request):
