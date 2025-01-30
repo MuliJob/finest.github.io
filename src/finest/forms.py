@@ -132,7 +132,65 @@ class ProfileForm(forms.ModelForm):
     class Meta:
         """Class Meta"""
         model = Profile
-        fields = ['profile_picture', 'bio', 'contact_info']
+        fields = ['profile_picture', 'bio', 'contact_info', 'github',
+                  'linkedin', 'twitter', 'instagram', 'profession']
+
+    github = forms.URLField(required=False)
+    linkedin = forms.URLField(required=False)
+    twitter = forms.URLField(required=False)
+    instagram = forms.URLField(required=False)
+
+    def clean_github(self):
+        """ URL validation """
+        github = self.cleaned_data.get('github')
+
+        if not github.startswith(('http://', 'https://')):
+            raise ValidationError("The URL must start with 'http://' or 'https://'")
+
+        parsed_github = urlparse(github)
+        if not parsed_github.netloc:
+            raise ValidationError("The URL must be a valid URL.")
+
+        return github
+
+    def clean_linkedin(self):
+        """ URL validation """
+        linkedin = self.cleaned_data.get('linkedin')
+
+        if not linkedin.startswith(('http://', 'https://')):
+            raise ValidationError("The URL must start with 'http://' or 'https://'")
+
+        parsed_linkedin = urlparse(linkedin)
+        if not parsed_linkedin.netloc:
+            raise ValidationError("The URL must be a valid URL.")
+
+        return linkedin
+
+    def clean_twitter(self):
+        """ URL validation """
+        twitter = self.cleaned_data.get('twitter')
+
+        if not twitter.startswith(('http://', 'https://')):
+            raise ValidationError("The URL must start with 'http://' or 'https://'")
+
+        parsed_twitter = urlparse(twitter)
+        if not parsed_twitter.netloc:
+            raise ValidationError("The URL must be a valid URL.")
+
+        return twitter
+
+    def clean_instagram(self):
+        """ URL validation """
+        instagram = self.cleaned_data.get('instagram')
+
+        if not instagram.startswith(('http://', 'https://')):
+            raise ValidationError("The URL must start with 'http://' or 'https://'")
+
+        parsed_instagram = urlparse(instagram)
+        if not parsed_instagram.netloc:
+            raise ValidationError("The URL must be a valid URL.")
+
+        return instagram
 
 class ContactForm(forms.ModelForm):
     '''Contact Form'''
