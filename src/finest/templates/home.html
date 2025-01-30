@@ -5,6 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{{ title }}</title>
+
 </head>
 <body>
   <section class="bg-white dark:bg-gray-900 mt-16">
@@ -31,13 +32,15 @@
           {{ website_title }}
         </h1>
         <div class="flex items-center space-x-3 mb-4 group">
-          <img
-            src="{{ user_avatar_url }}"
-            alt="{{ user_username }}'s avatar"
-            class="w-8 h-8 rounded-full border border-gray-300 dark:border-gray-600 group-hover:underline"
-          />
+          <a href="{% url 'user_detail' user_username %}">
+            <img
+              src="{{ user_avatar_url }}"
+              alt="{{ user_username }}'s avatar"
+              class="w-8 h-8 rounded-full border border-gray-300 dark:border-gray-600 group-hover:underline"
+            />
+          </a>
           <a
-            href="{{ user_profile_url }}"
+            href="{% url 'user_detail' user_username %}"
             class="text-lg font-semibold text-gray-700 dark:text-gray-300 group-hover:underline"
           >
             {{ user_username|capfirst }}
@@ -114,19 +117,25 @@
                 <h3 class="text-xl text-gray-600 dark:text-gray-400 font-semibold">{{ site.title|upper }} <span class="text-gray-500 dark:text-gray-400 text-sm">by</span></h3>
                 <div class="flex items-center">
                   {% if site.user.profile.profile_picture %}
-                  <img
-                    src="{{ site.user.profile.profile_picture.url }}"
-                    alt="{{ site.user.username }}'s Avatar"
-                    class="w-8 h-8 rounded-full border border-gray-300 dark:border-gray-600 mr-2"
-                  />
+                  <a href="{% url 'user_detail' site.user.username %}">
+                    <img
+                      src="{{ site.user.profile.profile_picture.url }}"
+                      alt="{{ site.user.username }}'s Avatar"
+                      class="w-8 h-8 rounded-full border border-gray-300 dark:border-gray-600 mr-2"
+                    />
+                  </a>
                   {% else %}
-                  <img
-                    src="https://robohash.org/{{ site.user.username }}.png?size=96x96"
-                    alt="{{ site.user.username }}'s Avatar"
-                    class="w-8 h-8 rounded-full border border-gray-300 dark:border-gray-600 mr-2"
-                  />
+                  <a href="{% url 'user_detail' site.user.username %}">
+                    <img
+                      src="https://robohash.org/{{ site.user.username }}.png?size=96x96"
+                      alt="{{ site.user.username }}'s Avatar"
+                      class="w-8 h-8 rounded-full border border-gray-300 dark:border-gray-600 mr-2"
+                    />
+                  </a>
                   {% endif %}
-                  <p class="text-lg text-gray-600 dark:text-gray-400 font-semibold mr-2">{{ site.user.username|capfirst }}</p>
+                  <a href="{% url 'user_detail' site.user.username %}">
+                    <p class="text-lg text-gray-600 dark:text-gray-400 font-semibold mr-2">{{ site.user.username|capfirst }}</p>
+                  </a>
                 </div>
               </div>
             </div>
@@ -144,6 +153,7 @@
       {% endif %}
     </div>             
   </section>
+
 </body>
 </html>
 {% endblock content %}

@@ -4,12 +4,13 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Login</title>
+    <title>FINEST - USER LOGIN</title>
+
   </head>
   <body>
-    <section class="bg-gray-50 dark:bg-gray-900 mt-16">
+    <section class="bg-gray-50 dark:bg-gray-900 min-h-screen flex items-center justify-center">
       <div
-        class="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0"
+        class="flex flex-col max-w-xl items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0 mt-16"
       >
         <div class="w-full md:mt-0 sm:max-w-md xl:p-0">
           {% if messages %} {% for message in messages %}
@@ -165,7 +166,7 @@
               btn.form.submit();
           }, 500);
       });
-    </script>  
+    </script>
   </body>
 </html>
 {% endblock content %}

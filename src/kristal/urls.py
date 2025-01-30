@@ -22,6 +22,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api-token-auth/', obtain_auth_token),
     path('', include('finest.urls')),
-    path('members/', include('django.contrib.auth.urls')),
-    path('members/', include('members.urls')),
+    # path('', include('django.contrib.auth.urls')),
+    # path('members/', include('members.urls')),
 ]
