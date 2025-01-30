@@ -41,7 +41,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.humanize',
     'finest',
-    'members',
     'compressor',
     'rest_framework',
     'django_filters',

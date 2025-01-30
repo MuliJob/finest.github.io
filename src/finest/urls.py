@@ -7,7 +7,10 @@ from finest import views
 
 urlpatterns = [
     path('', views.home, name='home'),
-    path('<str:username>/', views.user_project_detail, name='user_detail'),
+    path('members/login_user', views.login_user, name='login'),
+    path('members/logout_user', views.logout_user, name='logout'),
+    path('members/register_user', views.register_user, name='register_user'),
+    path('user/<str:username>/', views.user_project_detail, name='user_detail'),
     path('dashboard/overview/', views.dashboard, name='dashboard'),
     path('dashboard/explore/', views.explore, name='explore'),
     path('dashboard/my-reviews/', views.my_reviews, name='my_reviews'),
