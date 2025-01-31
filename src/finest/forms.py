@@ -102,13 +102,15 @@ class ReviewForm(forms.ModelForm):
     class Meta:
         """ Class Meta"""
         model = Review
-        fields = ['design', 'usability', 'content', 'overall', 'description']  # Include 'description' field
+        fields = ['design', 'usability', 
+                  'content', 'overall', 'description']
         widgets = {
             'design': forms.RadioSelect(),
             'usability': forms.RadioSelect(),
             'content': forms.RadioSelect(),
             'overall': forms.RadioSelect(),
-            'description': forms.Textarea(attrs={'rows': 4, 'placeholder': 'Add your comments or feedback here.'}),
+            'description': forms.Textarea(
+                attrs={'rows': 4, 'placeholder': 'Add your comments or feedback here.'}),
         }
 
     def clean(self):
@@ -117,7 +119,6 @@ class ReviewForm(forms.ModelForm):
         usability = cleaned_data.get("usability")
         content = cleaned_data.get("content")
 
-        # Ensure ratings are within the valid range
         if not 1 <= design <= 10:
             self.add_error('design', 'Rating should be between 1 and 10.')
         if not 1 <= usability <= 10:
@@ -226,12 +227,15 @@ class ContactForm(forms.ModelForm):
             try:
                 EmailValidator()(email)
             except ValidationError as exc:
-                raise forms.ValidationError({'email': "Please enter a valid email address."}) from exc
+                raise forms.ValidationError(
+                    {'email': "Please enter a valid email address."}) from exc
 
         if subject and len(subject) > 255:
-            raise forms.ValidationError({'subject': "Subject must not exceed a length 255 characters."})
+            raise forms.ValidationError(
+                {'subject': "Subject must not exceed a length 255 characters."})
 
         if message and len(message) > 1000:
-            raise forms.ValidationError({'message': "Message must not exceed a length 255 characters."})
+            raise forms.ValidationError(
+                {'message': "Message must not exceed a length 255 characters."})
 
         return cleaned_data
