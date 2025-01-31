@@ -132,15 +132,16 @@ class ProfileForm(forms.ModelForm):
     class Meta:
         """Class Meta"""
         model = Profile
-        fields = ['profile_picture', 'facebook',
-                    'bio', 'contact_info',
-                    'location', 'github',
-                    'linkedin', 'twitter',
-                    'instagram', 'profession']
+        fields = ['profile_picture', 'bio',
+                  'contact_info', 'location', 
+                  'github', 'linkedin', 
+                  'twitter', 'instagram', 
+                  'facebook', 'profession']
 
     github = forms.URLField(required=False)
     linkedin = forms.URLField(required=False)
     twitter = forms.URLField(required=False)
+    facebook = forms.URLField(required=False)
     instagram = forms.URLField(required=False)
 
     def clean_github(self):
@@ -181,6 +182,19 @@ class ProfileForm(forms.ModelForm):
             raise ValidationError("The URL must be a valid URL.")
 
         return twitter
+
+    def clean_facebook(self):
+        """ URL validation """
+        facebook = self.cleaned_data.get('facebook')
+
+        if not facebook.startswith(('http://', 'https://')):
+            raise ValidationError("The URL must start with 'http://' or 'https://'")
+
+        parsed_facebook = urlparse(facebook)
+        if not parsed_facebook.netloc:
+            raise ValidationError("The URL must be a valid URL.")
+
+        return facebook
 
     def clean_instagram(self):
         """ URL validation """

@@ -52,7 +52,7 @@
           </button>
         </div>
       {% endfor %} {% endif %}
-      <h2 class="text-2xl font-bold mb-4 text-gray-800 dark:text-white">Profile</h2>
+      <h2 class="text-2xl font-bold mb-4 text-gray-800 dark:text-white">{{ user.first_name|capfirst }} {{ user.last_name|capfirst }}</h2>
       <form id="profile-form" action="{% url 'edit_profile' user.username %}" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
         <div class="mb-6 text-center">
@@ -107,7 +107,7 @@
                 name="profession" 
                 class="block w-full text-sm text-gray-900 dark:text-white border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700 focus:ring-blue-500 focus:border-blue-500"
                 placeholder="Your profession"
-                value="{{ user.profile.profession }}">
+                value="{% if user.profile.profession %}{{ user.profile.profession|default:'' }}{% endif %}">
           </div>
       
           <div class="mb-6">
@@ -120,7 +120,18 @@
                 placeholder="Your work email, phone number, or other contact info"
                 value="{% if user.profile.contact_info %}{{ user.profile.contact_info }}{% endif %}">
           </div>
-      
+          
+          <div class="mb-6">
+            <label for="location" class="block text-sm font-medium text-gray-800 dark:text-white mb-2">Location</label>
+            <input 
+                type="text" 
+                id="location" 
+                name="location" 
+                class="block w-full text-sm text-gray-900 dark:text-white border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700 focus:ring-blue-500 focus:border-blue-500"
+                placeholder="e.g. Nairobi - Kenya"
+                value="{% if user.profile.location %}{{ user.profile.location|default:'' }}{% endif %}">
+          </div>
+
           <div class="mb-6">
             <label for="github" class="block text-sm font-medium text-gray-800 dark:text-white mb-2">Github</label>
             <input 
@@ -157,6 +168,18 @@
                 <div class="text-sm text-red-600 mt-2">{{ form.profile.twitter.errors }}</div>
           </div>
       
+          <div class="mb-6">
+            <label for="facebook" class="block text-sm font-medium text-gray-800 dark:text-white mb-2">Facebook</label>
+            <input 
+                type="text" 
+                id="facebook" 
+                name="facebook" 
+                class="block w-full text-sm text-gray-900 dark:text-white border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700 focus:ring-blue-500 focus:border-blue-500"
+                placeholder="Your facebook link"
+                value="{% if user.profile.facebook %}{{ user.profile.facebook }}{% endif %}">
+                <div class="text-sm text-red-600 mt-2">{{ form.profile.facebook.errors }}</div>
+          </div>
+
           <div class="mb-6">
             <label for="instagram" class="block text-sm font-medium text-gray-800 dark:text-white mb-2">Instagram</label>
             <input 
