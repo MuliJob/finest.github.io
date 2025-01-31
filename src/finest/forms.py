@@ -132,8 +132,11 @@ class ProfileForm(forms.ModelForm):
     class Meta:
         """Class Meta"""
         model = Profile
-        fields = ['profile_picture', 'bio', 'contact_info', 'github',
-                  'linkedin', 'twitter', 'instagram', 'profession']
+        fields = ['profile_picture', 'facebook',
+                    'bio', 'contact_info',
+                    'location', 'github',
+                    'linkedin', 'twitter',
+                    'instagram', 'profession']
 
     github = forms.URLField(required=False)
     linkedin = forms.URLField(required=False)
