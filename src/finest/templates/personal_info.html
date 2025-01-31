@@ -82,7 +82,7 @@
       </h1>
 
       <p class="mt-2 text-lg text-gray-600 pt-8 mb-8">
-          Nairobi - Kenya
+        {{ user_profile.profile.location|default:'' }}
       </p>
 
       <div class="mt-6 border border-gray-300 rounded-lg overflow-hidden shadow-md">
