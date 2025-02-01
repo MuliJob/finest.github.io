@@ -270,8 +270,8 @@ def dashboard(request):
     current_year = datetime.now().year
 
     review_data = (
-        Review.objects.filter(user=request.user, created_at__year=current_year)
-        .annotate(month=TruncMonth('created_at'))
+        SubmittedWebsite.objects.filter(user=request.user, submitted_at__year=current_year)
+        .annotate(month=TruncMonth('submitted_at'))
         .values('month')
         .annotate(total_reviews=Count('id'))
         .order_by('month')
