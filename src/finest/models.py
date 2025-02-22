@@ -6,6 +6,8 @@ from django.utils import timezone
 from django.core.exceptions import ValidationError
 
 # Create your models here.
+
+# Submitted Projects Model
 class SubmittedWebsite(models.Model):
     """ SubmittedWebsite form fields """
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -19,6 +21,7 @@ class SubmittedWebsite(models.Model):
 
     objects = models.Manager()
 
+# Profile Model
 class Profile(models.Model):
     """User Profile model"""
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
@@ -35,12 +38,14 @@ class Profile(models.Model):
 
     objects = models.Manager()
 
+# Contact Model
 class Contact(models.Model):
     '''Contact Model'''
     email = models.EmailField(blank=False, null=False)
     subject = models.CharField(max_length=255, blank=False, null=False)
     message = models.TextField(blank=False, null=False)
 
+# Review Model
 class Review(models.Model):
     """Review model"""
     design = models.PositiveIntegerField(choices=[(i, i) for i in range(1, 11)], default=1)
@@ -71,3 +76,21 @@ class Review(models.Model):
         username = self.user.username if self.user and hasattr(self.user, 'username') else "Unknown User"
         website = self.submitted_website or "Unknown Website"
         return f"Review by {username} for {website} ({self.average}/5)"
+
+# Followers Model
+class Follow(models.Model):
+    """Followers Model to track follow relationships"""
+    follower = models.ForeignKey(
+        User, related_name='following', on_delete=models.CASCADE,
+        null=True, blank=True
+    )
+    followed = models.ForeignKey(
+        User, related_name='followers', on_delete=models.CASCADE,
+        null=True, blank=True
+    )
+    created = models.DateTimeField(auto_now_add=True)
+    objects = models.Manager()
+
+    class Meta:
+        """meta class"""
+        unique_together = ('follower', 'followed')

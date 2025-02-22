@@ -7,14 +7,14 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.views import redirect_to_login
 from django.urls import reverse
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponseRedirect
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib import messages
 from django.db.models import Avg, Count, Q, Value
 from django.db.models.functions import Coalesce, TruncMonth
 from django.contrib.auth.models import User
 from django.utils.timezone import now
-from .models import SubmittedWebsite, Review, Profile
+from .models import SubmittedWebsite, Review, Profile, Follow
 from .forms import ContactForm, SubmittedWebsiteForm, ReviewForm, ProfileForm, RegisterUserForm, LoginUserForm
 from .serializers import ProfileSerializer, SubmittedWebsiteSerializer
 from .permissions import IsAdminOrReadOnly
@@ -91,7 +91,7 @@ def custom_login_required(view_func):
     def wrapper(request, *args, **kwargs):
         if not request.user.is_authenticated:
             messages.warning(request,
-                             "You need to be logged in to access this page. Please login below!")
+                             "You need to be logged in to access this page. Please login!")
             login_url = reverse('login')
             return redirect_to_login(request.get_full_path(), login_url)
         return view_func(request, *args, **kwargs)
@@ -199,7 +199,9 @@ def user_project_detail(request, username):
         site_of_the_day_count=Coalesce(Count('id', filter=Q(date_site_of_the_day__isnull=False)), 0)
     )
 
-    site_of_the_day_by_month = SubmittedWebsite.objects.filter(user=user, date_site_of_the_day__isnull=False) \
+    site_of_the_day_by_month = SubmittedWebsite.objects.filter(
+        user=user, 
+        date_site_of_the_day__isnull=False) \
         .annotate(month=TruncMonth('date_site_of_the_day')) \
         .values('month') \
         .annotate(month_count=Coalesce(Count('id'), Value(0))) \
@@ -214,7 +216,7 @@ def user_project_detail(request, username):
         "user_projects": user_projects,
         "site_of_the_day_by_month": site_of_the_day_by_month
     }
-    
+
     return render(request, 'personal_info.html', context)
 
 
@@ -590,3 +592,21 @@ def contact_us(request):
       'form': form,
     }
     return render(request, 'contactus.html', context)
+
+
+def follow_toggle(request, author):
+    """Follow Toggle Button"""
+    # author_obj = get_object_or_404(User, username=author)
+    # current_user_obj = request.user
+
+    # # Check if current_user_obj is trying to follow themselves
+    # if author != current_user_obj.username:
+    #     follow_instance, created = Follow.objects.get_or_create(
+    #         follower=current_user_obj, followed=author_obj
+    #     )
+    #     if not created:
+    #         # If the follow relationship exists, delete it (unfollow)
+    #         follow_instance.delete()
+
+    # # Redirect after toggling
+    # return HttpResponseRedirect(reverse('user_project_detail', args=[author_obj.username]))

@@ -10,9 +10,25 @@
 <body class="bg-gray-50 dark:bg-gray-900">
   <section class=" bg-gray-50 dark:bg-gray-900 mt-16">
     <div class="flex items-center gap-4 p-3">
-      <button class="border px-4 py-2 rounded-lg text-gray-800 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800 transition">
-          Follow
-      </button>
+        
+
+        {% if user.is_authenticated %}
+          {% if user in author.following.all %}
+              <a href="{% url 'follow_toggle' author=author %}" class="border px-4 py-2 rounded-lg text-gray-800 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800 transition"
+              >
+                Unfollow
+              </a>
+          {% else %}
+              <a  href="{% url 'follow_toggle' author=author  %}" class="border px-4 py-2 rounded-lg text-gray-800 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800 transition"
+              > 
+                Follow 
+              </a>
+              
+          {% endif %}
+        {% else %}
+          <p class="text-muted"> please, login to follow </p>
+        {% endif %}
+
   
       <div class="flex gap-3">
         {% if user_profile.profile.github %}
@@ -208,6 +224,8 @@
           
     </div>    
   </section>
+
+  
 </body>
 </html>
 {% endblock content %}
