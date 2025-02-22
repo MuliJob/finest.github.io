@@ -79,14 +79,18 @@ class Review(models.Model):
 
 # Followers Model
 class Follow(models.Model):
-    """Followers Model"""
-    follower = models.ForeignKey(User, related_name="following", on_delete=models.CASCADE)
-    followed = models.ForeignKey(User, related_name="followers", on_delete=models.CASCADE)
-    created_at = models.DateTimeField(auto_now_add=True)
+    """Followers Model to track follow relationships"""
+    follower = models.ForeignKey(
+        User, related_name='following', on_delete=models.CASCADE,
+        null=True, blank=True
+    )
+    followed = models.ForeignKey(
+        User, related_name='followers', on_delete=models.CASCADE,
+        null=True, blank=True
+    )
+    created = models.DateTimeField(auto_now_add=True)
+    objects = models.Manager()
 
     class Meta:
-        """Preventing duplication"""
-        unique_together = ("follower", "followed")
-
-    def __str__(self):
-        return f"{self.follower} follows {self.followed}"
+        """meta class"""
+        unique_together = ('follower', 'followed')
