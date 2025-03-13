@@ -6,9 +6,106 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>FINEST - USER LOGIN</title>
 
+    <style>
+      .divider-wrapper {
+          display: flex;
+          flex-direction: row;
+          text-transform: uppercase;
+          border: none;
+          font-size: 12px;
+          font-weight: 400;
+          margin: 0;
+          padding: 24px 0 0;
+          align-items: center;
+          justify-content: center;
+          width: 320px;
+          vertical-align: baseline
+      }
+
+      .divider-wrapper:before,.divider-wrapper:after {
+          content: "";
+          border-bottom: 1px solid #c2c8d0;
+          flex: 1 0 auto;
+          height: .5em;
+          margin: 0
+      }
+
+      .divider {
+          text-align: center;
+          flex: .2 0 auto;
+          margin: 0;
+          height: 12px
+      }
+
+      .social-section {
+          margin-top: 24px
+      }
+
+      .social-btn {
+          position: relative;
+          width: 320px;
+          border: 1px solid #c2c8d0;
+          border-radius: 6px;
+          font-size: 16px;
+          align-items: center;
+          background-color: #fff;
+          height: 52px;
+          transition: box-shadow .15 ease-in-out,background-color .15s ease-in-out;
+          cursor: pointer;
+          color: #2d333a;
+          margin-bottom: 8px;
+          display: flex;
+          outline: 0
+      }
+
+      .social-btn {
+          padding: 0 8px 0 52px
+      }
+
+      .social-btn:hover {
+          box-shadow: inset 0 0 0 150px #0000001a
+      }
+
+      .social-btn:focus {
+          outline: none
+      }
+
+      .social-logo-wrapper {
+          position: absolute;
+          left: 26px;
+          top: 50%;
+          transform: translate(-50%) translateY(-50%);
+          display: flex;
+          align-items: center
+      }
+
+      .social-logo {
+          width: 20px;
+          height: 20px;
+          display: inline-block
+      }
+
+      .error-icon {
+          display: inline-block;
+          height: 16px;
+          width: 16px;
+          margin-right: 8px;
+          flex-shrink: 0;
+          background-position: 0 0;
+          background-repeat: no-repeat;
+          background-size: 16px
+      }
+
+      .social-text {
+          text-align: left;
+          position: relative
+      }
+    </style>
   </head>
   <body>
-    <section class="bg-white dark:bg-gray-900 min-h-screen flex items-center justify-center">
+    <section
+      class="bg-white dark:bg-gray-900 min-h-screen flex items-center justify-center"
+    >
       <div
         class="flex flex-col max-w-xl items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0 mt-16"
       >
@@ -80,23 +177,37 @@
                   >Username</label
                 >
                 <div class="flex">
-                  <span class="inline-flex items-center px-3 text-sm text-gray-900 bg-gray-200 border border-e-0 border-gray-300 rounded-s-md dark:bg-gray-600 dark:text-gray-400 dark:border-gray-600">
-                    <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-                      <path fill-rule="evenodd" d="M12 20a7.966 7.966 0 0 1-5.002-1.756l.002.001v-.683c0-1.794 1.492-3.25 3.333-3.25h3.334c1.84 0 3.333 1.456 3.333 3.25v.683A7.966 7.966 0 0 1 12 20ZM2 12C2 6.477 6.477 2 12 2s10 4.477 10 10c0 5.5-4.44 9.963-9.932 10h-.138C6.438 21.962 2 17.5 2 12Zm10-5c-1.84 0-3.333 1.455-3.333 3.25S10.159 13.5 12 13.5c1.84 0 3.333-1.455 3.333-3.25S13.841 7 12 7Z" clip-rule="evenodd"/>
+                  <span
+                    class="inline-flex items-center px-3 text-sm text-gray-900 bg-gray-200 border border-e-0 border-gray-300 rounded-s-md dark:bg-gray-600 dark:text-gray-400 dark:border-gray-600"
+                  >
+                    <svg
+                      class="w-6 h-6 text-gray-800 dark:text-white"
+                      aria-hidden="true"
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      fill="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        fill-rule="evenodd"
+                        d="M12 20a7.966 7.966 0 0 1-5.002-1.756l.002.001v-.683c0-1.794 1.492-3.25 3.333-3.25h3.334c1.84 0 3.333 1.456 3.333 3.25v.683A7.966 7.966 0 0 1 12 20ZM2 12C2 6.477 6.477 2 12 2s10 4.477 10 10c0 5.5-4.44 9.963-9.932 10h-.138C6.438 21.962 2 17.5 2 12Zm10-5c-1.84 0-3.333 1.455-3.333 3.25S10.159 13.5 12 13.5c1.84 0 3.333-1.455 3.333-3.25S13.841 7 12 7Z"
+                        clip-rule="evenodd"
+                      />
                     </svg>
                   </span>
-                  <input 
-                    type="text" 
-                    id="username" 
+                  <input
+                    type="text"
+                    id="username"
                     name="username"
                     value="{{ form.username.value|default_if_none:'' }}"
-                    class="rounded-none rounded-e-lg bg-gray-50 border border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" 
+                    class="rounded-none rounded-e-lg bg-gray-50 border border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder="Bonnie Green"
-                  >
+                  />
                 </div>
                 <div class="text-sm text-red-600 mt-2">
                   {{ form.username.errors }}
-                </div>              
+                </div>
               </div>
               <div>
                 <label
@@ -104,18 +215,32 @@
                   >Password</label
                 >
                 <div class="flex">
-                  <span class="inline-flex items-center px-3 text-sm text-gray-900 bg-gray-200 border border-e-0 border-gray-300 rounded-s-md dark:bg-gray-600 dark:text-gray-400 dark:border-gray-600">
-                    <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-                      <path fill-rule="evenodd" d="M8 10V7a4 4 0 1 1 8 0v3h1a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h1Zm2-3a2 2 0 1 1 4 0v3h-4V7Zm2 6a1 1 0 0 1 1 1v3a1 1 0 1 1-2 0v-3a1 1 0 0 1 1-1Z" clip-rule="evenodd"/>
+                  <span
+                    class="inline-flex items-center px-3 text-sm text-gray-900 bg-gray-200 border border-e-0 border-gray-300 rounded-s-md dark:bg-gray-600 dark:text-gray-400 dark:border-gray-600"
+                  >
+                    <svg
+                      class="w-6 h-6 text-gray-800 dark:text-white"
+                      aria-hidden="true"
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      fill="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        fill-rule="evenodd"
+                        d="M8 10V7a4 4 0 1 1 8 0v3h1a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h1Zm2-3a2 2 0 1 1 4 0v3h-4V7Zm2 6a1 1 0 0 1 1 1v3a1 1 0 1 1-2 0v-3a1 1 0 0 1 1-1Z"
+                        clip-rule="evenodd"
+                      />
                     </svg>
                   </span>
-                  <input 
-                    type="password" 
+                  <input
+                    type="password"
                     name="password"
-                    id="password" 
-                    class="rounded-none rounded-e-lg bg-gray-50 border border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" 
+                    id="password"
+                    class="rounded-none rounded-e-lg bg-gray-50 border border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder="••••••••"
-                  >
+                  />
                 </div>
                 <div class="text-sm text-red-600 mt-2">
                   {{ form.password.errors }}
@@ -129,15 +254,33 @@
                 >
               </div>
               <button
-                  type="submit"
-                  class="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 flex items-center justify-center space-x-2"
-                  id="login-submit-btn">
-                  <svg id="spinner" class="w-6 h-6 text-white animate-spin hidden" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                      <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.651 7.65a7.131 7.131 0 0 0-12.68 3.15M18.001 4v4h-4m-7.652 8.35a7.13 7.13 0 0 0 12.68-3.15M6 20v-4h4"/>
-                  </svg>
-                  <span id="login-text">Login</span>
+                type="submit"
+                class="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 flex items-center justify-center space-x-2"
+                id="login-submit-btn"
+              >
+                <svg
+                  id="spinner"
+                  class="w-6 h-6 text-white animate-spin hidden"
+                  aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M17.651 7.65a7.131 7.131 0 0 0-12.68 3.15M18.001 4v4h-4m-7.652 8.35a7.13 7.13 0 0 0 12.68-3.15M6 20v-4h4"
+                  />
+                </svg>
+                <span id="login-text">Login</span>
               </button>
-              <p class="text-sm text-center font-light text-gray-500 dark:text-gray-400">
+              <p
+                class="text-sm text-center font-light text-gray-500 dark:text-gray-400"
+              >
                 Don’t have an account yet?
                 <a
                   href="{% url 'register_user' %}"
@@ -146,26 +289,43 @@
                 >
               </p>
             </form>
+
+            <!-- Third party authentication -->
+            <div class="divider-wrapper text-center font-light text-gray-500 dark:text-gray-400">
+              <span class="divider">Or</span>
+            </div>
+            <div class="social-section">
+              <button class="social-btn">
+                <span class="social-logo-wrapper"
+                  ><img
+                    class="social-logo"
+                    src="{% static 'img/google-logo-NePEveMl.svg' %}"
+                    alt="Google logo" /></span
+                ><span class="social-text">Continue with Google</span>
+                </button>
+            </div>
           </div>
         </div>
       </div>
     </section>
     <script>
-      document.getElementById("login-submit-btn").addEventListener("click", function(event) {
+      document
+        .getElementById("login-submit-btn")
+        .addEventListener("click", function (event) {
           var btn = event.target;
           var spinner = document.getElementById("spinner");
           var loginText = document.getElementById("login-text");
-  
+
           btn.disabled = true;
           spinner.classList.remove("hidden");
           spinner.classList.add("animate-spin");
-  
+
           loginText.textContent = "Logging in...";
-  
-          setTimeout(function() {
-              btn.form.submit();
+
+          setTimeout(function () {
+            btn.form.submit();
           }, 500);
-      });
+        });
     </script>
   </body>
 </html>
