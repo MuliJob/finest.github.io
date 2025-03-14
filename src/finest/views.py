@@ -29,14 +29,17 @@ def login_user(request):
             username = form.cleaned_data['username']
             password = form.cleaned_data['password']
             user = authenticate(request, username=username, password=password)
+
             if user:
                 login(request, user)
-                messages.success(request, f'Login Successful. Welcome {username}')
+                messages.success(request, f'Login Successful. Welcome, {username}!')
                 return redirect('dashboard')
-        else:
-            return render(request, 'auth/login.html', {'form': form})
+            else:
+                messages.error(request, 'Invalid username or password.')
+
     else:
         form = LoginUserForm()
+
     return render(request, 'auth/login.html', {'form': form})
 
 def logout_user(request):
@@ -596,17 +599,17 @@ def contact_us(request):
 
 def follow_toggle(request, author):
     """Follow Toggle Button"""
-    # author_obj = get_object_or_404(User, username=author)
-    # current_user_obj = request.user
+    author_obj = get_object_or_404(User, username=author)
+    current_user_obj = request.user
 
-    # # Check if current_user_obj is trying to follow themselves
-    # if author != current_user_obj.username:
-    #     follow_instance, created = Follow.objects.get_or_create(
-    #         follower=current_user_obj, followed=author_obj
-    #     )
-    #     if not created:
-    #         # If the follow relationship exists, delete it (unfollow)
-    #         follow_instance.delete()
+    # Check if current_user_obj is trying to follow themselves
+    if author != current_user_obj.username:
+        follow_instance, created = Follow.objects.get_or_create(
+            follower=current_user_obj, followed=author_obj
+        )
+        if not created:
+            # If the follow relationship exists, delete it (unfollow)
+            follow_instance.delete()
 
-    # # Redirect after toggling
-    # return HttpResponseRedirect(reverse('user_project_detail', args=[author_obj.username]))
+    # Redirect after toggling
+    return HttpResponseRedirect(reverse('user_project_detail', args=[author_obj.username]))

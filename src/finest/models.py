@@ -77,7 +77,6 @@ class Review(models.Model):
         website = self.submitted_website or "Unknown Website"
         return f"Review by {username} for {website} ({self.average}/5)"
 
-# Followers Model
 class Follow(models.Model):
     """Followers Model to track follow relationships"""
     follower = models.ForeignKey(
