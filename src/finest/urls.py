@@ -1,5 +1,5 @@
 """ Finest app urls """
-from django.urls import path
+from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 from finest import views
@@ -7,8 +7,9 @@ from finest import views
 
 urlpatterns = [
     path('', views.home, name='home'),
-    path('members/login_user', views.login_user, name='login'),
-    path('members/logout_user', views.logout_user, name='logout'),
+    path('accounts/', include('allauth.urls')),
+    path('members/login_user/', views.login_user, name='login'),
+    path('members/logout_user/', views.logout_user, name='logout'),
     path('members/register_user', views.register_user, name='register_user'),
     path('user/<str:username>/', views.user_project_detail, name='user_detail'),
     path('dashboard/overview/', views.dashboard, name='dashboard'),
@@ -22,7 +23,7 @@ urlpatterns = [
     path('dashboard/all/details/<int:pk>', views.all_post_details, name='all_post_details'),
     path('dashboard/<int:pk>/add-review/', views.add_review, name='add_review'),
     path('dashboard/profile/<str:username>/', views.edit_profile, name='edit_profile'),
-    # path("follows/<str:author>/",views.follow_toggle, name="follow_toggle"),
+    path("follows/<str:author>/",views.follow_toggle, name="follow_toggle"),
     path('contact_us/', views.contact_us, name='contact_us'),
     path('api/profiles/', views.ProfileListAPIView.as_view(), name='api_profiles'),
     path('api/projects/', views.SubmittedWebsiteListAPIView.as_view(), name='api_projects'),

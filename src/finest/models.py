@@ -77,20 +77,19 @@ class Review(models.Model):
         website = self.submitted_website or "Unknown Website"
         return f"Review by {username} for {website} ({self.average}/5)"
 
-# Followers Model
-# class Follow(models.Model):
-#     """Followers Model to track follow relationships"""
-#     follower = models.ForeignKey(
-#         User, related_name='following', on_delete=models.CASCADE,
-#         null=True, blank=True
-#     )
-#     followed = models.ForeignKey(
-#         User, related_name='followers', on_delete=models.CASCADE,
-#         null=True, blank=True
-#     )
-#     created = models.DateTimeField(auto_now_add=True)
-#     objects = models.Manager()
+class Follow(models.Model):
+    """Followers Model to track follow relationships"""
+    follower = models.ForeignKey(
+        User, related_name='following', on_delete=models.CASCADE,
+        null=True, blank=True
+    )
+    followed = models.ForeignKey(
+        User, related_name='followers', on_delete=models.CASCADE,
+        null=True, blank=True
+    )
+    created = models.DateTimeField(auto_now_add=True)
+    objects = models.Manager()
 
-#     class Meta:
-#         """meta class"""
-#         unique_together = ('follower', 'followed')
+    class Meta:
+        """meta class"""
+        unique_together = ('follower', 'followed')
