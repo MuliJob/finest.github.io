@@ -102,7 +102,7 @@ class ReviewForm(forms.ModelForm):
     class Meta:
         """ Class Meta"""
         model = Review
-        fields = ['design', 'usability', 
+        fields = ['design', 'usability',
                   'content', 'overall', 'description']
         widgets = {
             'design': forms.RadioSelect(),
