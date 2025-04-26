@@ -59,6 +59,10 @@ SITE_ID = 2
 LOGIN_REDIRECT_URL = 'dashboard/overview/'
 LOGOUT_REDIRECT_URL = '/'
 
+SOCIALACCOUNT_LOGIN_ON_GET = True
+
+SOCIALACCOUNT_AUTO_SIGNUP = True
+
 
 # Application definition
 
